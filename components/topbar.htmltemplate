@@ -1,0 +1,84 @@
+<div id="topbar">
+  <style>
+    #topbar {
+      width: calc(100% - 20px);
+      height: 80px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    body {
+      margin-top: 120px;
+    }
+
+    body:not(.dark) #topbar {
+      background-color: #aaf;
+
+    }
+
+    body.dark #topbar {
+      background-color: #bbf;
+    }
+
+    #topbar-myname {
+      font-size: 30px;
+      color: #1b3015;
+    }
+
+    #topbar-selectors {
+      margin-left: 50px;
+    }
+
+    #topbar-urls {
+      display: flex;
+    }
+
+    #topbar-urls>a {
+      display: flex;
+      font-size: 20px;
+      color: #000;
+      text-decoration: none;
+      background-color: white;
+      padding: 1px 10px;
+      border-radius: 10px;
+      margin-right: 5px;
+    }
+
+    #topbar-urls>a.now {
+      background-color: #afa;
+    }
+
+
+    #topbar-urls>a:visited {
+      color: #000;
+    }
+
+
+    #topbar-icon {
+      border-radius: 10px;
+    }
+  </style>
+  <img id="topbar-icon" src="/assets/mameeenn.png" alt="Mameeenn" width="80px" height="80px">
+  <div id="topbar-selectors">
+    <div id="topbar-myname">Mameeenn/まめーん</div>
+    <div id="topbar-urls"></div>
+  </div>
+  <script>
+    (() => {
+      const urls = ["/index.html", "/test.html"]
+      const sites = ["Main", "Test"]
+      let index = sites.indexOf(location.pathname);
+      if (index === -1) index = 0;
+      urls.forEach((url, i) => {
+        const a = $(`<a href="${url}">${sites[i]}</a>`);
+        if (index === i) a.addClass("now");
+        $("#topbar-urls").append(a);
+      })
+    })()
+  </script>
+
+</div>
