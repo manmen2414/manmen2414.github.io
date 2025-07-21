@@ -1,0 +1,23 @@
+{
+  "name": "manmen2414.github.io",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "https://github.com/manmen2414/manmen2414.github.io#readme",
+  "bugs": {
+    "url": "https://github.com/manmen2414/manmen2414.github.io/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manmen2414/manmen2414.github.io.git"
+  },
+  "license": "MIT",
+  "author": "manmen2414",
+  "type": "commonjs",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"No Test Command\";"
+  },
+  "dependencies": {
+    "@types/jquery": "^3.5.32"
+  }
+}
