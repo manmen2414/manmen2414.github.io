@@ -44,7 +44,13 @@ function changeTheme() {
 async function translate(lang) {
   const json = await (await fetch(`/langs/${lang}.json`)).json();
   translateJson = json;
-  const translates = [...$("div"), ...$("a"), ...$("button"), ...$("span")];
+  const translates = [
+    ...$("div"),
+    ...$("a"),
+    ...$("button"),
+    ...$("span"),
+    ...$("li"),
+  ];
   translates.forEach((j) => {
     const k = j.innerText;
     //虚無や非対象は飛ばす
