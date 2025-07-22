@@ -90,8 +90,8 @@ function initTextConversion() {
     );
   });
   $("#text-download").on("click", () => {
-    let filename =
-      prompt(getTranslate("tools.download.filename")) ?? "file.txt";
+    let filename = prompt(getTranslate("tools.download.filename"));
+    if (filename === null) return;
     if (filename.length === 0) filename = "file.txt";
     downloadText(text.val(), filename);
   });
@@ -103,6 +103,59 @@ function initTextConversion() {
   $("#text-base64-en").on("click", () => convertFunctions.base64Encode());
   $("#text-base64-de").on("click", () => convertFunctions.base64Decode());
 }
+function initNumbers() {
+  /**
+   * @returns {number}
+   * @param {string} id
+   * @param {number} def
+   */
+  function numVal(id, def) {
+    const val = $("#" + id).val();
+    if (val.length === 0) return def;
+    return parseFloat(val);
+  }
+  //random
+  $("#random-go").on("click", () => {
+    let min = numVal("random-min", 1);
+    let max = numVal("random-max", 100);
+    const count = numVal("random-count", 1);
+    const answers = [];
+    if (min > max) {
+      const minMin = min;
+      min = max;
+      max = minMin;
+    }
+    if (count <= 0) $("#random-answer").text("(0 ~ 0)");
+    for (let i = 0; i < count; i++) {
+      answers.push(random(max + 1, min));
+    }
+    const sum = answers.reduce((p, c) => p + c);
+    //回数1なら結果だけを,2以上なら1つあたりの値と結果を表示する
+    const sumStr = (count === 1 ? "" : answers.join("+") + " = ") + sum;
+    const info = `${sumStr} (${min * count} ~ ${max * count})`;
+    $("#random-answer").text(info);
+  });
+  //radix
+  /**
+   * @param {2|8|10|16} input
+   */
+  function changeBase(base) {
+    const base10Value = parseInt($(`#base-${base}`).val(), base);
+    const BASES = [2, 8, 10, 16];
+    //変更を加えられていないinputに対し変更を加える
+    BASES.filter((v) => v !== base).forEach((changeAt) => {
+      const num = base10Value.toString(changeAt);
+      const elem = $(`#base-${changeAt}`);
+      if (isNaN(base10Value)) elem.val("");
+      else elem.val(num);
+    });
+  }
+  //各inputに適用
+  [2, 8, 10, 16].forEach((v) => {
+    $(`#base-${v}`).on("change", () => changeBase(v));
+  });
+}
 $(() => {
   initTextConversion();
+  initNumbers();
 });

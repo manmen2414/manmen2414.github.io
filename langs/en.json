@@ -46,5 +46,12 @@
   "tools.json-formatter.minify": "Minify",
   "tools.json-formatter.format": "Format",
   "tools.json-formatter.error": "Error excepted at line $ column $ of the JSON data.",
-  "tools.download.filename": "File Name (optional)"
+  "tools.download.filename": "File Name (optional)",
+  "tools.title.numbers": "Numbers",
+  "tools.numbers.random": "Random",
+  "tools.numbers.base": "Base number conversion",
+  "tools.numbers.base.2": "Binary",
+  "tools.numbers.base.8": "Octal",
+  "tools.numbers.base.10": "Deciman",
+  "tools.numbers.base.16": "Hexadecimal"
 }

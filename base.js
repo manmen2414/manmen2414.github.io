@@ -1,4 +1,4 @@
-/**@type {JQuery<HTMLElement>} */
+/**@type {JQuery<HTMLBodyElement>} */
 let BODY;
 let translateJson = {};
 const TRANSLATE_KEYS = ["ja", "en"];
@@ -38,10 +38,10 @@ function changeTheme() {
   }
 }
 /**
+ * min以上max未満の整数乱数。
  * @returns {number}
  * @param {number} max
  * @param {number} min
- * min以上max未満の整数乱数。
  */
 function random(max, min = 0) {
   const rand = Math.floor(Math.random() * (max - min) + min);

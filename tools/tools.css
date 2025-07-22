@@ -19,14 +19,31 @@ body:not(.dark) #text-conversion {
   margin-right: 40px;
 }
 
+.base-table,
 .text-table {
   text-align: left;
 }
 
+.base-table input,
 .text-table button {
   margin-right: 10px;
 }
+.base-table span,
 .text-table span {
   font-weight: normal;
   margin-right: 10px;
+}
+#random-answer {
+  border: 1px solid currentColor;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}
+#random-count {
+  width: 100px;
+}
+.gobutton {
+  width: 60px;
+}
+.base-table input {
+  width: 300px;
 }

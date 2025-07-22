@@ -34,7 +34,33 @@
       <th> <button id="text-json-mini">@tools.json-formatter.minify</button><button
           id="text-json-form">@tools.json-formatter.format</button></th>
     </tr>
-  </table>
+  </table><br>
+  <div class="title">@tools.title.numbers</div>
+  <span class="title-smaller m-ri40">@tools.numbers.random</span>
+  <input type="number" placeholder="Min (1)" id="random-min">
+  <input type="number" placeholder="Max (100)" id="random-max">
+  <input type="number" placeholder="Count (1)" id="random-count">
+  <button id="random-go" class="gobutton">Go!</button>
+  <div id="random-answer"></div>
+  <span class="title-smaller m-ri40">@tools.numbers.base</span>
+  <table class="base-table">
+    <tr>
+      <th> <span class="title-smaller">@tools.numbers.base.2</span></th>
+      <th> <input type="text" id="base-2" placeholder="[01]"></th>
+    </tr>
+    <tr>
+      <th> <span class="title-smaller">@tools.numbers.base.8</span></th>
+      <th> <input type="text" id="base-8" placeholder="[01234567]"></th>
+    </tr>
+    <tr>
+      <th> <span class="title-smaller">@tools.numbers.base.10</span></th>
+      <th> <input type="number" id="base-10" placeholder="[0123456789]"></th>
+    </tr>
+    <tr>
+      <th> <span class="title-smaller">@tools.numbers.base.16</span></th>
+      <th> <input type="text" id="base-16" placeholder="[0123456789ABCDEF]"></th>
+    </tr>
+  </table><br>
 </body>
 
 </html>

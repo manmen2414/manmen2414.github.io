@@ -46,5 +46,12 @@
   "tools.json-formatter.minify": "圧縮",
   "tools.json-formatter.format": "フォーマット",
   "tools.json-formatter.error": "JSONデータの$行目$文字目でエラーが発生しました。",
-  "tools.download.filename": "ファイル名(任意)"
+  "tools.download.filename": "ファイル名(任意)",
+  "tools.title.numbers": "数値",
+  "tools.numbers.random": "ランダム",
+  "tools.numbers.base": "進数変換",
+  "tools.numbers.base.2": "2進数",
+  "tools.numbers.base.8": "8進数",
+  "tools.numbers.base.10": "10進数",
+  "tools.numbers.base.16": "16進数"
 }
