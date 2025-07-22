@@ -38,6 +38,46 @@ function changeTheme() {
   }
 }
 /**
+ * @returns {number}
+ * @param {number} max
+ * @param {number} min
+ * min以上max未満の整数乱数。
+ */
+function random(max, min = 0) {
+  const rand = Math.floor(Math.random() * (max - min) + min);
+  //運がめっちゃよかったらジャスト1を引くことがある
+  if (rand === max) return max - 1;
+  return rand;
+}
+
+/**
+ * arrからランダムで1つ抽出する。\
+ * コード上は文字列でもいけそう
+ * @template T
+ * @param {T[]} arr
+ * @returns {T}
+ */
+function randomFromArray(arr) {
+  return arr[random(arr.length)];
+}
+
+/**
+ * arrayをlength個の要素で区切る。
+ * @template T
+ * @param {T[]} array
+ * @param {number} length
+ * @returns {T[][]}
+ */
+function separateArray(array, length) {
+  /**@type {T[][]} */
+  const newArr = [];
+  for (let i = 0; i < array.length; i += length) {
+    newArr.push(array.slice(i, i + length));
+  }
+  return newArr;
+}
+
+/**
  * 翻訳キーを用いて翻訳を行う。
  * @param {string} lang
  */
@@ -65,12 +105,13 @@ async function translate(lang) {
 /**
  * 翻訳キーから翻訳結果を取得する。
  * @param {string} key
+ * @returns {string}
  */
 function getTranslate(key) {
   let k = key;
   const isTranslateMarked = k.startsWith("@");
   if (isTranslateMarked) k = k.slice(1);
-  if (k in json) return json[k];
+  if (k in translateJson) return translateJson[k];
   return `${isTranslateMarked ? "@" : ""}${k}`;
 }
 /**
@@ -112,6 +153,65 @@ function changeLanguage() {
     setParam(newparam, true);
   }
 }
+
+/**
+ * https://developer.mozilla.org/ja/docs/Glossary/Base64#%E3%80%8Cunicode_%E5%95%8F%E9%A1%8C%E3%80%8D
+ * @param {Uint8Array|number[]} bytes
+ */
+function bytesToBase64(bytes) {
+  const binString = Array.from(bytes, (byte) =>
+    String.fromCodePoint(byte)
+  ).join("");
+  return btoa(binString);
+}
+/**
+ * https://developer.mozilla.org/ja/docs/Glossary/Base64#%E3%80%8Cunicode_%E5%95%8F%E9%A1%8C%E3%80%8D
+ * @param {string} base64
+ */
+function base64ToByte(base64) {
+  const binString = atob(base64);
+  return Uint8Array.from(binString, (m) => m.codePointAt(0));
+}
+
+/**
+ * 文字列をutf-8で数列に変換する
+ * @param {string} str
+ */
+function stringToByte(str) {
+  const encorder = new TextEncoder();
+  return Array.from(encorder.encode(str));
+}
+/**
+ * 数列をutf-8で文字列に変換する
+ * @param {Uint8Array<ArrayBuffer>} bytes
+ */
+function ByteToString(bytes) {
+  const decoder = new TextDecoder();
+  return decoder.decode(bytes);
+}
+/**
+ * urlの中身をダウンロードする
+ * @param {string} url
+ * @param {string} filename
+ */
+function downloadUrl(url, filename) {
+  const anchor = document.createElement("a");
+  anchor.download = filename;
+  anchor.href = url;
+  anchor.click();
+}
+/**
+ * テキストをダウンロードする
+ * @param {string} text
+ * @param {string} filename
+ */
+function downloadText(text, filename = "text") {
+  downloadUrl(
+    `data:text/plain;charset=utf-8;base64,` + bytesToBase64(stringToByte(text)),
+    filename
+  );
+}
+
 $(() => {
   BODY = $("body");
   genTopBar();

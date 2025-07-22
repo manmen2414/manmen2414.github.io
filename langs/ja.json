@@ -1,6 +1,8 @@
 {
   "general.language": "日本語",
   "words.programming": "プログラミング",
+  "words.encode": "エンコード",
+  "words.decode": "デコード",
   "index.title.hello": "こんにちは！",
   "index.introduce": "私はただの一般通過日本人学生です。本当にこれ以外書くことがありません。",
   "rightbar.theme": "ダーク/ライト",
@@ -35,5 +37,14 @@
   "index.todo.tools_message": "そしてツールへのリンクを用意する",
   "index.todo.games": "ゲームのスクショ乗せるページあってもいいと思うんだ",
   "index.todo.korockle": "コロックルのライブラリ",
-  "index.todo.light": "ライトモード/ダークモードの保持"
+  "index.todo.light": "ライトモード/ダークモードの保持",
+  "tools.title.tools": "ツール",
+  "tools.title.textconversion": "テキスト変換",
+  "tools.title.base64": "Base64 エンコード/デコード",
+  "tools.title.unicode-escape": "Unicodeエスケープ",
+  "tools.title.json-formatter": "JSON フォーマット",
+  "tools.json-formatter.minify": "圧縮",
+  "tools.json-formatter.format": "フォーマット",
+  "tools.json-formatter.error": "JSONデータの$行目$文字目でエラーが発生しました。",
+  "tools.download.filename": "ファイル名(任意)"
 }

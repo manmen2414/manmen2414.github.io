@@ -5,13 +5,12 @@
       position: fixed;
       text-align: left;
       top: 20px;
-      right: -200px;
+      right: -190px;
       width: 255px;
-      height: 190px;
+      height: 200px;
       border-radius: 20px 0 0 20px;
       z-index: 10;
       transition: right 0.2s ease-in-out;
-
     }
 
     #rightbar:hover {

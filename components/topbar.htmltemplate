@@ -69,12 +69,14 @@
   </div>
   <script>
     (() => {
-      const urls = ["/index.html", "/test.html"]
-      const sites = ["Main", "Test"]
-      let index = sites.indexOf(location.pathname);
+      const urls = ["/index.html", "/tools/tools.html"]
+      const sites = ["Main", "Tools"]
+      let index = urls.indexOf(location.pathname);
       if (index === -1) index = 0;
+      const paramsRaw = "#" + getParam().join('&');
+      const params = paramsRaw.length === 1 ? "" : paramsRaw;
       urls.forEach((url, i) => {
-        const a = $(`<a href="${url}">${sites[i]}</a>`);
+        const a = $(`<a href="${url}${params}">${sites[i]}</a>`);
         if (index === i) a.addClass("now");
         $("#topbar-urls").append(a);
       })

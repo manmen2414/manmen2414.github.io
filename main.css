@@ -34,3 +34,26 @@ body {
   margin-top: 7.5px;
   font-size: 20px;
 }
+
+body.dark button:active,
+body:not(.dark) button:active {
+  border: 2px solid #77d;
+}
+
+body:not(.dark) button {
+  background-color: #ccc;
+  border: 2px solid #333;
+}
+
+body.dark button {
+  background-color: #333;
+  border: 2px solid #ccc;
+}
+
+button {
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border 0.05s ease-in-out;
+}

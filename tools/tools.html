@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <title>Mameeenn/まめーん</title>
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Mameeenn's Tool.">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="./tools.css">
+  <script src="/base.js"></script>
+  <script src="./tools.js"></script>
+</head>
+
+<body>
+  <div class="title" style="width: 100%;text-align: center;">@tools.title.tools</div>
+  <span class="title m-ri40">@tools.title.textconversion</span>
+
+  <button id="text-clear">Clear</button>
+  <button id="text-copy">Copy</button>
+  <button id="text-download">Download</button>
+  <textarea id="text-conversion"></textarea><br>
+  <table class="text-table">
+    <tr>
+      <th> <span class="title-smaller">@tools.title.base64</span></th>
+      <th> <button id="text-base64-en">@words.encode</button><button id="text-base64-de">@words.decode</button></th>
+    </tr>
+    <tr>
+      <th> <span class="title-smaller">@tools.title.unicode-escape</span></th>
+      <th> <button id="text-unicode-en">@words.encode</button><button id="text-unicode-de">@words.decode</button></th>
+    </tr>
+    <tr>
+      <th> <span class="title-smaller">@tools.title.json-formatter</span></th>
+      <th> <button id="text-json-mini">@tools.json-formatter.minify</button><button
+          id="text-json-form">@tools.json-formatter.format</button></th>
+    </tr>
+  </table>
+</body>
+
+</html>

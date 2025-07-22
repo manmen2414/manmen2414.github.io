@@ -1,6 +1,8 @@
 {
   "general.language": "English",
   "words.programming": "Programming",
+  "words.encode": "Encode",
+  "words.decode": "Decode",
   "index.title.hello": "Hello!",
   "index.introduce": "I'm only normal Japanese student. I can't use English well... I haven't anythings to write here.",
   "rightbar.theme": "Dark/Light",
@@ -35,5 +37,14 @@
   "index.todo.tools_message": "And make tools link",
   "index.todo.games": "Make my game screenshots page.",
   "index.todo.korockle": "Korockle Library",
-  "index.todo.light": "Keep data of Light Theme or Dark Theme"
+  "index.todo.light": "Keep data of Light Theme or Dark Theme",
+  "tools.title.tools": "Tools",
+  "tools.title.textconversion": "Text Conversions",
+  "tools.title.base64": "Base64 Encode/Decode",
+  "tools.title.unicode-escape": "Unicode Escape",
+  "tools.title.json-formatter": "JSON Format",
+  "tools.json-formatter.minify": "Minify",
+  "tools.json-formatter.format": "Format",
+  "tools.json-formatter.error": "Error excepted at line $ column $ of the JSON data.",
+  "tools.download.filename": "File Name (optional)"
 }
