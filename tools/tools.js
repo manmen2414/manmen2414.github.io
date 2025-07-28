@@ -65,6 +65,8 @@ function safeJsonParse(value) {
       return {
         error: { line: parseInt(execData[1]), char: parseInt(execData[2]) },
       };
+    } else {
+      return { error: { line: 0, char: 0 } };
     }
   }
 }
@@ -74,6 +76,7 @@ function initTextConversion() {
     text.val("");
   });
   $("#text-copy").on("click", (ev) => {
+    if (text.val().length === 0) return;
     navigator.clipboard.writeText(text.val()).then(
       () => {
         ev.currentTarget.innerText = "Copied!";

@@ -1,6 +1,10 @@
+const ISDEBUG = getParam().includes("dev");
+
 /**@type {JQuery<HTMLBodyElement>} */
 let BODY;
 let translateJson = {};
+/**@type {Set<string>} */
+const noTranslatedTexts = new Set();
 const TRANSLATE_KEYS = ["ja", "en"];
 const TRANSLATE_KEYS_LAST = TRANSLATE_KEYS[TRANSLATE_KEYS.length - 1];
 /**
@@ -78,6 +82,37 @@ function separateArray(array, length) {
 }
 
 /**
+ * デバッグモードの場合、翻訳できなかったテキストをリストに入れる。
+ * または、リストからJSONを取得する。
+ * @param {string?} key
+ */
+function Dev_NoTranslated(key) {
+  if (!ISDEBUG) return;
+  if (!!key) {
+    if (key.startsWith("@")) key = key.slice(1);
+    noTranslatedTexts.add(key);
+    return;
+  }
+  let data = "";
+  noTranslatedTexts.forEach((k) => (data += `"${k}": "",\n`));
+  console.log(data);
+}
+/**
+ * デバッグモードの場合、翻訳できなかったテキストをリストに入れる。
+ * または、リストからJSONを取得する。
+ * @param {string} key
+ * @param {string} at
+ */
+function Dev_TranslatedLog(key, at) {
+  if (!ISDEBUG) return;
+  styledLog(`%cTranslated%r %c"${key}"%r > %c"${at}"`, [
+    "!C:black;!B:yellow;!PA:1px 3px",
+    "!C:red",
+    "!C:green",
+  ]);
+}
+
+/**
  * 翻訳キーを用いて翻訳を行う。
  * @param {string} lang
  */
@@ -99,7 +134,11 @@ async function translate(lang) {
     if (!k.startsWith("@")) return;
     //HTML持ちも飛ばす
     if (j.innerHTML.includes("<")) return;
-    if (k.slice(1) in json) j.innerText = json[k.slice(1)];
+    if (k.slice(1) in json) {
+      const at = json[k.slice(1)];
+      Dev_TranslatedLog(k, at);
+      j.innerText = at;
+    } else Dev_NoTranslated(k);
   });
 }
 /**
@@ -111,8 +150,14 @@ function getTranslate(key) {
   let k = key;
   const isTranslateMarked = k.startsWith("@");
   if (isTranslateMarked) k = k.slice(1);
-  if (k in translateJson) return translateJson[k];
-  return `${isTranslateMarked ? "@" : ""}${k}`;
+  if (k in translateJson) {
+    const at = translateJson[k];
+    Dev_TranslatedLog(k, at);
+    return at;
+  } else {
+    Dev_NoTranslated(k);
+    return `${isTranslateMarked ? "@" : ""}${k}`;
+  }
 }
 /**
  * パラメータを取得する。
@@ -210,6 +255,67 @@ function downloadText(text, filename = "text") {
     `data:text/plain;charset=utf-8;base64,` + bytesToBase64(stringToByte(text)),
     filename
   );
+}
+
+/**
+ * 配列の特定位置に要素を追加する。
+ * @template T
+ * @param {T[]} arr
+ * @param {T} val
+ * @param {number} index
+ */
+function pushArrAjustIndex(arr, val, index) {
+  return [...arr.slice(0, index), val, ...arr.slice(index)];
+}
+
+/**
+ * console.logの上位互換もどき。\
+ * %c: スタイルを適用\
+ * スタイルの省略: `!C=color, !B=background-color, !BR=border-radius, !PA=padding, !BO=border`\
+ * %r: スタイルを通常に戻す
+ * @param {string} text
+ * @param {string[]} paramsStyled
+ */
+function styledLog(text, paramsStyled) {
+  let pos = 0;
+  let index = 0;
+  let params = [text.replace(/%r/g, "%c")];
+  function checkNext() {
+    const c = text.indexOf("%c", pos);
+    const r = text.indexOf("%r", pos);
+    if (c === r && c === -1) return false;
+    if ((c < r || r === -1) && c !== -1) {
+      pos = c + 1;
+      return "c";
+    }
+    if ((r < c || c === -1) && r !== -1) {
+      pos = r + 1;
+      return "r";
+    }
+  }
+  /**
+   * @param {string} css
+   */
+  function style(css) {
+    return css
+      .replace(/!C/g, "color")
+      .replace(/!B/g, "background-color")
+      .replace(/!BR/g, "border-radius")
+      .replace(/!PA/g, "padding")
+      .replace(/!BO/g, "border");
+  }
+
+  let check = checkNext();
+  while (check) {
+    if (check === "r") {
+      params.push("");
+    } else {
+      params.push(style(paramsStyled[index]));
+      index++;
+    }
+    check = checkNext();
+  }
+  console.log(...params);
 }
 
 $(() => {

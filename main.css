@@ -1,5 +1,5 @@
 body:not(.dark) {
-  background-color: #ccc;
+  background-color: #ddd;
 }
 
 body.dark {
@@ -42,13 +42,13 @@ body:not(.dark) button:active {
 }
 
 body:not(.dark) button {
-  background-color: #ccc;
+  background-color: #ddd;
   border: 2px solid #333;
 }
 
 body.dark button {
   background-color: #333;
-  border: 2px solid #ccc;
+  border: 2px solid #ddd;
 }
 
 button {
@@ -65,13 +65,13 @@ body:not(.dark) input:not(:placeholder-shown) {
 }
 
 body:not(.dark) input {
-  background-color: #ccc;
+  background-color: #ddd;
   border: 2px solid #333;
 }
 
 body.dark input {
   background-color: #333;
-  border: 2px solid #ccc;
+  border: 2px solid #ddd;
 }
 
 input {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <title>Mameeenn/まめーん</title>
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Korockle Playground.">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="./korockle.css">
+  <script src="/base.js"></script>
+  <script src="korockle/export.js" type="module"></script>
+  <script src="./korockle.js" type="module"></script>
+</head>
+
+<body>
+  <div id="connectgui">
+    <div>@korockle.info.connect</div>
+    <button id="connect">@korockle.connect</button>
+  </div>
+  <div id="content" class="x">
+    <button id="disconnect">@korockle.disconnect</button>
+    <div class="title">@korockle.title.led</div>
+    <button id="led-red">@korockle.red</button>
+    <button id="led-green">@korockle.green</button>
+    <button id="led-blue">@korockle.blue</button>
+    <button id="led-black">@korockle.lightout</button>
+    <div class="title-smaller">@korockle.title.ledvalue</div>
+    <input type="checkbox" id="led-live">
+    <span>@korockle.led.live</span><br>
+    <span>R: </span><input type="number" id="ledvalue-red" min="0" max="10" placeholder="0~10">
+    <span>G: </span><input type="number" id="ledvalue-green" min="0" max="10" placeholder="0~10">
+    <span>B:</span><input type="number" id="ledvalue-blue" min="0" max="10" placeholder="0~10">
+    <span>Color:</span><input type="color" id="ledvalue-color"><br>
+    <input type="checkbox" id="ledvalue-grad">
+    <span>@korockle.led.gradation</span>
+    <div class="title">@korockle.title.sounds</div>
+    <button id="sound-1"><span>@words.sound</span>1</button>
+    <button id="sound-2"><span>@words.sound</span>2</button>
+    <button id="sound-3"><span>@words.sound</span>3</button><br>
+    <button id="melody">@korockle.sound.melody.play</button>
+    <span>@korockle.sound.melody.index</span>
+    <input type="number" id="melody-index" placeholder="(1)" min="1"><br>
+    <button id="melody-loop">@korockle.sound.melody.roop</button>
+    <button id="melody-stop">@korockle.sound.melody.stop</button>
+    <div class="title">@korockle.title.time</div>
+    <button id="time-setnow">@korockle.time.setnow</button>
+    <button id="time-setnow-wait">@korockle.time.setnow.wait</button><br>
+    <input type="time" id="time-time"><button id="time-setthis">@korockle.time.setthis</button>
+    <div class="title">@korockle.title.alerm</div>
+    <input type="time" id="alerm-time"><button id="alerm-set">@korockle.alerm.set</button>
+  </div>
+</body>
+
+</html>
