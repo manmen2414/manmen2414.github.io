@@ -69,8 +69,8 @@
   </div>
   <script>
     (() => {
-      const urls = ["/index.html", "/tools/tools.html"]
-      const sites = ["Main", "Tools"]
+      const urls = ["/index.html", "/tools/tools.html", "/tools/korockle.html"]
+      const sites = ["Main", "Tools", "Korockle"]
       let index = urls.indexOf(location.pathname);
       if (index === -1) index = 0;
       const paramsRaw = "#" + getParam().join('&');
