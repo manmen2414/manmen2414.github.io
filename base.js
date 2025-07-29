@@ -2,11 +2,72 @@ const ISDEBUG = getParam().includes("dev");
 
 /**@type {JQuery<HTMLBodyElement>} */
 let BODY;
+let Version = "0.0.0";
 let translateJson = {};
 /**@type {Set<string>} */
 const noTranslatedTexts = new Set();
 const TRANSLATE_KEYS = ["ja", "en"];
 const TRANSLATE_KEYS_LAST = TRANSLATE_KEYS[TRANSLATE_KEYS.length - 1];
+function _DEV() {
+  const param = getParam();
+  if (param.includes("dev"))
+    setParam(
+      param.filter((v) => v !== "dev"),
+      true
+    );
+  else setParam(["dev", ...param], true);
+}
+
+/**
+ * 文字列がオブジェクトであるか判断する。
+ * @param {string} str
+ */
+function isObjectString(str) {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (ex) {
+    return false;
+  }
+}
+
+/**
+ * localStorageからデータを取得する。\
+ * デバッグの場合ログを出し、値がない場合デフォルト値を出力する。\
+ * オブジェクトと判断されたかつobjTranslateがfalseでない場合はオブジェクトに変換する。
+ * @param {string} key
+ * @param {any} ifNull
+ */
+function getStorage(key, ifNull = null, objTranslate = true) {
+  const value = localStorage.getItem(key) ?? ifNull;
+  if (getParam().includes("dev"))
+    styledLog(`%cStorage:GET%c${key} >%r${value}`, [
+      "!C:black;!B:#1aa;!PA:1px 4px",
+      "!C:white;!B:#522;!PA:1px 4px",
+    ]);
+  if (objTranslate && isObjectString(value)) return JSON.parse(value);
+  return value;
+}
+
+/**
+ * localStorageにデータを書き込む。\
+ * デバッグの場合ログを出す。\
+ * 値がオブジェクトかつobjTranslateがfalseでない場合は文字列に変換する。
+ * @param {string} key
+ * @param {any} value
+ */
+function setStorage(key, value = null, objTranslate = true) {
+  let writeVal = value;
+  if (objTranslate && typeof value !== "string")
+    writeVal = JSON.stringify(value);
+  if (getParam().includes("dev"))
+    styledLog(`%cStorage:SET%c${key} >%r${writeVal}`, [
+      "!C:white;!B:#a1a;!PA:1px 4px",
+      "!C:white;!B:#522;!PA:1px 4px",
+    ]);
+  localStorage.setItem(key, writeVal);
+  return writeVal;
+}
 /**
  * 上部に表示するバーを生成する。
  */
@@ -24,21 +85,25 @@ function genRightbar() {
   });
 }
 /**
- * テーマをデバイス色に設定する。
+ * テーマをデバイス色、もしくはlocalStorage.m.themeに設定する。
  */
 function setTheme() {
+  const storage = getStorage("m.theme");
+  if (storage === "d") changeTheme();
+  if (!!storage) return;
   const dark = matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
   if (dark) changeTheme();
 }
 /**
  * テーマを変更する。
  */
-function changeTheme() {
+function changeTheme(save = true) {
   const bo = $("body");
-  if (bo.hasClass("dark")) {
-    bo.removeClass("dark");
-  } else {
-    bo.addClass("dark");
+  let nowIsDark = bo.hasClass("dark");
+  if (nowIsDark) $("body").removeClass("dark");
+  else $("body").addClass("dark");
+  if (save) {
+    setStorage("m.theme", nowIsDark ? "l" : "d");
   }
 }
 /**
@@ -119,6 +184,7 @@ function Dev_TranslatedLog(key, at) {
 async function translate(lang) {
   const json = await (await fetch(`/langs/${lang}.json`)).json();
   translateJson = json;
+  translateJson.version = Version;
   const translates = [
     ...$("div"),
     ...$("a"),
@@ -158,6 +224,43 @@ function getTranslate(key) {
     Dev_NoTranslated(k);
     return `${isTranslateMarked ? "@" : ""}${k}`;
   }
+}
+
+/**
+ * url/videoIDからYoutubeの埋め込みのHTMLを取得する
+ * // TODO: 処理を共通化
+ * @param {string} url
+ */
+function youtubeUrlToEmbed(url) {
+  const EMBED_BASE = `<iframe width="560" height="315" src="https://www.youtube.com/embed/%VIDEO_ID%" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+  function getVideoId() {
+    const shortLink = /http(?:s?)\:\/\/youtu\.be\/([0-9a-zA-z_\-]+)/;
+    const normalLink =
+      /http(?:s?)\:\/\/www\.youtube\.com\/watch\?v=([0-9a-zA-z_\-]+)/;
+    const videoIdExec = shortLink.exec(url) ?? normalLink.exec(url);
+    if (!videoIdExec) return null;
+    return videoIdExec[1];
+  }
+  const videoId = url.includes("/") ? getVideoId() : url;
+  if (!videoId) return null;
+  return EMBED_BASE.replace(/%VIDEO_ID%/g, videoId);
+}
+/**
+ * url/videoIDからニコ動の埋め込みのHTMLを取得する
+ * // TODO: 処理を共通化
+ * @param {string} url
+ */
+function nicoVideoUrlToEmbed(url) {
+  const EMBED_BASE = `<iframe width="560" height="206" src="https://ext.nicovideo.jp/thumb/%VIDEO_ID%" scrolling="no"style="border:solid 1px #ccc;" frameborder="0"><a href="https://www.nicovideo.jp/watch/%VIDEO_ID%">_</a></iframe>`;
+  function getVideoId() {
+    const link = /http(?:s?)\:\/\/(?:www.)?nicovideo.jp\/watch\/(sm[0-9]+)/;
+    const videoIdExec = link.exec(url);
+    if (!videoIdExec) return null;
+    return videoIdExec[1];
+  }
+  const videoId = url.includes("/") ? getVideoId() : url;
+  if (!videoId) return null;
+  return EMBED_BASE.replace(/%VIDEO_ID%/g, videoId);
 }
 /**
  * パラメータを取得する。
@@ -271,7 +374,7 @@ function pushArrAjustIndex(arr, val, index) {
 /**
  * console.logの上位互換もどき。\
  * %c: スタイルを適用\
- * スタイルの省略: `!C=color, !B=background-color, !BR=border-radius, !PA=padding, !BO=border`\
+ * スタイルの省略: `!C=color, !B=background-color, !BR=border-radius, !PA=padding, !BO=border, !F=font-size`\
  * %r: スタイルを通常に戻す
  * @param {string} text
  * @param {string[]} paramsStyled
@@ -302,7 +405,8 @@ function styledLog(text, paramsStyled) {
       .replace(/!B/g, "background-color")
       .replace(/!BR/g, "border-radius")
       .replace(/!PA/g, "padding")
-      .replace(/!BO/g, "border");
+      .replace(/!BO/g, "border")
+      .replace(/!F/g, "font-size");
   }
 
   let check = checkNext();
@@ -318,8 +422,32 @@ function styledLog(text, paramsStyled) {
   console.log(...params);
 }
 
-$(() => {
+/**
+ * package.jsonからバージョンを取得する。返り値は基本使用せず、Version変数から取得するのが普通。
+ */
+async function getVersion() {
+  const res = await fetch("/package.json");
+  const json = await res.json();
+  Version = json.version;
+  return json.version;
+}
+/**
+ * 開始時のログ。景気づけ。
+ */
+function logStartMessage() {
+  const styleDef = "!C:#fff;!F:20px;!PA:5px 10px;";
+  const isDev = getParam().includes("dev") ? "%cDev" : "";
+  styledLog(`%cmanmen2414.github.io%cVersion ${Version}${isDev}`, [
+    styleDef + "!B:#33b;",
+    styleDef + "!B:#774;",
+    styleDef + "!B:#944;",
+  ]);
+}
+
+$(async () => {
   BODY = $("body");
+  await getVersion();
+  logStartMessage();
   genTopBar();
   genRightbar();
   setTheme();

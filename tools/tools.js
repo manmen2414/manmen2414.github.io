@@ -158,7 +158,19 @@ function initNumbers() {
     $(`#base-${v}`).on("change", () => changeBase(v));
   });
 }
+function initMediaEmbed() {
+  const embed = $("#mediaembed");
+  $("#mediaembed-url").on("change", (ev) => {
+    const val = ev.currentTarget.value;
+    if (val.length === 0) {
+      embed.html("");
+    } else {
+      embed.html(youtubeUrlToEmbed(val) ?? nicoVideoUrlToEmbed(val) ?? "");
+    }
+  });
+}
 $(() => {
   initTextConversion();
   initNumbers();
+  initMediaEmbed();
 });

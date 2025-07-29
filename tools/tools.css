@@ -47,3 +47,7 @@ body:not(.dark) #text-conversion {
 .base-table input {
   width: 300px;
 }
+
+#mediaembed-url {
+  width: 40%;
+}
