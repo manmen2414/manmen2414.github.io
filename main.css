@@ -55,7 +55,7 @@ button {
   padding: 4px 10px;
   font-size: 15px;
   cursor: pointer;
-  transition: border 0.05s ease-in-out;
+  transition: border 0.1s ease-in-out;
 }
 
 body.dark input:not(:placeholder-shown),

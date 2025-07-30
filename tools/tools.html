@@ -24,7 +24,11 @@
   <table class="text-table">
     <tr>
       <th> <span class="title-smaller">@tools.title.base64</span></th>
-      <th> <button id="text-base64-en">@words.encode</button><button id="text-base64-de">@words.decode</button></th>
+      <th>
+        <button id="text-base64-en">@words.encode</button>
+        <button id="text-base64-de">@words.decode</button>
+        <button id="text-base64-url">@tools.base64.data-url</button>
+      </th>
     </tr>
     <tr>
       <th> <span class="title-smaller">@tools.title.unicode-escape</span></th>
@@ -34,6 +38,13 @@
       <th> <span class="title-smaller">@tools.title.json-formatter</span></th>
       <th> <button id="text-json-mini">@tools.json-formatter.minify</button><button
           id="text-json-form">@tools.json-formatter.format</button></th>
+    </tr>
+    <tr>
+      <th> <span class="title-smaller">@tools.title.sjis-utf8</span></th>
+      <th>
+        <button id="text-sjis8-sjis">@tools.sjis-utf8.sjis</button>
+        <button id="text-sjis8-utf8">@tools.sjis-utf8.utf8</button>
+      </th>
     </tr>
   </table><br>
   <div class="title">@tools.title.numbers</div>

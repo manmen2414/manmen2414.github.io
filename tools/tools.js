@@ -48,6 +48,52 @@ const convertFunctions = {
   base64Decode() {
     text.val(ByteToString(base64ToByte(text.val())));
   },
+  base64DataUrl() {
+    this.base64Encode();
+    text.val("data:text/plain;charset=utf-8;base64," + text.val());
+  },
+  sjisToUtf8() {
+    const sjisDec = new TextDecoder("shift-jis");
+    const utf8Dec = new TextDecoder("utf-8");
+    //#region https://qiita.com/dopperi46/items/49441391fa0e3beae3da
+    const table = { "\u00a5": 0x5c, "\u203e": 0x7e, "\u301c": 0x8160 };
+    for (let i = 0x81; i <= 0xfc; i++) {
+      if (
+        i <= 0x84 ||
+        (i >= 0x87 && i <= 0x9f) ||
+        (i >= 0xe0 && i <= 0xea) ||
+        (i >= 0xed && i <= 0xee) ||
+        i >= 0xfa
+      )
+        for (let j = 0x40; j <= 0xfc; j++) {
+          const c = sjisDec.decode(new Uint8Array([i, j]));
+          if (c.length === 1 && c !== "\ufffd" && !table[c]) {
+            table[c] = (i << 8) | j;
+          }
+        }
+    }
+    const utf8Text = text.val();
+    const buffer = [];
+    for (let i = 0; i < utf8Text.length; i++) {
+      const c = utf8Text.codePointAt(i);
+      if (c > 0xffff) i++;
+
+      if (c < 0x80) buffer.push(c);
+      else if (c >= 0xff61 && c <= 0xff9f) buffer.push(c - 0xfec0);
+      else {
+        const d = table[String.fromCodePoint(c)] || 0x3f;
+        if (d > 0xff) buffer.push((d >> 8) & 0xff, d & 0xff);
+        else buffer.push(d);
+      }
+    }
+    //#endregion
+    text.val(utf8Dec.decode(Uint8Array.from(buffer)));
+  },
+  utf8ToSjis() {
+    const sjisDec = new TextDecoder("shift-jis");
+    const utf8Enc = new TextEncoder();
+    text.val(sjisDec.decode(utf8Enc.encode(text.val())));
+  },
 };
 /**
  * @returns {{json:object?,error:{line:number,char:number}?}}
@@ -105,6 +151,9 @@ function initTextConversion() {
   $("#text-unicode-de").on("click", () => convertFunctions.unicodeDecode());
   $("#text-base64-en").on("click", () => convertFunctions.base64Encode());
   $("#text-base64-de").on("click", () => convertFunctions.base64Decode());
+  $("#text-base64-url").on("click", () => convertFunctions.base64DataUrl());
+  $("#text-sjis8-sjis").on("click", () => convertFunctions.utf8ToSjis());
+  $("#text-sjis8-utf8").on("click", () => convertFunctions.sjisToUtf8());
 }
 function initNumbers() {
   /**

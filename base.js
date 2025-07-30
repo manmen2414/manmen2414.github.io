@@ -343,6 +343,12 @@ function ByteToString(bytes) {
  * @param {string} filename
  */
 function downloadUrl(url, filename) {
+  if (getParam().includes("dev"))
+    styledLog(`%cDownload%c${filename}%c ${url}`, [
+      "!C:white;!B:#744;!PA:1px 4px",
+      "!PA:1px 4px;!B:black;!C:white",
+      "",
+    ]);
   const anchor = document.createElement("a");
   anchor.download = filename;
   anchor.href = url;
@@ -358,6 +364,22 @@ function downloadText(text, filename = "text") {
     `data:text/plain;charset=utf-8;base64,` + bytesToBase64(stringToByte(text)),
     filename
   );
+}
+
+/**
+ * inputにファイルが設定されたらテキストファイルとして解釈しfuncを実行する
+ * @param {HTMLInputElement} input
+ * @param {(text:string,name:string)=>void} func
+ */
+function onFileSelected(input, func) {
+  input.addEventListener("change", function () {
+    const file = this.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      func(reader.result, file.name);
+    };
+    reader.readAsText(file);
+  });
 }
 
 /**
