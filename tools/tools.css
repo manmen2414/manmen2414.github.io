@@ -11,7 +11,7 @@ body:not(.dark) #text-conversion {
   font-size: 18px;
   width: 100%;
   height: 120px;
-  resize: none;
+  resize: vertical;
   border-radius: 10px;
 }
 
@@ -50,4 +50,12 @@ body:not(.dark) #text-conversion {
 
 #mediaembed-url {
   width: 40%;
+}
+
+.text-replace {
+  width: 30vw;
+}
+
+.text-swap {
+  width: 15vw;
 }

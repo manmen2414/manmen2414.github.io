@@ -94,6 +94,44 @@ const convertFunctions = {
     const utf8Enc = new TextEncoder();
     text.val(sjisDec.decode(utf8Enc.encode(text.val())));
   },
+  reverse() {
+    text.val(text.val().split("").reverse().join(""));
+  },
+  unicodeShift() {
+    //引数を変数みたいに扱い匿名関数で変数宣言を汚さない見ずらいコード！
+    const shiftAmount = ((v) => (v.length === 0 ? 1 : parseInt(v)))(
+      $("#text-shift-amount").val()
+    );
+    function shift(c) {
+      const charPoint = c.codePointAt(0) + shiftAmount;
+      if (charPoint < 0) return "";
+      return String.fromCodePoint(charPoint);
+    }
+    text.val(text.val().split("").map(shift).join(""));
+  },
+  replace(isRegex) {
+    /**@type {string|RegExp} */
+    let from = $("#text-replace-from").val();
+    const to = $("#text-replace-to").val();
+    if (isRegex) {
+      from = new RegExp(from, "g");
+      text.val(text.val().replace(from, to));
+    } else {
+      text.val(text.val().replaceAll(from, to));
+    }
+  },
+  swap() {
+    const str1 = $("#text-swap1").val();
+    const str2 = $("#text-swap2").val();
+    const REPLACEING = "\u2414";
+    text.val(
+      text
+        .val()
+        .replaceAll(str2, REPLACEING)
+        .replaceAll(str1, str2)
+        .replaceAll(REPLACEING, str1)
+    );
+  },
 };
 /**
  * @returns {{json:object?,error:{line:number,char:number}?}}
@@ -154,6 +192,11 @@ function initTextConversion() {
   $("#text-base64-url").on("click", () => convertFunctions.base64DataUrl());
   $("#text-sjis8-sjis").on("click", () => convertFunctions.utf8ToSjis());
   $("#text-sjis8-utf8").on("click", () => convertFunctions.sjisToUtf8());
+  $("#text-reverse").on("click", () => convertFunctions.reverse());
+  $("#text-shift").on("click", () => convertFunctions.unicodeShift());
+  $("#text-replace-normal").on("click", () => convertFunctions.replace(false));
+  $("#text-replace-regex").on("click", () => convertFunctions.replace(true));
+  $("#text-swap").on("click", () => convertFunctions.swap());
 }
 function initNumbers() {
   /**

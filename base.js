@@ -192,19 +192,19 @@ async function translate(lang) {
     ...$("span"),
     ...$("li"),
   ];
-  translates.forEach((j) => {
-    const k = j.innerText;
+  function translateOne(k) {
     //虚無や非対象は飛ばす
-    if (!k) return;
-    if (!k.length === 0) return;
-    if (!k.startsWith("@")) return;
-    //HTML持ちも飛ばす
+    if (!k) return k;
+    if (!k.length === 0) return k;
+    if (!k.startsWith("@")) return k;
+    return getTranslate(k);
+  }
+  translates.forEach((j) => {
     if (j.innerHTML.includes("<")) return;
-    if (k.slice(1) in json) {
-      const at = json[k.slice(1)];
-      Dev_TranslatedLog(k, at);
-      j.innerText = at;
-    } else Dev_NoTranslated(k);
+    j.innerText = translateOne(j.innerText);
+  });
+  [...$("input")].forEach((e) => {
+    e.placeholder = translateOne(e.placeholder ?? "");
   });
 }
 /**
@@ -242,6 +242,7 @@ function youtubeUrlToEmbed(url) {
     return videoIdExec[1];
   }
   const videoId = url.includes("/") ? getVideoId() : url;
+  if (/sm([0-9]+)/.test(url)) return null;
   if (!videoId) return null;
   return EMBED_BASE.replace(/%VIDEO_ID%/g, videoId);
 }
@@ -474,7 +475,4 @@ $(async () => {
   genRightbar();
   setTheme();
   translateParam();
-  setTimeout(() => {
-    translateParam();
-  }, 100);
 });

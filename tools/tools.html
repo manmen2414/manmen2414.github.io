@@ -46,6 +46,36 @@
         <button id="text-sjis8-utf8">@tools.sjis-utf8.utf8</button>
       </th>
     </tr>
+    <tr>
+      <th><span class="title-smaller">@tools.title.reverse</span></th>
+      <th><button id="text-reverse">@tools.reverse.text</button></th>
+    </tr>
+    <tr>
+      <th><span class="title-smaller">@tools.title.shift</span></th>
+      <th>
+        <button id="text-shift">@tools.shift.text</button>
+        <input type="number" id="text-shift-amount" placeholder="@tools.shift.amount.placeholder">
+      </th>
+    </tr>
+    <tr>
+      <th><span class="title-smaller">@tools.title.replace</span></th>
+      <th>
+        <button id="text-replace-normal">@tools.replace.normal</button>
+        <input type="text" id="text-replace-from" class="text-replace" placeholder="@tools.replace.from"> →
+        <div style="padding: 2px;"></div>
+        <button id="text-replace-regex">@tools.replace.regex</button>
+        <input type="text" id="text-replace-to" class="text-replace" placeholder="@tools.replace.to">
+      </th>
+    </tr>
+    <tr>
+      <th><span class="title-smaller">@tools.title.swap</span></th>
+      <th>
+        <button id="text-swap">@tools.swap</button>
+        <div style="padding: 2px;"></div>
+        <input type="text" id="text-swap1" class="text-swap" placeholder="@tools.swap.ph">
+        <input type="text" id="text-swap2" class="text-swap" placeholder="@tools.swap.ph">
+      </th>
+    </tr>
   </table><br>
   <div class="title">@tools.title.numbers</div>
   <span class="title-smaller m-ri40">@tools.numbers.random</span>
