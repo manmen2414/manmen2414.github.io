@@ -1,4 +1,4 @@
-const CommandId = {
+const COMMANDID = {
   setTimeOrAlerm: 101,
   writeProgram: 102,
   readProgram: 103,
@@ -13,4 +13,4 @@ const CommandId = {
   action: 120,
   dataSegment: 208,
 };
-export default CommandId;
+export { COMMANDID };

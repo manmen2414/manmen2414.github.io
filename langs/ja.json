@@ -98,5 +98,22 @@
   "korockle.alerm.set": "アラーム設定",
   "words.sound": "サウンド",
   "korockle.sound.melody.index": "音符インデックス",
-  "korockle.time.setnow.waiting": "待っています..."
+  "korockle.time.setnow.waiting": "待っています...",
+  "korockle.command": "任意コマンド",
+  "korockle.commandid.select": "コマンドIDプリセット",
+  "korockle.commandid.time-alerm": "時間・アラーム設定",
+  "korockle.commandid.write-program": "プログラム書き込み",
+  "korockle.commandid.read-program": "プログラム読み取り",
+  "korockle.commandid.run-program": "プログラム実行",
+  "korockle.commandid.stop-program": "プログラム停止",
+  "korockle.commandid.write-melody": "メロディー書き込み",
+  "korockle.commandid.read-melody": "メロディー読み取り",
+  "korockle.commandid.update-firmware": "ファームウェアアップデート",
+  "korockle.commandid.play-melody": "メロディー再生",
+  "korockle.commandid.stop-melody": "メロディー停止",
+  "korockle.commandid.sensor": "センサー情報",
+  "korockle.commandid.action": "即時操作",
+  "korockle.commandid.data-segment": "分割データ",
+  "korockle.command.id": "コマンドID",
+  "korockle.command.data": "データ(0~255, 任意の文字で区切る)"
 }

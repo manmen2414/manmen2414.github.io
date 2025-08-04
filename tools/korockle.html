@@ -50,6 +50,28 @@
     <input type="time" id="time-time"><button id="time-setthis">@korockle.time.setthis</button>
     <div class="title">@korockle.title.alerm</div>
     <input type="time" id="alerm-time"><button id="alerm-set">@korockle.alerm.set</button>
+    <div class="title">@korockle.command</div>
+    <select name="commandid-selector" id="commandid-selector">
+      <option value="0" selected>@korockle.commandid.select</option>
+      <option value="101">@korockle.commandid.time-alerm</option>
+      <option value="102">@korockle.commandid.write-program</option>
+      <option value="103">@korockle.commandid.read-program</option>
+      <option value="104">@korockle.commandid.run-program</option>
+      <option value="105">@korockle.commandid.stop-program</option>
+      <option value="112">@korockle.commandid.write-melody</option>
+      <option value="113">@korockle.commandid.read-melody</option>
+      <option value="114">@korockle.commandid.update-firmware</option>
+      <option value="115">@korockle.commandid.play-melody</option>
+      <option value="116">@korockle.commandid.stop-melody</option>
+      <option value="119">@korockle.commandid.sensor</option>
+      <option value="120">@korockle.commandid.action</option>
+      <option value="208">@korockle.commandid.data-segment</option>
+    </select>
+    <input type="number" id="commandid" placeholder="@korockle.command.id"> <button id="command-send">Go!</button>
+    <div style="padding: 2px;"></div>
+    <input type="text" id="command-data" style="width: 100%;" placeholder="@korockle.command.data">
+    <div id="command-answer"></div>
+
   </div>
 </body>
 

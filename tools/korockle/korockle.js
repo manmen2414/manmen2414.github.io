@@ -1,10 +1,10 @@
 //@ts-check
-import getKorockle from "./get.js";
+import { getKorockle } from "./get.js";
 import * as util from "./util.js";
 import { toUint8 } from "./util.js";
-import LongDataWriter from "./longdataWriter.js";
-import CommandId from "./commandId.js";
-import korockleDataToInfo from "./dataToInfo.js";
+import { LongDataWriter } from "./longdataWriter.js";
+import { COMMANDID } from "./commandId.js";
+import { korockleDataToInfo } from "./dataToInfo.js";
 import { Color } from "./programBuilder/color.js";
 const THREE0 = [0, 0, 0];
 class Korockle {
@@ -15,7 +15,7 @@ class Korockle {
   /**@type {number} */
   commandSequenceNumber = 0;
   /**@type {number} */
-  __dataRemoveId = 0;
+  __dataRemoveTimeout = 0;
   /**@param {HIDDevice | null} hid  */
   constructor(hid = null) {
     if (!hid) {
@@ -31,19 +31,25 @@ class Korockle {
     });
   }
   async execute() {
-    await this.sendCommand(CommandId.executeProgram);
+    await this.sendCommand(COMMANDID.executeProgram);
   }
   /** `execute`と同じ */
   async runProgram() {
     await this.execute();
   }
   async stopProgram() {
-    await this.sendCommand(CommandId.stopProgram);
+    await this.sendCommand(COMMANDID.stopProgram);
   }
   /**@param {number[]} program */
   async writeProgram(program) {
-    await this.sendCommand(CommandId.writeProgram);
+    await this.sendCommand(COMMANDID.writeProgram);
     const longData = new LongDataWriter(this, program);
+    return await longData.send();
+  }
+  /**@param {number[]} melody */
+  async writeMelody(melody) {
+    await this.sendCommand(COMMANDID.writeMelody);
+    const longData = new LongDataWriter(this, melody);
     return await longData.send();
   }
   /**
@@ -75,7 +81,7 @@ class Korockle {
   }
   async getInfoRaw() {
     if (!this.hid) throw new Error("HID not readied");
-    const data = await this.sendCommand(CommandId.getInfo, []);
+    const data = await this.sendCommand(COMMANDID.getInfo, []);
     if (!data) return null;
     return data.slice(2);
   }
@@ -89,19 +95,19 @@ class Korockle {
    */
   async led(color = new Color(0, 0, 0)) {
     if (color.red === 0 && color.blue === 0 && color.green === 0) {
-      await this.sendCommand(CommandId.action, [35, 0, 0, 0, 0]);
+      await this.sendCommand(COMMANDID.action, [35, 0, 0, 0, 0]);
     } else {
       const constColor = color.constColor();
       const argment = [6, 0, color.red, color.green, color.blue];
       if (constColor !== 0) argment[0] = constColor + 3;
-      await this.sendCommand(CommandId.action, argment);
+      await this.sendCommand(COMMANDID.action, argment);
     }
   }
   /**
    * @param {1|2|3} id
    */
   async sound(id) {
-    await this.sendCommand(CommandId.action, [35 + id, 0]);
+    await this.sendCommand(COMMANDID.action, [35 + id, 0]);
   }
   /**
    * @param {"once" | "loop" | "stop"} type
@@ -110,13 +116,13 @@ class Korockle {
   async melody(type, index = 0) {
     switch (type) {
       case "once":
-        await this.sendCommand(CommandId.playMelody, [index + 1]);
+        await this.sendCommand(COMMANDID.playMelody, [index + 1]);
         break;
       case "loop":
-        await this.sendCommand(CommandId.action, [40, 0]);
+        await this.sendCommand(COMMANDID.action, [40, 0]);
         break;
       case "stop":
-        await this.sendCommand(CommandId.stopMeloay);
+        await this.sendCommand(COMMANDID.stopMeloay);
         break;
     }
   }
@@ -136,7 +142,7 @@ class Korockle {
       hour = hour_date;
       minute = _minute;
     }
-    await this.sendCommand(CommandId.setTimeOrAlerm, [
+    await this.sendCommand(COMMANDID.setTimeOrAlerm, [
       1,
       minute,
       hour,
@@ -159,7 +165,7 @@ class Korockle {
       hour = hour_date;
       minute = _minute;
     }
-    await this.sendCommand(CommandId.setTimeOrAlerm, [
+    await this.sendCommand(COMMANDID.setTimeOrAlerm, [
       ...THREE0,
       1,
       minute,
@@ -190,7 +196,8 @@ class Korockle {
     if (event.device.vendorId !== this.hid.vendorId) return;
 
     this.__data = util.dataViewToArray(event.data);
-    this.__dataRemoveId = setTimeout(() => {
+    //@ts-ignore
+    this.__dataRemoveTimeout = setTimeout(() => {
       this.__data = [];
     }, 500);
   }
@@ -204,7 +211,7 @@ class Korockle {
         if (this.__data.length !== 0) {
           const data = [...this.__data];
           this.__data.length = 0;
-          clearTimeout(this.__dataRemoveId);
+          clearTimeout(this.__dataRemoveTimeout);
           r(data);
           clearInterval(id);
           return;
@@ -218,4 +225,4 @@ class Korockle {
     });
   }
 }
-export default Korockle;
+export { Korockle };

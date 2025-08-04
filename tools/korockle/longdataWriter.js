@@ -1,6 +1,6 @@
 //@ts-check
-import CommandId from "./commandId.js";
-import Korockle from "./korockle.js";
+import { COMMANDID } from "./commandId.js";
+import { Korockle } from "./korockle.js";
 import { checkUint8, toUint8 } from "./util.js";
 
 class LongDataWriter {
@@ -51,11 +51,11 @@ class LongDataWriter {
     );
     await connectedDeviceInfo.sendReport(0, buffer);
   }*/
-    await this.korockle.sendData(CommandId.dataSegment, reportId, sendData);
+    await this.korockle.sendData(COMMANDID.dataSegment, reportId, sendData);
     if (!(this.offset >= this.data.length)) {
       await this.send();
     }
   }
 }
 
-export default LongDataWriter;
+export { LongDataWriter };

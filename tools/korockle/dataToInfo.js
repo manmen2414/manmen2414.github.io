@@ -25,4 +25,4 @@ function korockleDataToInfo(gotData) {
   };
 }
 
-export default korockleDataToInfo;
+export { korockleDataToInfo };

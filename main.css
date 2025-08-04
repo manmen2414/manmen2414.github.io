@@ -63,19 +63,22 @@ body:not(.dark) input:not(:placeholder-shown) {
   border: 2px solid #77d;
 }
 
-body:not(.dark) input {
+body:not(.dark) input,
+body:not(.dark) select {
   background-color: #ddd;
   border: 2px solid #333;
 }
 
-body.dark input {
+body.dark input,
+body.dark select {
   background-color: #333;
   border: 2px solid #ddd;
 }
 
-input {
+input,
+select {
   border-radius: 5px;
-  padding: 3px 1px 3px 3px;
+  padding: 3px 2px 3px 3px;
   font-size: 15px;
   transition: border 0.05s ease-in-out;
 }

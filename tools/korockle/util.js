@@ -1,9 +1,7 @@
 //@ts-check
-/**@type {HID} */
-//@ts-ignore
-const hid = navigator.hid;
 function isHidUseable() {
-  return !!hid;
+  //@ts-ignore navigator.hidなんてあるよ うるせぇよ 黙れよ navigator.hidなんてあるよ node.js:85こそが正義 navigator.hidなんて あるよ 正しいのは俺
+  return !!navigator.hid;
 }
 /**
  * @param {number} value
@@ -50,4 +48,4 @@ function dataViewToArray(dataView) {
     return data;
   }
 }
-export { checkUint8, toUint8, findIndex, isHidUseable, hid, dataViewToArray };
+export { checkUint8, toUint8, findIndex, isHidUseable, dataViewToArray };

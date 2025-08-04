@@ -1,9 +1,8 @@
-import { device, programLib } from "./korockle/export.js";
-import Korockle from "./korockle/korockle.js";
-const { Color } = programLib;
+import * as kLib from "./korockle/web.js";
+const { Color } = kLib;
 
 /**
- * @type {Korockle}
+ * @type {kLib.Korockle}
  */
 let korockle = null;
 /**
@@ -20,8 +19,8 @@ let korockleSensor = {
 
 async function connect() {
   if (!!korockle) return;
-  const korocklehid = await device.getKorockle();
-  korockle = new Korockle(korocklehid);
+  const korocklehid = await kLib.getKorockle();
+  korockle = new kLib.Korockle(korocklehid);
   $("#content").removeClass("x");
   $("#connectgui").hide();
 }
@@ -168,6 +167,30 @@ function initLEDs() {
     }
   });
 }
+function initCommand() {
+  const select = $("#commandid-selector");
+  const data = $("#command-data");
+  const idInput = $("#commandid");
+  const answer = $("#command-answer");
+  select.on("change", () => {
+    idInput.val(select.val());
+    select.val("0");
+  });
+  $("#command-send").on("click", () => {
+    if (!korockle) return;
+    const intOr0 = (val) => (val.length === 0 ? 0 : parseInt(val));
+    const id = Math.abs(intOr0(idInput.val())) % 256;
+    idInput.val(id);
+    /**@type {number[]} */
+    const datas = data
+      .val()
+      .split(/[^0-9]+/)
+      .map((v) => Math.abs(parseInt(v) % 256));
+    korockle.sendCommand(id, datas).then((a) => {
+      answer.text(a.join());
+    });
+  });
+}
 
 $(() => {
   check();
@@ -175,6 +198,7 @@ $(() => {
   initSounds();
   initLEDs();
   initTimeAlerm();
+  initCommand();
   $("#connect").on("click", () => {
     connect();
   });

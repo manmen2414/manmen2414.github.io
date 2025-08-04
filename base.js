@@ -191,6 +191,7 @@ async function translate(lang) {
     ...$("button"),
     ...$("span"),
     ...$("li"),
+    ...$("option"),
   ];
   function translateOne(k) {
     //虚無や非対象は飛ばす

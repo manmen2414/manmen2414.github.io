@@ -98,5 +98,22 @@
   "korockle.alerm.set": "Set alerm",
   "words.sound": "Sound",
   "korockle.sound.melody.index": "Melody Index",
-  "korockle.time.setnow.waiting": "Waiting..."
+  "korockle.time.setnow.waiting": "Waiting...",
+  "korockle.command": "Send Command",
+  "korockle.commandid.select": "Command id Preset",
+  "korockle.commandid.time-alerm": "Set time or alerm",
+  "korockle.commandid.write-program": "Write program",
+  "korockle.commandid.read-program": "Read program",
+  "korockle.commandid.run-program": "Run program",
+  "korockle.commandid.stop-program": "Stop program",
+  "korockle.commandid.write-melody": "Write program",
+  "korockle.commandid.read-melody": "Read program",
+  "korockle.commandid.update-firmware": "Update firmware",
+  "korockle.commandid.play-melody": "Play melody",
+  "korockle.commandid.stop-melody": "Stop melody",
+  "korockle.commandid.sensor": "Get sensors",
+  "korockle.commandid.action": "Action",
+  "korockle.commandid.data-segment": "Splited datas",
+  "korockle.command.id": "Command id",
+  "korockle.command.data": "Data Array(0~255, split with any char)"
 }

@@ -1,6 +1,6 @@
-import { hid } from "./util.js";
-
 async function getKorockle() {
+  /**@type {HID} navigator.hidなんてあるよ うるせぇよ 黙れよ navigator.hidなんてあるよ node.js:85こそが正義 navigator.hidなんて あるよ 正しいのは俺*/
+  const hid = navigator.hid;
   const [korockle] = await hid.requestDevice({
     filters: [
       {
@@ -9,8 +9,7 @@ async function getKorockle() {
       },
     ],
   });
-  if (!korockle) throw new Error("Korockle Not Found");
   await korockle.open();
   return korockle;
 }
-export default getKorockle;
+export { getKorockle };
