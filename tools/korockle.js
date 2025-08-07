@@ -186,9 +186,15 @@ function initCommand() {
       .val()
       .split(/[^0-9]+/)
       .map((v) => Math.abs(parseInt(v) % 256));
-    korockle.sendCommand(id, datas).then((a) => {
-      answer.text(a.join());
-    });
+    if (datas.length >= 64) {
+      korockle.sendCommand(id);
+      const ldw = new kLib.LongDataWriter(korockle, data);
+      answer.text(getTranslate("korockle.command.sendedlong"));
+    } else {
+      korockle.sendCommand(id, datas).then((a) => {
+        answer.text(a.join());
+      });
+    }
   });
 }
 

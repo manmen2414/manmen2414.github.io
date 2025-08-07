@@ -47,10 +47,6 @@
       </th>
     </tr>
     <tr>
-      <th><span class="title-smaller">@tools.title.reverse</span></th>
-      <th><button id="text-reverse">@tools.reverse.text</button></th>
-    </tr>
-    <tr>
       <th><span class="title-smaller">@tools.title.shift</span></th>
       <th>
         <button id="text-shift">@tools.shift.text</button>
@@ -71,9 +67,24 @@
       <th><span class="title-smaller">@tools.title.swap</span></th>
       <th>
         <button id="text-swap">@tools.swap</button>
+        <button id="text-reverse">@tools.reverse.text</button>
         <div style="padding: 2px;"></div>
         <input type="text" id="text-swap1" class="text-swap" placeholder="@tools.swap.ph">
         <input type="text" id="text-swap2" class="text-swap" placeholder="@tools.swap.ph">
+      </th>
+    </tr>
+    <tr>
+      <th><span class="title-smaller">@tools.title.frame</span></th>
+      <th>
+        <select name="frames" id="text-frames">
+          <option value="normalLight" selected>@tools.frame.light</option>
+          <option value="normalBold">@tools.frame.bold</option>
+          <option value="totuzennosi">@tools.frame.totuzennosi</option>
+          <option value="fukidasi">@tools.frame.fukidasi</option>
+          <option value="double">@tools.frame.double</option>
+        </select>
+
+        <button id="text-frame-apply">@tools.frame.apply</button>
       </th>
     </tr>
   </table><br>

@@ -74,6 +74,13 @@
   "tools.swap": "Swap It",
   "tools.title.swap": "Swap",
   "tools.swap.ph": "Swap string",
+  "tools.frame.apply": "Apply",
+  "tools.title.frame": "Frame",
+  "tools.frame.light": "Normal Light",
+  "tools.frame.bold": "Normal Bold",
+  "tools.frame.totuzennosi": "Totsuzen No Shi",
+  "tools.frame.fukidasi": "Speech bubble",
+  "tools.frame.double": "Double Lined",
   "korockle.info.connect": "HID Connect is suported by only desktop Chromium.",
   "korockle.connect": "Connect",
   "korockle.title.led": "LED Functionals",
@@ -115,5 +122,6 @@
   "korockle.commandid.action": "Action",
   "korockle.commandid.data-segment": "Splited datas",
   "korockle.command.id": "Command id",
-  "korockle.command.data": "Data Array(0~255, split with any char)"
+  "korockle.command.data": "Data Array(0~255, split with any char)",
+  "korockle.command.sendedlong": "It was sent as long data because it has 64 or over datas."
 }

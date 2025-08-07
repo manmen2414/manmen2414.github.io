@@ -132,6 +132,94 @@ const convertFunctions = {
         .replaceAll(REPLACEING, str1)
     );
   },
+  frame() {
+    const type = $("#text-frames").val();
+    text.val(framegens[type](text.val()));
+  },
+};
+const framegens = {
+  /**@param {string} line 半角文字を0.5,全角文字を1とした文字数 */
+  _calcX(line) {
+    let hankakus = 0;
+    line.split("").forEach((c) => {
+      const matchers = [/[\x01-\x7E]/, /[\uFF65-\uFF9F]/, /[╔═╗║╚╝]/];
+      if (matchers.some((r) => c.match(r))) hankakus++;
+    });
+    return line.length - hankakus / 2;
+  },
+  /**@param {string} text*/
+  _getInfo(text) {
+    const posiOr0 = (num) => (num > 0 ? num : 0);
+    const linesUnspaced = text.split(/\r\n|\r|\n/);
+    const calcdXs = linesUnspaced.map((l) => this._calcX(l));
+    const maxXUnceiled = Math.max(...calcdXs);
+    const maxX = Math.ceil(maxXUnceiled);
+    const lines = linesUnspaced.map(
+      (l, i) => l + " ".repeat(posiOr0((maxX - calcdXs[i]) * 2))
+    );
+    const Y = lines.length;
+    return { lines, maxX, Y, maxXUnceiled };
+  },
+  /**@param {string} input*/
+  _normal(input, chars) {
+    const { lines, maxX, Y } = this._getInfo(input);
+    const topBottomLine = chars[1].repeat(maxX);
+    let text = `${chars[0]}${topBottomLine}${chars[2]}\n`;
+    lines.forEach((c) => {
+      text += `${chars[3]}${c}${chars[3]}\n`;
+    });
+    text += `${chars[4]}${topBottomLine}${chars[5]}`;
+
+    return text;
+  },
+  /**@param {string} input*/
+  normalBold(input) {
+    return this._normal(input, ["┏", "━", "┓", "┃", "┗", "┛"]);
+  },
+  /**@param {string} input*/
+  normalLight(input) {
+    return this._normal(input, ["┌", "─", "┐", "│", "└", "┘"]);
+  },
+  double(input) {
+    return this._normal(input, ["╔", "══", "╗", "║", "╚", "╝"]);
+  },
+  /**@param {string} input*/
+  /**@param {string} input*/
+  fukidasi(input) {
+    let generated = this._normal(input, [
+      " ╭",
+      "━",
+      "╮ ",
+      "　",
+      " ╰",
+      "╯ ",
+    ]).split("\n");
+    const center = Math.floor(generated[0].length / 2);
+    const last = generated[generated.length - 1];
+    generated[generated.length - 1] =
+      last.substring(0, center) + "ｖ" + last.substring(center + 1);
+    return generated.join("\n");
+  },
+  /**@param {string} input*/
+  totuzennosi(input) {
+    const chars = ["＿", "人", "＿", "＞", "＜", "￣", "Y", "^", "￣"];
+    const spacedInput = input
+      .split(/\r\n|\r|\n/)
+      .map((c) => `　${c}　`)
+      .join("\n");
+    const { lines, maxX, Y } = this._getInfo(spacedInput);
+    let text = `${chars[0]}${chars[1].repeat(maxX)}${chars[2]}\n`;
+    lines.forEach((c) => {
+      text += `${chars[3]}${c}${chars[4]}\n`;
+    });
+    text += chars[5];
+    for (let i = 0; i < maxX * 2; i++) {
+      text += chars[6 + (i % 2)];
+    }
+    text += chars[8];
+
+    return text;
+  },
 };
 /**
  * @returns {{json:object?,error:{line:number,char:number}?}}
@@ -197,6 +285,7 @@ function initTextConversion() {
   $("#text-replace-normal").on("click", () => convertFunctions.replace(false));
   $("#text-replace-regex").on("click", () => convertFunctions.replace(true));
   $("#text-swap").on("click", () => convertFunctions.swap());
+  $("#text-frame-apply").on("click", () => convertFunctions.frame());
 }
 function initNumbers() {
   /**

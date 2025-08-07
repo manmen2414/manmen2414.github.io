@@ -62,7 +62,7 @@
   "tools.sjis-utf8.utf8": "UTF8へ",
   "tools.base64.data-url": "data: URL",
   "tools.title.reverse": "反転",
-  "tools.reverse.text": "反転",
+  "tools.reverse.text": "文字列反転",
   "tools.title.shift": "ずらす",
   "tools.shift.text": "ずらす",
   "tools.shift.amount.placeholder": "ずらす量",
@@ -74,6 +74,13 @@
   "tools.swap": "入れ替える",
   "tools.title.swap": "入れ替え",
   "tools.swap.ph": "入れ替える文字列",
+  "tools.frame.apply": "適用",
+  "tools.title.frame": "枠線",
+  "tools.frame.light": "通常(細)",
+  "tools.frame.bold": "通常(太)",
+  "tools.frame.totuzennosi": "突然の死",
+  "tools.frame.fukidasi": "吹き出し風",
+  "tools.frame.double": "二重線",
   "korockle.info.connect": "デスクトップのChromiumブラウザのみサポートされています。",
   "korockle.connect": "接続する",
   "korockle.title.led": "LED機能",
@@ -115,5 +122,6 @@
   "korockle.commandid.action": "即時操作",
   "korockle.commandid.data-segment": "分割データ",
   "korockle.command.id": "コマンドID",
-  "korockle.command.data": "データ(0~255, 任意の文字で区切る)"
+  "korockle.command.data": "データ(0~255, 任意の文字で区切る)",
+  "korockle.command.sendedlong": "データが64項目を超えたため、ロングデータとして送信しました。"
 }
