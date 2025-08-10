@@ -130,5 +130,8 @@
   "korockle.sound.midi.write": "Write!",
   "korockle.sound.midi.track": "Track",
   "korockle.sound.midi.pleaseselect": "Please select file first.",
-  "korockle.sound.midi.track.songmaker": "If midi from Chrome Music Lab Song Maker, set track to 2."
+  "korockle.sound.midi.track.songmaker": "If midi from Chrome Music Lab Song Maker, set track to 2.",
+  "battery.notworking": "This browser cannot use battery api. Please use chromium on desktop.",
+  "battery.data.clear": "Clear Data",
+  "battery.text": "Umm...Will I make more features?"
 }

@@ -4,16 +4,25 @@
 <head>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Mameeenn/まめーん</title>
   <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/main.css">
   <link rel="stylesheet" href="./battery.css">
-  <script src="path/to/chartjs/dist/chart.umd.min.js"></script>
   <script src="/base.js"></script>
   <script src="./battery.js"></script>
 </head>
 
 <body>
+  <svg id="bolt" xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#000"
+    style="opacity: 0;">
+    <path
+      d="m402.67-187.33 255-306H484.33L518-759.67l-230.33 333h149l-34 239.34ZM320-80l40-280H160l360-520h80l-40 320h240L400-80h-80Zm153-394Z" />
+  </svg>
+  <span id="batteryvalue" style="font-size: 43px;">100%</span>
+  <canvas id="graph-battery"></canvas>
+  <button id="clear">@battery.data.clear</button>
+  <div>@battery.text</div>
 </body>
 
 </html>

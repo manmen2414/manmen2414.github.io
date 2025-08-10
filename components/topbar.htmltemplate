@@ -39,12 +39,12 @@
 
     #topbar-urls>a {
       display: flex;
-      font-size: 20px;
+      font-size: 18px;
       color: #000;
       text-decoration: none;
       background-color: white;
-      padding: 1px 10px;
-      border-radius: 10px;
+      padding: 1px 8px;
+      border-radius: 7px;
       margin-right: 5px;
     }
 
@@ -59,7 +59,7 @@
 
 
     #topbar-icon {
-      border-radius: 10px;
+      border-radius: 8px;
     }
   </style>
   <img id="topbar-icon" src="/assets/mameeenn.png" alt="Mameeenn" width="80px" height="80px">
@@ -69,8 +69,8 @@
   </div>
   <script>
     (() => {
-      const urls = ["/index.html", "/tools/tools.html", "/tools/korockle.html"]
-      const sites = ["Main", "Tools", "Korockle"]
+      const urls = ["/index.html", "/tools/tools.html", "/tools/korockle.html", "/tools/battery.html"]
+      const sites = ["Main", "Tools", "Korockle", "Battery"]
       let index = urls.indexOf(location.pathname);
       if (index === -1) index = 0;
       const paramsRaw = "#" + getParam().join('&');
