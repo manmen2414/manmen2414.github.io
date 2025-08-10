@@ -48,4 +48,22 @@ function dataViewToArray(dataView) {
     return data;
   }
 }
-export { checkUint8, toUint8, findIndex, isHidUseable, dataViewToArray };
+/**
+ * @param {number} value
+ * @returns {number[]}
+ */
+function convertToDeviceEndian(value) {
+  const isLittleEndian = !!new Uint8Array(Uint16Array.of(1).buffer)[0];
+  if (isLittleEndian) return [value, 0];
+  const buffer = new ArrayBuffer(2);
+  new Uint16Array(buffer, 0, 1)[0] = value;
+  return Array.from(new Uint8Array(buffer, 0, 2).reverse());
+}
+export {
+  checkUint8,
+  toUint8,
+  findIndex,
+  isHidUseable,
+  dataViewToArray,
+  convertToDeviceEndian,
+};

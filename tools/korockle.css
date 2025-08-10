@@ -21,3 +21,7 @@
   font-size: 15px;
   margin-top: 5px;
 }
+
+#melody-midi-track {
+  width: 60px;
+}

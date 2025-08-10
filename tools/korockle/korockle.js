@@ -6,6 +6,7 @@ import { LongDataWriter } from "./longdataWriter.js";
 import { COMMANDID } from "./commandId.js";
 import { korockleDataToInfo } from "./dataToInfo.js";
 import { Color } from "./programBuilder/color.js";
+
 const THREE0 = [0, 0, 0];
 class Korockle {
   /**@type {HIDDevice | null} */
@@ -42,13 +43,19 @@ class Korockle {
   }
   /**@param {number[]} program */
   async writeProgram(program) {
-    await this.sendCommand(COMMANDID.writeProgram);
+    await this.sendCommand(
+      COMMANDID.writeProgram,
+      util.convertToDeviceEndian(program.length)
+    );
     const longData = new LongDataWriter(this, program);
     return await longData.send();
   }
   /**@param {number[]} melody */
   async writeMelody(melody) {
-    await this.sendCommand(COMMANDID.writeMelody);
+    await this.sendCommand(
+      COMMANDID.writeMelody,
+      util.convertToDeviceEndian(melody.length)
+    );
     const longData = new LongDataWriter(this, melody);
     return await longData.send();
   }

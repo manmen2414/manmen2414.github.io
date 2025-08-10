@@ -4,6 +4,8 @@
   "words.encode": "Encode",
   "words.decode": "Decode",
   "words.version": "Version",
+  "words.error": "Error excepted...",
+  "words.done": "Done!",
   "index.title.hello": "Hello!",
   "index.introduce": "I'm only normal Japanese student. I can't use English well... I haven't anythings to write here.",
   "rightbar.theme": "Dark/Light",
@@ -123,5 +125,10 @@
   "korockle.commandid.data-segment": "Splited datas",
   "korockle.command.id": "Command id",
   "korockle.command.data": "Data Array(0~255, split with any char)",
-  "korockle.command.sendedlong": "It was sent as long data because it has 64 or over datas."
+  "korockle.command.sendedlong": "It was sent as long data because it has 64 or over datas.",
+  "korockle.sound.from-midi": "Write from midi",
+  "korockle.sound.midi.write": "Write!",
+  "korockle.sound.midi.track": "Track",
+  "korockle.sound.midi.pleaseselect": "Please select file first.",
+  "korockle.sound.midi.track.songmaker": "If midi from Chrome Music Lab Song Maker, set track to 2."
 }

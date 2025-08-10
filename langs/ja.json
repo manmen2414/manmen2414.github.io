@@ -4,6 +4,8 @@
   "words.encode": "エンコード",
   "words.decode": "デコード",
   "words.version": "バージョン",
+  "words.error": "エラーが発生しました...",
+  "words.done": "完了しました！",
   "index.title.hello": "こんにちは！",
   "index.introduce": "私はただの一般通過日本人学生です。本当にこれ以外書くことがありません。",
   "rightbar.theme": "ダーク/ライト",
@@ -123,5 +125,10 @@
   "korockle.commandid.data-segment": "分割データ",
   "korockle.command.id": "コマンドID",
   "korockle.command.data": "データ(0~255, 任意の文字で区切る)",
-  "korockle.command.sendedlong": "データが64項目を超えたため、ロングデータとして送信しました。"
+  "korockle.command.sendedlong": "データが64項目を超えたため、ロングデータとして送信しました。",
+  "korockle.sound.from-midi": "MIDIファイル変換",
+  "korockle.sound.midi.write": "書き込む",
+  "korockle.sound.midi.track": "トラック",
+  "korockle.sound.midi.pleaseselect": "ファイルを先に選択してください。",
+  "korockle.sound.midi.track.songmaker": "midiファイルがChrome Music LabのSong Makerからである場合、トラックは2に設定してください。"
 }

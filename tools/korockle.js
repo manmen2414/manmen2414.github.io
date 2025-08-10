@@ -100,13 +100,41 @@ function initSounds() {
   });
   $("#melody").on("click", () => {
     const val = parseInt($("#melody-index").val());
-    korockle.melody("once", isNaN(val) ? 1 : val);
+    korockle.melody("once", isNaN(val) ? 0 : val);
   });
   $("#melody-loop").on("click", () => {
     korockle.melody("loop");
   });
   $("#melody-stop").on("click", () => {
     korockle.melody("stop");
+  });
+  $("#melody-midi-write").on("click", () => {
+    const file = $("#melody-midi")[0].files[0];
+    let track = $("#melody-midi-track").val();
+    if (track.length === 0) track = 0;
+    else track = parseInt(track) - 1;
+    if (!file) {
+      alert(getTranslate("korockle.sound.midi.pleaseselect"));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const b64 = /data:audio\/mid;base64,([a-zA-Z0-9\/\+=]+)/.exec(
+        reader.result
+      );
+      if (!b64) {
+        alert(getTranslate("words.error") + "\nBase64 Error");
+        return;
+      }
+      const melody = await kLib.parseMidi(b64[1], track, "null");
+      if (!melody) {
+        alert(getTranslate("words.error") + "\nWriting Error");
+        return;
+      }
+      await korockle.writeMelody(melody.build());
+      alert(getTranslate("words.done"));
+    };
+    reader.readAsDataURL(file);
   });
 }
 function initTimeAlerm() {
