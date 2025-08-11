@@ -29,6 +29,7 @@ let chart = { canvas: null, destroy: () => {} };
 function infoTick(battery) {
   const value = Math.round(battery.level * 100);
   const chargeing = battery.charging;
+  $("#batteryvalue").text(`${value}%`);
   const isDark = document.body.classList.contains("dark");
   const boltSVG = $("#bolt");
   if (isDark) boltSVG.attr("fill", "#fff");
