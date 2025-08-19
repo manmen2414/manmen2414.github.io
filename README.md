@@ -24,4 +24,5 @@ It keeps selected language between pages.
 + en: 英語 English
 + dev: デバッグモード Debug mode
 + ignore-korockle-connect: コロックルの接続を無視してUIを表示 Show ui without korockle connect
-  + /tools/korockle.htmlでのみ動作  It effects only /tools/korockle.html
+  + /tools/korockle.html, /tools/korohub/korohub.html で動作
+  + It effects /tools/korockle.html, /tools/korohub/korohub.html

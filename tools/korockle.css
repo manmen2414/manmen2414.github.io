@@ -25,3 +25,22 @@
 #melody-midi-track {
   width: 60px;
 }
+
+#__________________ {
+  position: fixed;
+  bottom: -30px;
+  right: -20px;
+}
+
+#__________________:hover #______ {
+  opacity: 0.1;
+}
+
+#______ {
+  position: fixed;
+  right: 50px;
+  bottom: 40px;
+  background-color: black;
+  color: greenyellow;
+  opacity: 0;
+}

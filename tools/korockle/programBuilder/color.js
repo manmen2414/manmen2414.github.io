@@ -24,7 +24,7 @@ const ConstColorColor = {
   BLUE: [0, 0, 10],
   YELLOW: [10, 10, 0],
   PURPLE: [10, 0, 10],
-  CYAN: [10, 10, 0],
+  CYAN: [0, 10, 10],
   WHITE: [10, 10, 10],
 };
 /**@param {number} val  */

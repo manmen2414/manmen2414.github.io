@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <title>Mameeenn/まめーん</title>
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+  <meta name="description" content="My Program Korohub Setting">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="./korohub.css">
+  <script src="/base.js"></script>
+  <script src="./korohub.js" type="module"></script>
+</head>
+
+<body>
+  <div class="title">@korohub.korohub</div>
+  <div id="connectgui">
+    <div>@korockle.info.connect</div>
+    <button id="connect">@korockle.connect</button>
+  </div>
+  <div id="content" class="x">
+    <button id="disconnect">@korockle.disconnect</button>
+    <div class="title">@korohub.timer</div>
+    <div class="title-smaller">@korohub.timer.focus</div>
+    <span>@korohub.timer.timemin</span>
+    <input type="number" id="focus-minute" placeholder="@korohub.timer.timemin" min="1" max="127" value="45">
+    <span>@korohub.timer.color-onend</span>
+    <select class="constcolor-selector" id="focus-color"></select>
+    <span>@korohub.timer.sound-onend</span>
+    <select name="" id="focus-sound" class="sound-selector"></select>
+    <div class="title-smaller">@korohub.timer.break</div>
+    <span>@korohub.timer.timemin</span>
+    <input type="number" id="break-minute" placeholder="@korohub.timer.timemin" min="1" max="127" value="10">
+    <span>@korohub.timer.color-onend</span>
+    <select class="constcolor-selector" id="break-color"></select>
+    <span>@korohub.timer.sound-onend</span>
+    <select name="" id="break-sound" class="sound-selector"></select>
+    <div class="title">@korohub.display</div>
+    <span>@korohub.display.timeshowtick</span>
+    <input type="number" id="time-showtime" placeholder="Tick" min="1" max="255" value="20">
+    <span>@korohub.display.tempshowtick</span>
+    <input type="number" id="temp-showtime" placeholder="Tick" min="1" max="255" value="14">
+    <div class="title">@korohub.setting</div>
+    <span>@korohub.setting.led-color</span>
+    <select class="constcolor-selector" id="setting-led"></select>
+    <span>@korohub.setting.timer-color</span>
+    <select class="constcolor-selector" id="setting-timer"></select><br>
+    <span>@korohub.led.color</span>
+    <input type="color" id="led-color" value="#cccccc">
+    <span>@korohub.alerm.sound</span>
+    <select name="" id="alerm-sound" class="sound-selector"></select><br>
+    <button id="apply">@korohub.apply</button>
+    <div id="answer"></div>
+  </div>
+</body>
+
+</html>
