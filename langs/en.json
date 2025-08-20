@@ -6,6 +6,7 @@
   "words.version": "Version",
   "words.error": "Error excepted...",
   "words.done": "Done!",
+  "words.file-input": "Select File",
   "index.title.hello": "Hello!",
   "index.introduce": "I'm only normal Japanese student. I can't use English well... I haven't anythings to write here.",
   "rightbar.theme": "Dark/Light",
@@ -157,5 +158,8 @@
   "korockle.constcolor.YELLOW": "Yellow",
   "korockle.constcolor.PURPLE": "Purple",
   "korockle.constcolor.CYAN": "Cyan",
-  "korockle.constcolor.WHITE": "White"
+  "korockle.constcolor.WHITE": "White",
+  "korockle.file.nokorockle": "The file is marked a not korockle file.",
+  "korockle.file.globaled": "The file has already be global.",
+  "korockle.file.converter.desc": "The korockle files has a different in Web and Windows Edition. (UPPER/lower of x,y)\nThis function generate a file that fixed the positioning bug."
 }

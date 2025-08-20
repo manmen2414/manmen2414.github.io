@@ -6,6 +6,7 @@
   "words.version": "バージョン",
   "words.error": "エラーが発生しました...",
   "words.done": "完了しました！",
+  "words.file-input": "ファイルを選択",
   "index.title.hello": "こんにちは！",
   "index.introduce": "私はただの一般通過日本人学生です。本当にこれ以外書くことがありません。",
   "rightbar.theme": "ダーク/ライト",
@@ -157,5 +158,9 @@
   "korockle.constcolor.YELLOW": "黄色",
   "korockle.constcolor.PURPLE": "紫色",
   "korockle.constcolor.CYAN": "水色",
-  "korockle.constcolor.WHITE": "白色"
+  "korockle.constcolor.WHITE": "白色",
+  "korockle.file.nokorockle": "ファイルはコロックルエディタのファイルではないと判定されました。",
+  "korockle.file.globaled": "ファイルはすでにグローバル化されています。",
+  "korockle.file.converter": "Webファイル/Windowsファイル共通化",
+  "korockle.file.converter.desc": "コロックルのファイルは、Web版とWindows版でごくわずかな差があります。(座標のXとYの大文字小文字が違う)\nそれによって発生する位置重なりを修正したファイルを生成します。"
 }

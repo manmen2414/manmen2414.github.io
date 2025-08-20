@@ -226,6 +226,44 @@ function initCommand() {
   });
 }
 
+function initFileConverting() {
+  $("#file-conv-btn").on("click", () => {
+    $("#file-conv-inp")[0].click();
+  });
+  onFileSelected($("#file-conv-inp")[0], (text, name) => {
+    try {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, "text/xml");
+      const isWin = !!xml.querySelector("X");
+      const isWeb = !!xml.querySelector("x");
+      if (!isWin && !isWeb) {
+        alert(getTranslate("@korockle.file.nokorockle"));
+        return;
+      }
+      if (isWin && isWeb) {
+        alert(getTranslate("@korockle.file.globaled"));
+        return;
+      }
+      const posX = xml.querySelectorAll(isWin ? "X" : "x");
+      const posY = xml.querySelectorAll(isWin ? "Y" : "y");
+      posX.forEach((v) => {
+        const newX = xml.createElement(isWin ? "x" : "X");
+        newX.innerHTML = v.innerHTML;
+        v.insertAdjacentElement("afterend", newX);
+      });
+      posY.forEach((v) => {
+        const newY = xml.createElement(isWin ? "y" : "Y");
+        newY.innerHTML = v.innerHTML;
+        v.insertAdjacentElement("afterend", newY);
+      });
+      const serialzer = new XMLSerializer();
+      downloadText(serialzer.serializeToString(xml), name);
+    } catch (ex) {
+      alert(ex);
+    }
+  });
+}
+
 $(() => {
   check();
   initInputing();
@@ -233,6 +271,7 @@ $(() => {
   initLEDs();
   initTimeAlerm();
   initCommand();
+  initFileConverting();
   $("#connect").on("click", () => {
     connect();
   });
