@@ -1,0 +1,54 @@
+body.dark textarea {
+  background-color: #444;
+  border: 1px solid lightblue;
+}
+body:not(.dark) textarea {
+  border: 1px solid blue;
+  background-color: #aaa;
+}
+textarea {
+  padding: 5px 10px;
+  font-size: 18px;
+  width: 100%;
+  height: 120px;
+  resize: vertical;
+  border-radius: 10px;
+}
+
+#img-pos {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 400px;
+  padding-left: 100px;
+  background-color: #fff;
+}
+
+#hukidashi {
+  pointer-events: none;
+}
+
+#iruka {
+  position: relative;
+  top: 90px;
+  left: -30px;
+  pointer-events: none;
+}
+
+#text {
+  position: relative;
+  color: #243c4d;
+  font-size: 21px;
+  transform: rotate(-10deg);
+  bottom: 210px;
+  left: 50px;
+  text-align: center;
+  width: 220px;
+  line-height: 30px;
+  font-family: sans-serif;
+}
+
+#text > * {
+  color: #243c4d;
+}

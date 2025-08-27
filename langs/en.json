@@ -94,7 +94,7 @@
   "korockle.lightout": "Light Out(0, 0, 0)",
   "korockle.title.ledvalue": "Value / RGB",
   "korockle.led.live": "Apply for every 0.1 seconds (Cannot use sensor information when on)",
-  "korockle.notworking": "This browser cannot use hid. Please use chromium on desktop.",
+  "korockle.notworking": "This browser cannot use connect.",
   "korockle.disconnect": "Disconnect",
   "korockle.led.gradation": "Gradation (When \"Apply for every 0.1 seconds\" Checkbox on)",
   "korockle.title.sounds": "Sounds / Melody",
@@ -161,5 +161,10 @@
   "korockle.constcolor.WHITE": "White",
   "korockle.file.nokorockle": "The file is marked a not korockle file.",
   "korockle.file.globaled": "The file has already be global.",
-  "korockle.file.converter.desc": "The korockle files has a different in Web and Windows Edition. (UPPER/lower of x,y)\nThis function generate a file that fixed the positioning bug."
+  "korockle.file.converter.desc": "The korockle files has a different in Web and Windows Edition. (UPPER/lower of x,y)\nThis function generate a file that fixed the positioning bug.",
+  "ihop.input-selection": "Input Text in to '?' with line splited",
+  "ihop.editable": "↓Editable",
+  "ihop.go": "Apply",
+  "ihop.gorandom": "Randam Apply",
+  "ihop.gorandom.multipy": "Randam Apply (Has Duplication)"
 }

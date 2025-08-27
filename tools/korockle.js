@@ -31,7 +31,7 @@ async function disconnect() {
 function check() {
   if (!navigator.hid) {
     setTimeout(() => {
-      alert(getTranslate("korockle.notworking"));
+      $("#connect-info").text(getTranslate("korockle.notworking"));
     }, 100);
   }
 }
