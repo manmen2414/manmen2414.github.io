@@ -340,15 +340,23 @@ function initNumbers() {
   });
 }
 function initMediaEmbed() {
+  const urlInput = $("#mediaembed-url");
   const embed = $("#mediaembed");
-  $("#mediaembed-url").on("change", (ev) => {
-    const val = ev.currentTarget.value;
+  const nicoEmbedVideo = $("#isnico-video");
+  function changeFunc() {
+    const val = urlInput.val();
     if (val.length === 0) {
       embed.html("");
     } else {
-      embed.html(youtubeUrlToEmbed(val) ?? nicoVideoUrlToEmbed(val) ?? "");
+      const embedHtml =
+        youtubeUrlToEmbed(val) ??
+        nicoVideoUrlToEmbed(val, nicoEmbedVideo[0].checked) ??
+        "";
+      embed.html(embedHtml);
     }
-  });
+  }
+  urlInput.on("change", changeFunc);
+  nicoEmbedVideo.on("change", changeFunc);
 }
 $(() => {
   initTextConversion();

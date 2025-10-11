@@ -192,6 +192,7 @@ async function translate(lang) {
     ...$("span"),
     ...$("li"),
     ...$("option"),
+    ...$("label"),
   ];
   function translateOne(k) {
     //虚無や非対象は飛ばす
@@ -243,7 +244,7 @@ function youtubeUrlToEmbed(url) {
     return videoIdExec[1];
   }
   const videoId = url.includes("/") ? getVideoId() : url;
-  if (/sm([0-9]+)/.test(url)) return null;
+  if (/((?:sm|so)[0-9]+)/.test(url)) return null;
   if (!videoId) return null;
   return EMBED_BASE.replace(/%VIDEO_ID%/g, videoId);
 }
@@ -252,17 +253,22 @@ function youtubeUrlToEmbed(url) {
  * // TODO: 処理を共通化
  * @param {string} url
  */
-function nicoVideoUrlToEmbed(url) {
+function nicoVideoUrlToEmbed(url, isVideo = false) {
+  const EMBED_BASE_VIDEO = `<iframe width="560" height="315" src="http://embed.nicovideo.jp/watch/%VIDEO_ID%"></iframe>`;
   const EMBED_BASE = `<iframe width="560" height="206" src="https://ext.nicovideo.jp/thumb/%VIDEO_ID%" scrolling="no"style="border:solid 1px #ccc;" frameborder="0"><a href="https://www.nicovideo.jp/watch/%VIDEO_ID%">_</a></iframe>`;
   function getVideoId() {
-    const link = /http(?:s?)\:\/\/(?:www.)?nicovideo.jp\/watch\/(sm[0-9]+)/;
+    const link =
+      /http(?:s?)\:\/\/(?:www.)?nicovideo.jp\/watch\/((?:sm|so)[0-9]+)/;
     const videoIdExec = link.exec(url);
     if (!videoIdExec) return null;
     return videoIdExec[1];
   }
   const videoId = url.includes("/") ? getVideoId() : url;
   if (!videoId) return null;
-  return EMBED_BASE.replace(/%VIDEO_ID%/g, videoId);
+  return (isVideo ? EMBED_BASE_VIDEO : EMBED_BASE).replace(
+    /%VIDEO_ID%/g,
+    videoId
+  );
 }
 /**
  * パラメータを取得する。
