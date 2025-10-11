@@ -17,19 +17,18 @@ class Korockle {
   commandSequenceNumber = 0;
   /**@type {number} */
   __dataRemoveTimeout = 0;
-  /**@param {HIDDevice | null} hid  */
-  constructor(hid = null) {
-    if (!hid) {
-      getKorockle().then((hid) => {
-        this.hid = hid;
-      });
-      return this;
-    }
+  /**@param {HIDDevice} hid  */
+  constructor(hid) {
     this.hid = hid;
     this.hid.addEventListener("inputreport", (event) => {
       //@ts-ignore
       this.__inputreport(event);
     });
+  }
+  static async get() {
+    const kHid = await getKorockle();
+    if (!kHid) return null;
+    return new Korockle(kHid);
   }
   async execute() {
     await this.sendCommand(COMMANDID.executeProgram);

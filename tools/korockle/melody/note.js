@@ -47,7 +47,7 @@ class Note {
    * @param {number} length
    */
   constructor(scale, length) {
-    if (0 > scale || 30 < scale || scale % 1 !== 0)
+    if (1 > scale || 31 < scale || scale % 1 !== 0)
       throw new RangeError(`${scale} is not vaild note scale.`);
     if (0 > length || 7 < length || length % 1 !== 0)
       throw new RangeError(`${length} is not vaild note length.`);

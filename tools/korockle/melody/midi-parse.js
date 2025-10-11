@@ -1,5 +1,6 @@
 import { NOTE_LENGTHS, NOTE_SCALES } from "./melody.js";
 import { MelodyBuilder } from "./builder.js";
+//HACK: このクソみたいなコードのリファクタリング
 class MidiMelodyBuilder extends MelodyBuilder {
   constructor(data, track) {
     super(0, false);
@@ -13,10 +14,15 @@ class MidiMelodyBuilder extends MelodyBuilder {
     this.mapNotes();
   }
   getBPM() {
-    const bpmEvent = this.track.find(
-      (v) => v.type === 0xff && v.metaType === 81
-    ) ?? { data: 500000 }; //500000 = BPM120(デフォルト)
-    const bps = 1 / (bpmEvent.data / 1000000);
+    let bpmEvent = { data: 500000 }; //500000 = BPM120(デフォルト)
+    this.data.track
+      .map((v) => v.event)
+      .forEach((ev) => {
+        //全トラックから探し出す
+        bpmEvent =
+          ev.find((v) => v.type === 0xff && v.metaType === 81) ?? bpmEvent;
+      });
+    const bps = 1000000 / bpmEvent.data;
     this.setBPM(Math.round(bps * 60));
   }
   getDeltatime() {
@@ -60,6 +66,7 @@ class MidiMelodyBuilder extends MelodyBuilder {
       if (!!sounding) {
         this._log(`[${i}]${rawNoteLevel} 終了: ${sounding.elapseTime}`);
         let noteLevel = rawNoteLevel - 60 + 8;
+        //音が高すぎる/低すぎる場合はマッピング
         while (noteLevel > NOTE_SCALES.HIGH_SI) {
           noteLevel -= NOTE_SCALES.HIGH_SI - NOTE_SCALES.LOW_SI;
         }

@@ -29,9 +29,9 @@ class LongDataWriter {
         ? 0b10000000 | remainingDataLength
         : LongDataWriter.MAX_SEGMENT_LENGTH
     );
-
     for (let i = 0; i < LongDataWriter.MAX_SEGMENT_LENGTH; i++) {
-      if (this.offset + i < this.data.length) {
+      //WARNING: =いらないかも
+      if (this.offset + i <= this.data.length) {
         sendData[i] = this.data[this.offset + i];
       } else {
         sendData[i] = 0; // パディング

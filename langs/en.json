@@ -44,6 +44,7 @@
   "index.todo.korockle": "Korockle Library",
   "index.ggrbk": "It's very important to search with myself. PLEASE SEARCH before ask to your fellow.",
   "index.stats": "My Github Stats",
+  "index.tools": "My tools",
   "tools.title.tools": "Tools",
   "tools.title.textconversion": "Text Conversions",
   "tools.title.base64": "Base64 Encode",
@@ -166,5 +167,6 @@
   "ihop.editable": "↓Editable",
   "ihop.go": "Apply",
   "ihop.gorandom": "Randam Apply",
-  "ihop.gorandom.multipy": "Randam Apply (Has Duplication)"
+  "ihop.gorandom.multipy": "Randam Apply (Has Duplication)",
+  "ihop.title": "In home, party or other place...?"
 }

@@ -44,6 +44,7 @@
   "index.todo.korockle": "コロックルのライブラリ",
   "index.ggrbk": "自分で調べることはとても重要です。人に聞く前に一度検索してみやがれください。",
   "index.stats": "Githubステータス",
+  "index.tools": "ツールたち",
   "tools.title.tools": "ツール",
   "tools.title.textconversion": "テキスト変換",
   "tools.title.base64": "Base64 エンコード",
@@ -167,5 +168,6 @@
   "ihop.editable": "↓編集できるよ（笑）",
   "ihop.go": "適用",
   "ihop.gorandom": "ランダムに適用",
-  "ihop.gorandom.multipy": "ランダムに適用(被りあり)"
+  "ihop.gorandom.multipy": "ランダムに適用(被りあり)",
+  "ihop.title": "家でもパーティーでも...?"
 }

@@ -5,7 +5,6 @@ import * as nodeHid from "node-hid";
  * @returns
  */
 function bufferToDataView(buff) {
-  //FIXME: これどうなってんだ
   return new DataView(new Uint8Array(buff).buffer);
 }
 
