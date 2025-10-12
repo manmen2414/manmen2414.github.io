@@ -169,5 +169,13 @@
   "ihop.go": "Apply",
   "ihop.gorandom": "Randam Apply",
   "ihop.gorandom.multipy": "Randam Apply (Has Duplication)",
-  "ihop.title": "In home, party or other place...?"
+  "ihop.title": "In home, party or other place...?",
+  "forme.lc.title": "Gen Lightmans Currency Sale Format",
+  "forme.lc.addshop": "Add shop",
+  "forme.lc.amount-placeholder": "Amount",
+  "forme.lc.item-placeholder": "Item name",
+  "forme.lc.price-placeholder": "Price",
+  "forme.lc.shop-placeholder": "Shop name",
+  "forme.lc.additem": "Add item",
+  "forme.lc.isbuying": "Buying"
 }

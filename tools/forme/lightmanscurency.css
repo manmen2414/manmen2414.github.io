@@ -1,0 +1,19 @@
+#genui {
+  margin-top: 30px;
+}
+
+.shop-title {
+  width: 60%;
+}
+
+.item-text {
+  width: 300px;
+}
+
+.amount-text {
+  width: 50px;
+}
+
+input {
+  border-style: dotted !important;
+}

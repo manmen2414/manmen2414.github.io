@@ -170,5 +170,13 @@
   "ihop.go": "適用",
   "ihop.gorandom": "ランダムに適用",
   "ihop.gorandom.multipy": "ランダムに適用(被りあり)",
-  "ihop.title": "家でもパーティーでも...?"
+  "ihop.title": "家でもパーティーでも...?",
+  "forme.lc.title": "Lightmans Currency販売フォーマット",
+  "forme.lc.addshop": "ショップ追加",
+  "forme.lc.amount-placeholder": "個数",
+  "forme.lc.item-placeholder": "名前",
+  "forme.lc.price-placeholder": "価格",
+  "forme.lc.shop-placeholder": "ショップ名",
+  "forme.lc.additem": "アイテム追加",
+  "forme.lc.isbuying": "買取"
 }

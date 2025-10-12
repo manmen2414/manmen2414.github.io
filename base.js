@@ -375,6 +375,18 @@ function downloadText(text, filename = "text") {
 }
 
 /**
+ * `"abc"`に対して`{a:"an ",c:"anana"}`と与えると`"an banana"`が返ってくる
+ * @param {string} text
+ * @param {Object} replaceObject
+ */
+function strReplaceObject(text, replaceObject) {
+  Object.entries(replaceObject).forEach((kv) => {
+    text = text.replaceAll(kv[0], kv[1]);
+  });
+  return text;
+}
+
+/**
  * inputにファイルが設定されたらテキストファイルとして解釈しfuncを実行する
  * @param {HTMLInputElement} input
  * @param {(text:string,name:string)=>void} func
