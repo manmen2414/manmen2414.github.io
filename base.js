@@ -1,3 +1,4 @@
+//TODO: ドキュメントの描画の段階ごとにイベントによって状態を管理する
 const ISDEBUG = getParam().includes("dev");
 
 /**@type {JQuery<HTMLBodyElement>} */

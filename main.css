@@ -22,7 +22,8 @@ body {
 }
 
 .title {
-  margin-top: 20px;
+  margin-top: 23px;
+  margin-bottom: -4px;
   font-size: 35px;
 }
 
