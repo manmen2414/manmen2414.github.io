@@ -1,10 +1,16 @@
 //TODO: ドキュメントの描画の段階ごとにイベントによって状態を管理する
 const ISDEBUG = getParam().includes("dev");
+/**@type {PageLoadEventTarget} */
+const PageLoadEventTarget = new EventTarget();
 
 /**@type {JQuery<HTMLBodyElement>} */
 let BODY;
 let Version = "0.0.0";
+/**@type {Dictionary<string,string>} */
 let translateJson = {};
+let translateLang = "";
+/**@type {"d"|"l"} */
+let theme = "";
 /**@type {Set<string>} */
 const noTranslatedTexts = new Set();
 const TRANSLATE_KEYS = ["ja", "en"];
@@ -75,6 +81,9 @@ function setStorage(key, value = null, objTranslate = true) {
 function genTopBar() {
   fetch("/components/topbar.htmltemplate").then(async (v) => {
     BODY.prepend(await v.text());
+    /**@type {GeneratedTopBarEvent} */
+    const event = new Event("generatedTopBar", { cancelable: false });
+    PageLoadEventTarget.dispatchEvent(event);
   });
 }
 /**
@@ -83,6 +92,9 @@ function genTopBar() {
 function genRightbar() {
   fetch("/components/rightbar.htmltemplate").then(async (v) => {
     BODY.prepend(await v.text());
+    /**@type {GeneratedRightBarEvent} */
+    const event = new Event("generatedRightBar", { cancelable: false });
+    PageLoadEventTarget.dispatchEvent(event);
   });
 }
 /**
@@ -91,9 +103,16 @@ function genRightbar() {
 function setTheme() {
   const storage = getStorage("m.theme");
   if (storage === "d") changeTheme();
-  if (!!storage) return;
-  const dark = matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
-  if (dark) changeTheme();
+  if (!storage) {
+    const dark =
+      matchMedia && matchMedia("(prefers-color-scheme: dark)").matches;
+    if (dark) changeTheme();
+  }
+  let nowIsDark = $("body").hasClass("dark");
+  theme = nowIsDark ? "d" : "l";
+  /**@type {ThemeloadEvent} */
+  const event = new Event("themeload", { cancelable: false });
+  PageLoadEventTarget.dispatchEvent(event);
 }
 /**
  * テーマを変更する。
@@ -106,6 +125,10 @@ function changeTheme(save = true) {
   if (save) {
     setStorage("m.theme", nowIsDark ? "l" : "d");
   }
+  theme = nowIsDark ? "l" : "d";
+  /**@type {ThemeloadEvent} */
+  const event = new Event("themeload", { cancelable: false });
+  PageLoadEventTarget.dispatchEvent(event);
 }
 /**
  * min以上max未満の整数乱数。
@@ -114,10 +137,7 @@ function changeTheme(save = true) {
  * @param {number} min
  */
 function random(max, min = 0) {
-  const rand = Math.floor(Math.random() * (max - min) + min);
-  //運がめっちゃよかったらジャスト1を引くことがある
-  if (rand === max) return max - 1;
-  return rand;
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 /**
@@ -181,12 +201,22 @@ function Dev_TranslatedLog(key, at) {
 /**
  * 翻訳キーを用いて翻訳を行う。
  * @param {string} lang
+ * @param {HTMLElement[]} targetElements?
  */
-async function translate(lang) {
-  const json = await (await fetch(`/langs/${lang}.json`)).json();
-  translateJson = json;
-  translateJson.version = Version;
-  const translates = [
+async function translate(lang, targetElements = null) {
+  if (!targetElements) {
+    const json = await (await fetch(`/langs/${lang}.json`)).json();
+    translateJson = json;
+    translateLang = lang;
+    translateJson.version = Version;
+    /**@type {TranslateStartEvent} */
+    const startEvent = new Event("translateStart", { cancelable: true });
+    if (!PageLoadEventTarget.dispatchEvent(startEvent)) {
+      styledLog(`%c[!] Translate Canceled`, ["!C:black;!B:#c33;!PA:1px 3px"]);
+      return;
+    }
+  }
+  const defaultTarget = [
     ...$("div"),
     ...$("a"),
     ...$("button"),
@@ -195,6 +225,7 @@ async function translate(lang) {
     ...$("option"),
     ...$("label"),
   ];
+  const translates = !targetElements ? defaultTarget : targetElements;
   function translateOne(k) {
     //虚無や非対象は飛ばす
     if (!k) return k;
@@ -209,6 +240,11 @@ async function translate(lang) {
   [...$("input")].forEach((e) => {
     e.placeholder = translateOne(e.placeholder ?? "");
   });
+  if (!targetElements) {
+    /**@type {TranslateEndEvent} */
+    const endEvent = new Event("translateEnd", { cancelable: false });
+    PageLoadEventTarget.dispatchEvent(endEvent);
+  }
 }
 /**
  * 翻訳キーから翻訳結果を取得する。
@@ -472,6 +508,9 @@ async function getVersion() {
   const res = await fetch("/package.json");
   const json = await res.json();
   Version = json.version;
+  /**@type {VersionloadEvent} */
+  const event = new Event("versionload", { cancelable: false });
+  PageLoadEventTarget.dispatchEvent(event);
   return json.version;
 }
 /**
