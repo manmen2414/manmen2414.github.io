@@ -147,6 +147,8 @@
   "korockle.sound.midi.track": "Track",
   "korockle.sound.midi.pleaseselect": "Please select file first.",
   "korockle.sound.midi.track.songmaker": "If midi from Chrome Music Lab Song Maker, set track to 2.",
+  "korockle.file.player": ".mdp Player",
+  "korockle.file.player.desc": "Plays mdp file with sound likes korockle.",
   "battery.notworking": "This browser cannot use battery api. Please use chromium on desktop.",
   "battery.data.clear": "Clear Data",
   "battery.text": "Umm...Will I make more features?",

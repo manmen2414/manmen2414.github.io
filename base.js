@@ -530,8 +530,11 @@ $(async () => {
   BODY = $("body");
   await getVersion();
   logStartMessage();
-  genTopBar();
-  genRightbar();
-  setTheme();
-  translateParam();
+  if (!location.pathname.startsWith("/new")) {
+    // 試験
+    genTopBar();
+    genRightbar();
+    setTheme();
+    translateParam();
+  }
 });
