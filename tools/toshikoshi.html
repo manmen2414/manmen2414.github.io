@@ -9,6 +9,7 @@
   <meta name="description" content="Countdown 2025">
   <script>
     const F = (n)=>Math.floor(n);
+    const P = (n)=>(`${n}`).padStart("0",2);
     $(()=>{
       const at = $("div");
       const target = new Date(2026,0,1,0,0,0)
@@ -21,14 +22,14 @@
         const leftMinuteMapped = F(leftSecondMapped/60);
         const leftMinute = leftMinuteMapped % 60;
         const leftHour = F(leftMinuteMapped/60);
-        const text = `${leftHour}:${leftMinute}:${leftSecond}`;
+        const text = `${P(leftHour)}:${P(leftMinute)}:${P(leftSecond)}`;
         at.text(text);
       },50)
     })
   </script>
   <style>
     div {
-      font-size: 4vw;
+      font-size: 10vw;
       position:fixed;
       left:50%;
       top:50%;
