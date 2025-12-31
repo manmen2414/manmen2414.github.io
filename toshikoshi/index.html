@@ -7,22 +7,51 @@
   <meta name="description" content="Countdown 2025">
 
   <style>
-    div {
-      font-size: 15vw;
+    #time1 {
+      font-size: 10vw;
       position: fixed;
       left: 50%;
-      top: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+    }
+
+    #time2 {
+      font-size: 3vw;
+      position: fixed;
+      left: 50%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+    }
+
+    #text1 {
+      font-size: 5vw;
+      position: fixed;
+      left: 50%;
+      top: 26%;
+      transform: translate(-50%, -50%);
+    }
+
+    #text2 {
+      font-size: 4vw;
+      position: fixed;
+      left: 50%;
+      top: 70%;
+      text-align: center;
       transform: translate(-50%, -50%);
     }
   </style>
 </head>
 
 <body>
-  <div></div>
+  <div id="text1">年越しまで</div>
+  <div id="time1"></div>
+  <div id="time2"></div>
+  <div id="text2">次の予定:<br>17時~ Hide And Seek</div>
   <script>
     const F = (n) => Math.floor(n);
     const P = (n) => (`${n}`).padStart(2, "0");
-    const at = document.querySelector("div");
+    const time1 = document.querySelector("#time1");
+    const time2 = document.querySelector("#time2");
     const target = new Date(2026, 0, 1, 0, 0, 0)
     setInterval(() => {
       const now = new Date()
@@ -33,8 +62,10 @@
       const leftMinuteMapped = F(leftSecondMapped / 60);
       const leftMinute = leftMinuteMapped % 60;
       const leftHour = F(leftMinuteMapped / 60);
-      const text = `${P(leftHour)}:${P(leftMinute)}:${P(leftSecond)}`;
-      at.innerText = (text);
+      const time1Text = `${P(leftHour)}:${P(leftMinute)}:${P(leftSecond)}`;
+      const time2Text = `時刻 ${new Date().toLocaleTimeString()}`;
+      time1.innerText = time1Text;
+      time2.innerText = time2Text;
     }, 50)
   </script>
 </body>
