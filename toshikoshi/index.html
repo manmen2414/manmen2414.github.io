@@ -44,7 +44,7 @@
       font-size: 1vw;
       position: fixed;
       left: 50%;
-      top: 80%;
+      top: 85%;
       text-align: center;
       transform: translate(-50%, -50%);
     }
@@ -77,6 +77,9 @@
       time1.innerText = time1Text;
       time2.innerText = time2Text;
     }, 50)
+    setTimeout(() => {
+      location.reload();
+    }, 60 * 1000)
   </script>
 </body>
 
