@@ -271,6 +271,9 @@ function initKorocklePlayer() {
     const mainGain = audioCtx.createGain();
     mainGain.gain.value = 0.15;
     mainGain.connect(audioCtx.destination);
+    const subGain = audioCtx.createGain();
+    subGain.gain.value = 0.05;
+    subGain.connect(audioCtx.destination);
 
     const mainFreq = [1049, 2090, 3147, 5283];
 
@@ -282,9 +285,10 @@ function initKorocklePlayer() {
         audioCtx.currentTime,
       );
 
-      osc.connect(mainGain);
+      if (i < 2) osc.connect(mainGain);
+      else osc.connect(subGain);
       osc.start();
-      osc.stop(sec);
+      osc.stop(sec - 0.01);
     });
     return wait(sec);
   }

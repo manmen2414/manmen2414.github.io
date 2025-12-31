@@ -148,7 +148,7 @@
   "korockle.sound.midi.pleaseselect": "ファイルを先に選択してください。",
   "korockle.sound.midi.track.songmaker": "midiファイルがChrome Music LabのSong Makerからである場合、トラックは2に設定してください。",
   "korockle.file.player": "コロックルmdpプレイヤー",
-  "korockle.file.player.desc": "コロックルに似た音でプロジェクトファイルから再生します。",
+  "korockle.file.player.desc": "コロックルに似た音でプロジェクトファイルから再生します。\n逆にChromeだと動作しない可能性が高いです。",
   "battery.notworking": "このブラウザでは動作しません。デスクトップのChromiumを利用してください。",
   "battery.data.clear": "データ消去",
   "battery.text": "これ以上機能増やすかなぁ...?",
