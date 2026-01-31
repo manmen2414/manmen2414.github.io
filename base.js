@@ -530,11 +530,13 @@ $(async () => {
   BODY = $("body");
   await getVersion();
   logStartMessage();
-  if (!location.pathname.startsWith("/new")) {
-    // 試験
+  const page = window.mameeennPageSettings ?? {};
+  if(!page.noTopBar)
     genTopBar();
+  if(!page.noRightBar)
     genRightbar();
+  if(!page.noTheme)
     setTheme();
+  if(!page.noTranslate)
     translateParam();
-  }
 });
