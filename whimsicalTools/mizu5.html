@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="height=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <title>Mameeenn/まめーん</title>
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="見ないで理解できないでしょう..." />
+    <script>
+      window.mameeennPageSettings = {
+        noTopBar: true,
+        noTheme: true,
+      };
+    </script>
+    <script src="/base.js"></script>
+    <style>
+      * {
+        --bg: #14141d;
+        --popup-bg: #ebebf1;
+        --cancel-bg: #ffffff;
+        --view-bg: #96ebdd;
+        --shadow: 5px;
+        --shadow-color: #888;
+        --font-size: 1.4vw;
+        --font-size-btn: 1.3vw;
+      }
+      button {
+        cursor: pointer;
+      }
+      body {
+        background-color: #14141d;
+      }
+      .popup {
+        width: 48vw;
+        height: 27vh;
+        padding: 0.1vh 1vw;
+        background-color: #ebebf1;
+        border-radius: 1vw;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: var(--font-size);
+      }
+      .popup > p {
+        text-align: center;
+        margin-top: 5vh;
+      }
+      #close {
+        background: none;
+        border: none;
+        font-size: 2.5vw;
+        position: absolute;
+        right: 0.5vw;
+        text-shadow: var(--shadow-color) 0 0 var(--shadow);
+      }
+      #popup-btnarea > * {
+        font-size: var(--font-size-btn);
+        text-align: center;
+        width: 13vw;
+        margin: 1vw;
+        padding: 0.75vh;
+        border: none;
+        box-shadow: var(--shadow-color) 0 0 var(--shadow);
+        border-radius: 10003px;
+      }
+      #popup-btnarea {
+        position: absolute;
+        bottom: 1.5vh;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+      }
+      #cancel {
+        background-color: var(--cancel-bg);
+      }
+      #view {
+        background-color: var(--view-bg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="popup">
+      <button id="closebtn">×</button>
+      <p>@words.mizu5-8</p>
+      <div id="popup-btnarea">
+        <button id="cancelbtn">@words.cancel</button>
+        <button id="viewbtn">@words.view</button>
+      </div>
+    </div>
+    <script defer>
+      const closeBtn = $(closebtn);
+      const cancelBtn = $(cancelbtn);
+      const viewBtn = $(viewbtn);
+      closeBtn.on("click", history.back);
+      cancelBtn.on("click", history.back);
+      viewBtn.on("click", () => {
+        location.href = "https://youtu.be/EkdM5lJZ3NA?t=3852";
+      });
+    </script>
+  </body>
+</html>
