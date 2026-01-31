@@ -224,6 +224,7 @@ async function translate(lang, targetElements = null) {
     ...$("li"),
     ...$("option"),
     ...$("label"),
+    ...$("p"),
   ];
   const translates = !targetElements ? defaultTarget : targetElements;
   function translateOne(k) {
