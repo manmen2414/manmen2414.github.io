@@ -1,4 +1,4 @@
-<div id="topbar">
+<header id="topbar">
   <style>
     #topbar {
       width: calc(100% - 20px);
@@ -70,11 +70,11 @@
   <script>
     (() => {
       // `/path`の形式。index.htmlを参照する際は/を入れること。
-      const urls = ["/index", "/tools/tools", "/tools/korockle/", "/tools/battery"]
+      const urls = ["/", "/tools/tools", "/tools/korockle/", "/tools/battery"]
       const sites = ["Main", "Tools", "Korockle", "Battery"]
       let index = (() => {
         const path = location.pathname.replace(/\.html$|\.htm$/, "")
-        if (path === "/") return 0;
+        if (path === "/index") return 0;
         if (urls.includes(path)) return urls.indexOf(path);
         if (path.includes("korohub")) return 2;
         if (path.includes("whimsicalTools")) return 1;
@@ -95,4 +95,4 @@
     })()
   </script>
 
-</div>
+</header>
