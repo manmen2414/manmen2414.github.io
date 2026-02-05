@@ -1,4 +1,4 @@
-import * as kLib from "../korockle/main/web.js";
+import * as kLib from "../../korockle/main/web.js";
 const { Color } = kLib;
 
 /**

@@ -69,14 +69,26 @@
   </div>
   <script>
     (() => {
-      const urls = ["/index.html", "/tools/tools.html", "/tools/korockle.html", "/tools/battery.html"]
+      // `/path`の形式。index.htmlを参照する際は/を入れること。
+      const urls = ["/index", "/tools/tools", "/tools/korockle/", "/tools/battery"]
       const sites = ["Main", "Tools", "Korockle", "Battery"]
-      let index = urls.indexOf(location.pathname);
+      let index = (() => {
+        const path = location.pathname.replace(/\.html$|\.htm$/, "")
+        if (path === "/") return 0;
+        if (urls.includes(path)) return urls.indexOf(path);
+        if (path.includes("korohub")) return 2;
+        if (path.includes("whimsicalTools")) return 1;
+        if (path.includes("forme")) return 1;
+        return 0;
+      })();
       if (index === -1) index = 0;
       const paramsRaw = "#" + getParam().join('&');
-      const params = paramsRaw.length === 1 ? "" : paramsRaw;
+      let params = paramsRaw.length === 1 ? "" : paramsRaw;
+      const isGithubPages = location.host.includes(".github.io")
       urls.forEach((url, i) => {
-        const a = $(`<a href="${url}${params}">${sites[i]}</a>`);
+        let htmlIfNeed = "";
+        if (!url.endsWith("/") && !isGithubPages) htmlIfNeed = `.html`
+        const a = $(`<a href="${url}${htmlIfNeed}${params}">${sites[i]}</a>`);
         if (index === i) a.addClass("now");
         $("#topbar-urls").append(a);
       })
