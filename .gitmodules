@@ -1,0 +1,3 @@
+[submodule "tools/korockle"]
+	path = tools/korockle
+	url = https://github.com/manmen2414/MameKorockleLib

@@ -1,4 +1,4 @@
-import * as kLib from "../korockle/web.js";
+import * as kLib from "../korockle/main/web.js";
 const { Color } = kLib;
 
 /**
@@ -30,9 +30,9 @@ function generateConstColorSelector() {
       .map((kv) =>
         $(
           `<option value="${kv[1]}">${getTranslate(
-            `korockle.constcolor.${kv[0]}`
-          )}</option>`
-        )
+            `korockle.constcolor.${kv[0]}`,
+          )}</option>`,
+        ),
       )
       .forEach((v) => {
         el.appendChild(v[0]);
@@ -47,7 +47,7 @@ function generateSoundSelector() {
     s(1) +
       s(2) +
       s(3) +
-      `<option value="4">@korockle.sound.melody.play</option>`
+      `<option value="4">@korockle.sound.melody.play</option>`,
   );
 }
 
@@ -71,7 +71,7 @@ function generateCode() {
     parseInt($("#temp-showtime").val()),
     Color.fromRGB($("#led-color").val().substring(1)),
     Color.fromConstColor(parseInt($("#setting-led").val())),
-    Color.fromConstColor(parseInt($("#setting-timer").val()))
+    Color.fromConstColor(parseInt($("#setting-timer").val())),
   );
 }
 
@@ -103,7 +103,7 @@ function generateCodeFromValues(
   tempShowTime,
   ledColor,
   settingLedColor,
-  settingTimerColor
+  settingTimerColor,
 ) {
   if (timerFocusColor.constColor() === 0)
     return "@korohub.error.timerFocusColor";
@@ -409,7 +409,7 @@ async function apply() {
     if (!korockle) return;
     if (ans.length > 256) {
       $("#answer").text(
-        "コードが256バイトを超えたため、書き込むことができません。"
+        "コードが256バイトを超えたため、書き込むことができません。",
       );
     }
     $("#answer").text("書き込んでいます...");
