@@ -33,3 +33,6 @@ It keeps selected language between pages.
 
 This project used Git Submodule.  
 Please run `git submodule update --init --recursive` on init。  
+
+## Memo for me / メモ
+定期的に`git submodule update --remote --merge`でMameKorockleLibをアップデートする。
