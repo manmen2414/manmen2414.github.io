@@ -209,5 +209,7 @@
   "forme.lc.price-placeholder": "価格",
   "forme.lc.shop-placeholder": "ショップ名",
   "forme.lc.additem": "アイテム追加",
-  "forme.lc.isbuying": "買取"
+  "forme.lc.isbuying": "買取",
+  "korockle.multi.play-all": "再生",
+  "korockle.multi.stop-all": "停止"
 }

@@ -49,8 +49,11 @@ function check() {
 }
 
 function initMelody() {
-  $("#melody-playsync").on("click", () => {
+  $("#melody-play").on("click", () => {
     korockles.forEach((k) => k.melody("once"));
+  });
+  $("#melody-stop").on("click", () => {
+    korockles.forEach((k) => k.melody("stop"));
   });
 }
 

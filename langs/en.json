@@ -155,6 +155,12 @@
   "korockle.sound.midi.track.songmaker": "If midi from Chrome Music Lab Song Maker, set track to 2.",
   "korockle.file.player": ".mdp Player",
   "korockle.file.player.desc": "Plays mdp file with sound likes korockle.\n...But It wouldn't work correctly if you use chrome.",
+  "korockle.title.read-write": "Read And Write",
+  "korockle.read-write.saveclip": "Save at Clipboard",
+  "korockle.read-write.savetxt": "Save at Text",
+  "korockle.read-write.savedat": "Save at Binary",
+  "korockle.read-write.writeclip": "Write from Clipboard",
+  "korockle.read-write.writefile": "Write from File",
   "battery.notworking": "This browser cannot use battery api. Please use chromium on desktop.",
   "battery.data.clear": "Clear Data",
   "battery.text": "Umm...Will I make more features?",
@@ -184,6 +190,7 @@
   "korockle.constcolor.WHITE": "White",
   "korockle.file.nokorockle": "The file is marked a not korockle file.",
   "korockle.file.globaled": "The file has already be global.",
+  "korockle.file.converter": "Web / Windows Standardize ",
   "korockle.file.converter.desc": "The korockle files has a different in Web and Windows Edition. (UPPER/lower of x,y)\nThis function generate a file that fixed the positioning bug.",
   "korockle.multi.title": "Korockles Sync-Control",
   "korockle.multi.add": "Add Korockle",
@@ -201,5 +208,7 @@
   "forme.lc.price-placeholder": "Price",
   "forme.lc.shop-placeholder": "Shop name",
   "forme.lc.additem": "Add item",
-  "forme.lc.isbuying": "Buying"
+  "forme.lc.isbuying": "Buying",
+  "korockle.multi.play-all": "Play Melody",
+  "korockle.multi.stop-all": "Stop Melody"
 }
