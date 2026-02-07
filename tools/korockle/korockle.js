@@ -226,6 +226,79 @@ function initCommand() {
   });
 }
 
+function initReadWrite() {
+  const melodyCheck = $("#rw-melody")[0];
+  const result = $("#rw-result");
+  function writeResult(str) {
+    result.text(str);
+    setTimeout(() => result.html(""), 3000);
+  }
+  function onerror() {
+    writeResult(getTranslate("words.error"));
+  }
+  /**
+   * @param {string} str
+   */
+  async function writeStr(str) {
+    if (!korockle) return;
+    let data = str.split(/[^0-9]+/).map((v) => parseInt(v));
+    if (data.length < 256) data.push(...new Array(256).fill(0));
+    if (data.length > 256) data = data.slice(0, 256);
+
+    if (melodyCheck.checked) await korockle.writeMelody(data);
+    else await korockle.writeProgram(data).catch(onerror);
+    writeResult(getTranslate("korockle.wrote"));
+  }
+  async function read() {
+    if (!korockle) return;
+    let bytes = [0];
+    if (melodyCheck.checked) bytes = await korockle.readMelody().catch(onerror);
+    else bytes = await korockle.readProgram().catch(onerror);
+    if (!bytes) return void onerror();
+    return bytes;
+  }
+  $("#rw-saveclip").on("click", async () => {
+    const data = await read();
+    if (!data) return;
+    navigator.clipboard.writeText(data.join());
+    writeResult(getTranslate("words.copied"));
+  });
+  $("#rw-savetxt").on("click", async () => {
+    const data = await read();
+    if (!data) return;
+    downloadText(data.join(), "korockle-program.txt");
+  });
+  $("#rw-savedat").on("click", async () => {
+    const data = await read();
+    if (!data) return;
+    downloadUrl(
+      `data:application/octet-stream;base64,${bytesToBase64(data)}`,
+      "korockle-program.dat",
+    );
+  });
+  $("#rw-writeclip").on("click", async () => {
+    const data = await navigator.clipboard.readText().catch(onerror);
+    console.log(data);
+    if (!data) return onerror();
+    await writeStr(data);
+  });
+  const inputFile = $("#rw-fileselector")[0];
+  $("#rw-writefile").on("click", () => {
+    inputFile.click();
+  });
+  onFileSelected(inputFile, async (text) => {
+    let numbersLength = text.split(/[^0-9]/).join("").length;
+    let noNumbersLength = text.split(/[0-9]/).join("").length;
+    if (numbersLength < noNumbersLength) {
+      // バイナリファイルであると判定
+      console.log(text);
+      text = stringToByte(text).join();
+      console.log(text);
+    }
+    await writeStr(text);
+  });
+}
+
 function initFileConverting() {
   $("#file-conv-btn").on("click", () => {
     $("#file-conv-inp")[0].click();
@@ -376,11 +449,12 @@ function initKorocklePlayer() {
 
 $(() => {
   check();
-  initInputing();
+  //initInputing();
   initSounds();
   initLEDs();
   initTimeAlerm();
   initCommand();
+  initReadWrite();
   initFileConverting();
   initKorocklePlayer();
   $("#connect").on("click", () => {

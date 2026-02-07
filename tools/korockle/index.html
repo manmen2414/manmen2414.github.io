@@ -59,7 +59,7 @@
     <div class="title">@korockle.title.alerm</div>
     <input type="time" id="alerm-time"><button id="alerm-set">@korockle.alerm.set</button>
     <div class="title">@korockle.command</div>
-    <select name="commandid-selector" id="commandid-selector">
+    <select name="commandid-selector" id="commanapdid-selector">
       <option value="0" selected>@korockle.commandid.select</option>
       <option value="101">@korockle.commandid.time-alerm</option>
       <option value="102">@korockle.commandid.write-program</option>
@@ -79,6 +79,23 @@
     <div style="padding: 2px;"></div>
     <input type="text" id="command-data" style="width: 100%;" placeholder="@korockle.command.data">
     <div id="command-answer"></div>
+    <div class="title">@korockle.title.read-write</div>
+    <div>
+      <input type="radio" name="rw-type" id="rw-melody" checked>
+      <label for="rw-melody">@korockle.melody</label>
+      <input type="radio" name="rw-type" id="rw-program">
+      <label for="rw-program">@korockle.program</label>
+    </div>
+    <div>
+      <button id="rw-saveclip">@korockle.read-write.saveclip</button>
+      <button id="rw-savetxt">@korockle.read-write.savetxt</button>
+      <!--button id="rw-savedat">@korockle.read-write.savedat</button-->
+      <button id="rw-writeclip">@korockle.read-write.writeclip</button>
+      <button id="rw-writefile">@korockle.read-write.writefile</button>
+      <input type="file" id="rw-fileselector" style="display: none;">
+    </div>
+    <div id="rw-result"></div>
+
   </div>
   <div id="content">
     <div class="title">@korockle.file.converter</div>

@@ -20,7 +20,7 @@ function _DEV() {
   if (param.includes("dev"))
     setParam(
       param.filter((v) => v !== "dev"),
-      true
+      true,
     );
   else setParam(["dev", ...param], true);
 }
@@ -305,7 +305,7 @@ function nicoVideoUrlToEmbed(url, isVideo = false) {
   if (!videoId) return null;
   return (isVideo ? EMBED_BASE_VIDEO : EMBED_BASE).replace(
     /%VIDEO_ID%/g,
-    videoId
+    videoId,
   );
 }
 /**
@@ -354,7 +354,7 @@ function changeLanguage() {
  */
 function bytesToBase64(bytes) {
   const binString = Array.from(bytes, (byte) =>
-    String.fromCodePoint(byte)
+    String.fromCodePoint(byte),
   ).join("");
   return btoa(binString);
 }
@@ -408,7 +408,7 @@ function downloadUrl(url, filename) {
 function downloadText(text, filename = "text") {
   downloadUrl(
     `data:text/plain;charset=utf-8;base64,` + bytesToBase64(stringToByte(text)),
-    filename
+    filename,
   );
 }
 
@@ -435,6 +435,7 @@ function onFileSelected(input, func) {
     const reader = new FileReader();
     reader.onload = () => {
       func(reader.result, file.name);
+      input.value = "";
     };
     reader.readAsText(file);
   });
@@ -532,12 +533,8 @@ $(async () => {
   await getVersion();
   logStartMessage();
   const page = window.mameeennPageSettings ?? {};
-  if(!page.noTopBar)
-    genTopBar();
-  if(!page.noRightBar)
-    genRightbar();
-  if(!page.noTheme)
-    setTheme();
-  if(!page.noTranslate)
-    translateParam();
+  if (!page.noTopBar) genTopBar();
+  if (!page.noRightBar) genRightbar();
+  if (!page.noTheme) setTheme();
+  if (!page.noTranslate) translateParam();
 });

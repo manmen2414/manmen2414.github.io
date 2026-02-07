@@ -1,5 +1,6 @@
 {
   "general.language": "English",
+  "words.copied": "Copied.",
   "words.programming": "Programming",
   "words.encode": "Encode",
   "words.decode": "Decode",
@@ -120,6 +121,8 @@
   "korockle.sound.melody.play": "Play Melody",
   "korockle.sound.melody.roop": "Roop Play Melody",
   "korockle.sound.melody.stop": "Stop Melody",
+  "korockle.melody": "Melody",
+  "korockle.program": "Program",
   "korockle.time.setnow": "Set now time",
   "korockle.time.setnow.wait": "Set now time with just 0 seconds",
   "korockle.time.setthis": "Set this time",
