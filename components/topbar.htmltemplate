@@ -82,7 +82,7 @@
         return 0;
       })();
       if (index === -1) index = 0;
-      const paramsRaw = "#" + getParam().join('&');
+      const paramsRaw = "?p=" + getParam().join(',');
       let params = paramsRaw.length === 1 ? "" : paramsRaw;
       const isGithubPages = location.host.includes(".github.io")
       urls.forEach((url, i) => {

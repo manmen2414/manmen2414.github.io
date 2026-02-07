@@ -313,17 +313,20 @@ function nicoVideoUrlToEmbed(url, isVideo = false) {
  * @returns {string[]}
  */
 function getParam() {
-  const hash = location.hash;
-  if (hash.length === 0) return [];
-  return hash.slice(1).split("&");
+  const hash = location.hash.slice(1).split("&");
+  const search = (new URL(location).searchParams.get("p") ?? "").split(",");
+  // 重複の削除
+  const set = new Set([...hash, ...search].filter((s) => !!s));
+  return Array.from(set);
 }
 /**
  * 配列からパラメータを適用する。
  * @param {string[]} arr
  */
 function setParam(arr, reload = false) {
-  location.hash = "#" + arr.join("&");
-  if (reload) location.reload();
+  location.hash = "";
+  location.search = "?p=" + arr.join(",");
+  // if (reload) location.reload();
 }
 /**
  * URLのパラメータから翻訳キーを取得する。
