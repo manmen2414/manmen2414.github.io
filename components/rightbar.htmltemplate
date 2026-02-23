@@ -5,7 +5,7 @@
       position: fixed;
       text-align: left;
       top: 20px;
-      right: -190px;
+      right: -192px;
       width: 255px;
       padding-bottom: 10px;
       border-radius: 20px 0 0 20px;
@@ -13,7 +13,7 @@
       transition: right 0.2s ease-in-out;
     }
 
-    #rightbar:hover {
+    #rightbar.hovering {
       right: 0px;
     }
 
@@ -82,12 +82,40 @@
       }
       const params = getParam()
       const isDev = params.includes("dev");
+      let rightBar = $("#rightbar");
       if (isDev) { $("#rightbar-exitdev").show() }
-      $("#rightbar-theme").on("click", () => changeTheme());
-      $("#rightbar-translate").on("click", () => changeLanguage());
-      $("#rightbar-top").on("click", () => BODY.scrollTop(0));
-      $("#rightbar-github").on("click", () => open("https://github.com/manmen2414/manmen2414.github.io", "_blank"))
-      $("#rightbar-exitdev").on("click", () => setParam(params.filter(v => v !== "dev"), true))
+      $("#rightbar-theme").on("pointerdown", (e) => {
+        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
+          changeTheme()
+      });
+      $("#rightbar-translate").on("pointerdown", (e) => {
+        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
+          changeLanguage()
+      });
+      $("#rightbar-top").on("pointerdown", (e) => {
+        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
+          BODY.scrollTop(0)
+      });
+      $("#rightbar-github").on("pointerdown", (e) => {
+        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
+          open("https://github.com/manmen2414/manmen2414.github.io", "_blank")
+      })
+      $("#rightbar-exitdev").on("pointerdown", (e) => {
+        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
+          setParam(params.filter(v => v !== "dev"), true)
+      })
+      setTimeout(() => {
+        let closeBarTimeout = null;
+        rightBar = $("#rightbar");
+        rightBar.on("mouseover", () => rightBar.addClass("hovering"))
+        rightBar.on("mouseleave", () => rightBar.removeClass("hovering"))
+        rightBar.on("pointerdown", (e) => {
+          if (e.pointerType !== "touch") return;
+          setTimeout(() => rightBar.addClass("hovering"), 10)
+          if (!!closeBarTimeout) clearTimeout(closeBarTimeout)
+          closeBarTimeout = setTimeout(() => rightBar.removeClass("hovering"), 2000)
+        })
+      }, 100)
     })()
   </script>
 </div>

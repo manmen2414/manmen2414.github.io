@@ -8,7 +8,7 @@
   color: #fff;
 }
 :where(body:not(.dark)) {
-  background-color: #ddd;
+  background-color: #fff;
 }
 
 :where(body.dark) {
@@ -16,9 +16,10 @@
 }
 
 body {
-  margin: 0px 20%;
+  --margin: 15%;
+  margin: 0px var(--margin);
   margin-bottom: 50px;
-  width: calc(60%);
+  width: calc(100% - var(--margin) * 2);
 }
 
 .title {
@@ -143,5 +144,9 @@ select {
       var(--bg) 15%,
       var(--bg) 100%
     );
+  }
+
+  body {
+    --margin: 5%;
   }
 }

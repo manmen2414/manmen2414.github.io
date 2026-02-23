@@ -498,17 +498,17 @@ function initMelodySlicer() {
   function display() {
     table.html("");
     const header = $("<tr></tr>")
-      .append($("<th></th>").text(getTranslate("words.part")))
+      .append($("<th></th>").text(""))
       .appendTo(table);
 
     if (!!melodiess[0])
       melodiess[0].forEach((_, i) => {
-        header.append(`<th>♪</th>`);
+        header.append(`<th>${i + 1}</th>`);
       });
 
     melodiess.forEach((partMelodies, partI) => {
       const koroLine = $("<tr></tr>")
-        .append($("<td></td>").text(partI + 1))
+        .append($("<td></td>").text(`Part${partI + 1}`))
         .appendTo(table);
 
       partMelodies.forEach((melody, melodyIndex) => {
