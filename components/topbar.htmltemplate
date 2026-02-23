@@ -16,12 +16,12 @@
     }
 
     body:not(.dark) #topbar {
-      background-color: #aaf;
+      background-color: rgb(188, 188, 255);
 
     }
 
     body.dark #topbar {
-      background-color: #bbf;
+      background-color: rgb(172, 172, 255);
     }
 
     #topbar-myname {

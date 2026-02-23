@@ -1,7 +1,11 @@
 const PJSKCSS = (chara, index) =>
   `#pjsk-charas>li:nth-child(${index + 1})>a::after{content:"→ ${chara}";}\n`;
-const LIGHT_CHARA_COLOR = ["#26658aff", "#4a4a7eff", "#794c66ff"];
-const DARK_CHARA_COLOR = ["#33aaee", "#8888cc", "#deabca"];
+const LIGHT_CHARA_COLOR = [
+  "rgb(33, 86, 117)",
+  "rgb(53, 53, 99)",
+  "rgb(95, 66, 83)",
+];
+const DARK_CHARA_COLOR = ["#33aaee", "#6c6caf", "#d482b3"];
 
 $(() => {
   const pjskCharas = $("#pjsk-charas");
