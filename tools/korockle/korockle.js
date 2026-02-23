@@ -1,4 +1,5 @@
 import * as kLib from "../koroLib/main/web.js";
+import { mdpFileToMelodyBuilder, melodyBuilderToMDP } from "./koroutil.js";
 const { Color } = kLib;
 
 /**
@@ -447,6 +448,223 @@ function initKorocklePlayer() {
   });
 }
 
+const noteLengthNumbered = [
+  1, //16分
+  2, //8分
+  3, //8.分
+  4, //4分
+  6, //4.分
+  8, //2分
+  12, //2.分
+  16, //1分
+];
+
+function initMelodySlicer() {
+  const melodySlicerBtn = $("#melody-slicer-btn");
+  const closeBtn = $("#melody-slicer-ui-close");
+  const uiWrapper = $("#melody-slicer-ui-wrapper");
+  const table = $("#melody-slicer-table");
+  const input = $("#melody-slicer-melody-input")[0];
+  const memoryLimitInput = $("#melody-slicer-max-memory");
+  /**@type {(kLib.MelodyBuilder?)[][]} */
+  const melodiess = [[null]];
+  melodySlicerBtn.on("click", () => {
+    display();
+    uiWrapper.css("display", "block");
+  });
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "Escape" && uiWrapper.css("display") === "block")
+      uiWrapper.css("display", "none");
+  });
+  closeBtn.on("click", () => {
+    uiWrapper.css("display", "none");
+  });
+  $("#melody-slicer-generate").on("click", async () => {
+    const generating = $("#melody-slicer-generating");
+    generating.text(getTranslate("words.generating"));
+    await waitNextFrame();
+    const zip = generateZip();
+    zip
+      .generateAsync({ type: "blob" })
+      .then(async (b) => {
+        generating.text(getTranslate("words.done"));
+        await waitNextFrame();
+        downloadUrl(URL.createObjectURL(b), "melodies.zip");
+      })
+      .catch((ex) => {
+        generating.text(getTranslate("words.error") + `\n${ex}`);
+      });
+  });
+  function display() {
+    table.html("");
+    const header = $("<tr></tr>")
+      .append($("<th></th>").text(getTranslate("words.part")))
+      .appendTo(table);
+
+    if (!!melodiess[0])
+      melodiess[0].forEach((_, i) => {
+        header.append(`<th>♪</th>`);
+      });
+
+    melodiess.forEach((partMelodies, partI) => {
+      const koroLine = $("<tr></tr>")
+        .append($("<td></td>").text(partI + 1))
+        .appendTo(table);
+
+      partMelodies.forEach((melody, melodyIndex) => {
+        $("<td></td>")
+          .append(
+            $(`<button>${!melody ? "✕" : "✓"}</button>`).on("click", () =>
+              actMelodyButton(partI, melodyIndex),
+            ),
+          )
+          .appendTo(koroLine);
+      });
+    });
+
+    $("<tr></tr>")
+      .append(
+        $("<th></th>").append(
+          $(`<button>+</button>`).on("click", () => addPart()),
+        ),
+      )
+      .appendTo(table);
+  }
+
+  /**
+   * @param {number} partI
+   * @param {number} melodyI
+   */
+  function actMelodyButton(partI, melodyI) {
+    const melody = melodiess[partI][melodyI];
+    console.log(melody);
+    if (!melody) {
+      onFileSelected(input, (text) => {
+        const newBuilder = mdpFileToMelodyBuilder(text);
+        const firstBuilder = melodiess[partI][0];
+        if (!!firstBuilder && firstBuilder.bpmIndex !== newBuilder.bpmIndex) {
+          alert(getTranslate("korockle.melody-slicer.bpm-incorrect"));
+          return;
+        }
+        melodiess[partI][melodyI] = newBuilder;
+        if (melodiess[partI].length === melodyI + 1) {
+          addMelodyForParts();
+        }
+        display();
+      });
+      input.click();
+    } else {
+      melodiess[partI][melodyI] = null;
+      display();
+    }
+  }
+  function addPart() {
+    const leng = melodiess[0].length;
+    melodiess.push(new Array(leng).fill(null));
+    display();
+  }
+  function addMelodyForParts() {
+    melodiess.forEach((p) => p.push(null));
+    display();
+  }
+  function generate() {
+    /**@type {kLib.MelodyBuilder[]} */
+    const parts = [];
+    /**@type {number[][]} */
+    const noteEndTimingss = [];
+    // メロディを結合し、ノーツごとの終了タイミングをまとめる
+    for (const melodysIncludeNull of melodiess) {
+      const melodies = melodysIncludeNull.filter((m) => !!m);
+      const firstBuilder = melodies[0];
+      if (!firstBuilder) break;
+      const baseMelody = new kLib.MelodyBuilder(
+        firstBuilder.bpmIndex,
+        firstBuilder.isLEDLinked,
+      );
+      /**@type {number[]} */
+      const noteEndTimings = [];
+      let nowTiming = 0;
+      for (const melody of melodies) {
+        for (const note of melody.notes) {
+          baseMelody.addNote(note);
+          nowTiming += noteLengthNumbered[note.length];
+          noteEndTimings.push(nowTiming);
+        }
+      }
+      parts.push(baseMelody);
+      noteEndTimingss.push(noteEndTimings);
+    }
+
+    // 共通しているノーツ終了タイミングを探し出す
+    const sharedTimings = noteEndTimingss.reduce((p, c) =>
+      p.filter((v) => c.includes(v)),
+    );
+
+    let memoryLimit = parseInt(memoryLimitInput.val());
+    if (isNaN(memoryLimit)) memoryLimit = 254;
+
+    /**@type {number[]} */
+    const splitTimings = [];
+    let nowEndTiming = 0;
+    let startTiming = 0;
+    // コロックルに書き込める最大のメモリサイズで区切れるタイミングを探す
+    for (const timing of sharedTimings) {
+      if (nowEndTiming > timing) continue;
+      for (const noteEndTimings of noteEndTimingss) {
+        // コロックルのメモリサイズはノーツ数+1で計算可能
+        let useMemorys = 1;
+        noteEndTimings.forEach((n) => {
+          if (startTiming < n && n <= timing) useMemorys++;
+        });
+        if (useMemorys > memoryLimit) {
+          // nowEndTimingがメモリ内に収まる最大の区切り位置
+          splitTimings.push(nowEndTiming);
+          startTiming = nowEndTiming + 1;
+        }
+        nowEndTiming = timing;
+      }
+    }
+    // 一番後ろをとれるように追加
+    splitTimings.push(Infinity);
+    /**@type {kLib.MelodyBuilder[][]} */
+    const resultMelodiess = [];
+    // 区切る
+    parts.forEach((part, partI) => {
+      let lastTiming = 0;
+      const noteEndTimings = noteEndTimingss[partI];
+      /**@type {kLib.MelodyBuilder[]} */
+      const melodies = [];
+      for (const timing of splitTimings) {
+        const melody = new kLib.MelodyBuilder(part.bpmIndex);
+        melody.notes = part.notes.filter((_, ni) => {
+          const endTiming = noteEndTimings[ni];
+          return lastTiming < endTiming && endTiming <= timing;
+        });
+        melodies.push(melody);
+        lastTiming = timing;
+      }
+      resultMelodiess.push(melodies);
+    });
+    return resultMelodiess;
+  }
+  function generateZip() {
+    const result = generate();
+    console.log(result);
+    // return;
+    /**@type {ReturnType<typeof import("jszip")>} */
+    const zip = new JSZip();
+    result.forEach((melodys, parti) => {
+      const folder = zip.folder(`Part${parti + 1}`);
+      if (!folder) throw new Error(`Can't create folder "Part${parti + 1}"`);
+      melodys.forEach((melody, melodyi) => {
+        const mdp = melodyBuilderToMDP(melody);
+        folder.file(`${melodyi + 1}.mdp`, mdp);
+      });
+    });
+    return zip;
+  }
+}
+
 $(() => {
   check();
   //initInputing();
@@ -457,6 +675,7 @@ $(() => {
   initReadWrite();
   initFileConverting();
   initKorocklePlayer();
+  initMelodySlicer();
   $("#connect").on("click", () => {
     connect();
   });

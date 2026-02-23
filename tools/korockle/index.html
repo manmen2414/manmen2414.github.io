@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/main.css">
   <link rel="stylesheet" href="./korockle.css">
   <script src="https://colxi.info/midi-parser-js/src/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/Stuk/jszip/dist/jszip.min.js"></script>
 
   <script src="/base.js"></script>
   <script src="./korockle.js" type="module"></script>
@@ -98,19 +99,36 @@
 
   </div>
   <div id="content">
-    <div class="title">@korockle.file.converter</div>
+    <div class="title-smaller">@korockle.file.converter</div>
     <div>@korockle.file.converter.desc</div>
     <button id="file-conv-btn">@words.file-input</button>
     <input type="file" id="file-conv-inp" accept=".fcp,.blp,.nwp,.nbp" style="display: none;">
-    <div class="title">@korockle.file.player</div>
+    <div class="title-smaller">@korockle.file.player</div>
     <div>@korockle.file.player.desc</div>
     <div id="file-player-info"></div>
     <button id="file-player-btn">@words.file-input</button>
     <input type="file" id="file-player-inp" accept=".mdp" style="display: none;">
 
-    <div class="title">@korockle.multi.title</div>
+    <div class="title-smaller">@korockle.multi.title</div>
     <a href="./multi">@korockle.multi.title</a>
+
+    <div class="title-smaller">@korockle.melody-slicer.title</div>
+    <button id="melody-slicer-btn">@words.show</button>
   </div>
+
+  <div id="melody-slicer-ui-wrapper" class="modal-wrapper" style="--bg: #dfd;--color: #000;">
+    <div id="melody-slicer-ui" class="modal-ui">
+      <div class="title-smaller">@korockle.melody-slicer.title</div>
+      <table id="melody-slicer-table"></table>
+      <span>@korockle.melodyslicer.max-memory</span>
+      <input id="melody-slicer-max-memory" max="254" value="254" min="2" step="1" type="number"></input>
+      <button id="melody-slicer-generate">@words.generate</button>
+      <div id="melody-slicer-generating"></div>
+    </div>
+    <button id="melody-slicer-ui-close" title="Close(ESC)" class="modal-close">✕</button>
+    <input type="file" id="melody-slicer-melody-input" accept=".mdp" style="display: none" />
+  </div>
+
   <a id="__________________" href="./korohub/korohub.html">
     <div id="______">wElCoMe To thE dArk
       siDe</div>

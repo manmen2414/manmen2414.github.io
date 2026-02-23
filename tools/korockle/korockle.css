@@ -54,3 +54,31 @@
   padding: 1px 3px;
   margin-bottom: 5px;
 }
+
+#melody-slicer-ui table {
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+#melody-slicer-ui th,
+#melody-slicer-ui td {
+  border: 1px solid var(--color);
+  white-space: nowrap;
+}
+
+#melody-slicer-number {
+  width: 2em;
+  margin-right: 5px;
+}
+
+#melody-slicer-ui table button {
+  background: none;
+  border: none;
+}
+
+#melody-slicer-ui tr > th:last-child > button {
+  width: 100%;
+}
+
+#melody-slicer-max-memory {
+  width: 3em;
+}
