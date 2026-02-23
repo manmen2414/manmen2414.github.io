@@ -225,6 +225,8 @@ async function translate(lang, targetElements = null) {
     ...$("option"),
     ...$("label"),
     ...$("p"),
+    ...$("th"),
+    ...$("td"),
   ];
   const translates = !targetElements ? defaultTarget : targetElements;
   function translateOne(k) {
@@ -433,7 +435,7 @@ function strReplaceObject(text, replaceObject) {
  * @param {(text:string,name:string)=>void} func
  */
 function onFileSelected(input, func) {
-  input.addEventListener("change", function () {
+  input.onchange = function () {
     const file = this.files[0];
     const reader = new FileReader();
     reader.onload = () => {
@@ -441,7 +443,7 @@ function onFileSelected(input, func) {
       input.value = "";
     };
     reader.readAsText(file);
-  });
+  };
 }
 
 /**
@@ -530,6 +532,11 @@ function logStartMessage() {
     styleDef + "!B:#944;",
   ]);
 }
+/**
+ * 描画用に次のフレームを待つ非同期。
+ */
+const waitNextFrame = () =>
+  new Promise((r) => requestAnimationFrame(() => r()));
 
 $(async () => {
   BODY = $("body");
