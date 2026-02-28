@@ -200,8 +200,25 @@ function initMelody() {
   });
 }
 
+function initTime() {
+  $("#time-setnow").on("click", () => {
+    korockles.forEach((k) => k.setTimeNow());
+  });
+  $("#time-setnow-wait").on("click", (ev) => {
+    korockles.forEach((k) => k.setTimeNow(true));
+  });
+  $("#time-setthis").on("click", () => {
+    let time = $("#time-time").val();
+    if (time.length === 0) time = "00:00";
+    /**@type {number[]} */
+    const times = time.split(":").map((v) => parseInt(v));
+    korockles.forEach((k) => k.setTime(...times));
+  });
+}
+
 $(() => {
   initMelody();
+  initTime();
   melodySequenceWriter.display();
   $("#connect").on("click", () => {
     addKorockle();
