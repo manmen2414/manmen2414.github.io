@@ -1,3 +1,19 @@
+const PRICE_LIST = {
+  // 暫定的 https://www.curseforge.com/minecraft/mc-mods/numismatics 対応
+  sp: ":n_sp:",
+  be: ":n_be:",
+  sr: ":n_sr:",
+  co: ":n_co:",
+  cr: ":n_cr:",
+  su: ":b_su:",
+  c: ":lc_c:",
+  i: ":lc_i:",
+  g: ":lc_g:",
+  e: ":lc_e:",
+  d: ":lc_d:",
+  n: ":lc_n:",
+  E: ":emerald:",
+};
 /**
  * @param {string[][]} csv
  */
@@ -17,6 +33,8 @@ $(() => {
     additem: "",
     buying: "",
   };
+  const useables = $("#useables");
+  useables.text(`Coins: ${Object.keys(PRICE_LIST).join(", ")}`);
   /**@param {JQuery<HTMLDivElement>} shopDiv */
   function addItem(shopDiv) {
     const ul = shopDiv.children("ul");
@@ -70,7 +88,7 @@ $(() => {
           item.querySelector(".isbuying").checked.toString(),
           item.querySelector(".amount-text").value,
           item.querySelector(".item-text").value,
-          item.querySelector(".price-text").value
+          item.querySelector(".price-text").value,
         );
       });
       return arr;
@@ -114,15 +132,6 @@ $(() => {
   }
   function format() {
     let text = "";
-    const priceReps = {
-      c: ":lc_c:",
-      i: ":lc_i:",
-      g: ":lc_g:",
-      e: ":lc_e:",
-      d: ":lc_d:",
-      n: ":lc_n:",
-      E: ":emerald:",
-    };
     [...genUI.children()].forEach((shop) => {
       text += `## ${shop.querySelector(".shop-title").value}\n`;
       shop
@@ -135,7 +144,7 @@ $(() => {
           text += ` ${item.querySelector(".item-text").value}] `;
           text += strReplaceObject(
             item.querySelector(".price-text").value,
-            priceReps
+            PRICE_LIST,
           );
           text += `\n`;
         });

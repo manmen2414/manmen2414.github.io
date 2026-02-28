@@ -423,10 +423,17 @@ function downloadText(text, filename = "text") {
  * @param {Object} replaceObject
  */
 function strReplaceObject(text, replaceObject) {
-  Object.entries(replaceObject).forEach((kv) => {
-    text = text.replaceAll(kv[0], kv[1]);
+  const reg = new RegExp(
+    Object.keys(replaceObject)
+      .map((s) => RegExp.escape(s))
+      .join("|"),
+    "g",
+  );
+  return text.replace(reg, (s) => {
+    const at = replaceObject[s];
+    if (!at) throw new Error(`Found unregisted literal "${s}" on replace`);
+    return at;
   });
-  return text;
 }
 
 /**
