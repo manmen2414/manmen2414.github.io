@@ -1,11 +1,11 @@
 const PRICE_LIST = {
   // 暫定的 https://www.curseforge.com/minecraft/mc-mods/numismatics 対応
   sp: ":n_sp:",
-  be: ":n_be:",
-  sr: ":n_sr:",
-  co: ":n_co:",
+  bvl: ":n_bvl:",
+  spr: ":n_spr:",
+  cog: ":n_cog:",
   cr: ":n_cr:",
-  su: ":b_su:",
+  sun: ":b_sun:",
   c: ":lc_c:",
   i: ":lc_i:",
   g: ":lc_g:",
