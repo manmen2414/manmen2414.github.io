@@ -5,7 +5,7 @@ const PRICE_LIST = {
   spr: ":n_spr:",
   cog: ":n_cog:",
   cr: ":n_cr:",
-  sun: ":b_sun:",
+  sun: ":n_sun:",
   c: ":lc_c:",
   i: ":lc_i:",
   g: ":lc_g:",
