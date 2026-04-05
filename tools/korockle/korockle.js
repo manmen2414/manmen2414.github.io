@@ -1,5 +1,4 @@
 import * as kLib from "../koroLib/main/web.js";
-import { mdpFileToMelodyBuilder, melodyBuilderToMDP } from "./koroutil.js";
 const { Color } = kLib;
 
 /**
@@ -466,7 +465,7 @@ function initMelodySlicer() {
   const table = $("#melody-slicer-table");
   const input = $("#melody-slicer-melody-input")[0];
   const memoryLimitInput = $("#melody-slicer-max-memory");
-  /**@type {(kLib.MelodyBuilder?)[][]} */
+  /**@type {(kLib.Melody?)[][]} */
   const melodiess = [[null]];
   melodySlicerBtn.on("click", () => {
     display();
@@ -539,14 +538,14 @@ function initMelodySlicer() {
     const melody = melodiess[partI][melodyI];
     console.log(melody);
     if (!melody) {
-      onFileSelected(input, (text) => {
-        const newBuilder = mdpFileToMelodyBuilder(text);
-        const firstBuilder = melodiess[partI][0];
-        if (!!firstBuilder && firstBuilder.bpmIndex !== newBuilder.bpmIndex) {
+      onFileSelected(input, async (text) => {
+        const newMelody = await kLib.MDP.readMDP(text);
+        const firstMelody = melodiess[partI][0];
+        if (!!firstMelody && firstMelody.bpmIndex !== newMelody.bpmIndex) {
           alert(getTranslate("korockle.melody-slicer.bpm-incorrect"));
           return;
         }
-        melodiess[partI][melodyI] = newBuilder;
+        melodiess[partI][melodyI] = newMelody;
         if (melodiess[partI].length === melodyI + 1) {
           addMelodyForParts();
         }
@@ -568,18 +567,18 @@ function initMelodySlicer() {
     display();
   }
   function generate() {
-    /**@type {kLib.MelodyBuilder[]} */
+    /**@type {kLib.Melody[]} */
     const parts = [];
     /**@type {number[][]} */
     const noteEndTimingss = [];
     // メロディを結合し、ノーツごとの終了タイミングをまとめる
     for (const melodysIncludeNull of melodiess) {
       const melodies = melodysIncludeNull.filter((m) => !!m);
-      const firstBuilder = melodies[0];
-      if (!firstBuilder) break;
-      const baseMelody = new kLib.MelodyBuilder(
-        firstBuilder.bpmIndex,
-        firstBuilder.isLEDLinked,
+      const firstMelody = melodies[0];
+      if (!firstMelody) break;
+      const baseMelody = new kLib.Melody(
+        firstMelody.bpmIndex,
+        firstMelody.isLEDLinked,
       );
       /**@type {number[]} */
       const noteEndTimings = [];
@@ -626,16 +625,16 @@ function initMelodySlicer() {
     }
     // 一番後ろをとれるように追加
     splitTimings.push(Infinity);
-    /**@type {kLib.MelodyBuilder[][]} */
+    /**@type {kLib.Melody[][]} */
     const resultMelodiess = [];
     // 区切る
     parts.forEach((part, partI) => {
       let lastTiming = 0;
       const noteEndTimings = noteEndTimingss[partI];
-      /**@type {kLib.MelodyBuilder[]} */
+      /**@type {kLib.Melody[]} */
       const melodies = [];
       for (const timing of splitTimings) {
-        const melody = new kLib.MelodyBuilder(part.bpmIndex);
+        const melody = new kLib.Melody(part.bpmIndex);
         melody.notes = part.notes.filter((_, ni) => {
           const endTiming = noteEndTimings[ni];
           return lastTiming < endTiming && endTiming <= timing;
@@ -657,7 +656,11 @@ function initMelodySlicer() {
       const folder = zip.folder(`Part${parti + 1}`);
       if (!folder) throw new Error(`Can't create folder "Part${parti + 1}"`);
       melodys.forEach((melody, melodyi) => {
-        const mdp = melodyBuilderToMDP(melody);
+        const mdp = kLib.MDP.melodyToV4_3MDP(melody, {
+          comment:
+            `Part: ${parti + 1}, Index: ${melodyi + 1}\n` +
+            `Sliced with Melody Slicer by Mameeenn https://manmen2414.github.io/tools/korockle`,
+        });
         folder.file(`${melodyi + 1}.mdp`, mdp);
       });
     });

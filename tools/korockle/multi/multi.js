@@ -163,9 +163,9 @@ const melodySequenceWriter = {
     const koroMelodies = this.melodies[koroId];
     if (!koroMelodies[meloIndex]) {
       const input = $("#sequence-writer-melody-input")[0];
-      onFileSelected(input, (text) => {
-        const builder = mdpFileToMelodyBuilder(text);
-        const bytes = builder.build();
+      onFileSelected(input, async (text) => {
+        const melody = await kLib.MDP.readMDP(text);
+        const bytes = melody.build();
         koroMelodies[meloIndex] = bytes;
         this.display();
       });
