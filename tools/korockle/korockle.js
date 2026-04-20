@@ -559,6 +559,9 @@ function initMelodySlicer() {
         generating.text(getTranslate("words.error") + `\n${ex}`);
       });
   });
+  $("#melody-slicer-play").on("click", () => {
+    play();
+  });
   function display() {
     table.html("");
     const header = $("<tr></tr>")
@@ -730,6 +733,29 @@ function initMelodySlicer() {
       });
     });
     return zip;
+  }
+
+  async function play() {
+    const joinedMelodies = melodiess
+      .map((melodies) =>
+        melodies
+          // nullを絞る
+          .filter((m) => !!m)
+          // 1つのメロディーに結合させる
+          .reduce(
+            (joinAt, m) => {
+              joinAt.notes.push(...m.notes);
+              return joinAt;
+            },
+            // 最初のメロディーのBPMに揃える
+            new kLib.Melody(melodies.find((m) => !!m).bpmIndex),
+          ),
+      )
+      .filter((m) => m.notes.length !== 0);
+    const players = await Promise.all(
+      joinedMelodies.map((m) => playKorockleMDPFile(m)),
+    );
+    players.forEach((p) => p.play());
   }
 }
 
