@@ -495,7 +495,7 @@ function getNoteNameLocalizer() {
   return (note) => {
     /**@type {string} */
     const text = nameTable[note.scale];
-    if (!text) return "Note not listed";
+    if (!text) return "";
     return text;
   };
 }
