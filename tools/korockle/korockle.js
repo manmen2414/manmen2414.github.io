@@ -340,29 +340,41 @@ function initFileConverting() {
 function initKorocklePlayer() {
   const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
   const audioCtx = new AudioContext();
+  /**@type {[freq:number,reduceDecibel:number][]} */
+  const freqs = [
+    [1049, 0],
+    [2093, -30.5],
+    [3152, -2.9],
+    [4192, -42.5],
+    [5237, -5.75],
+    [6291, -37.7],
+    [7334, -28.1],
+    [8376, -56.5],
+    [9179, -47.9],
+  ];
+
+  /**@param {number} dB */
+  const relativedB2Percentage = (dB) => 10 ** (dB / 20);
+
+  const baseVolume = 0.5;
   function call(addFreq, sec) {
-    const mainGain = audioCtx.createGain();
-    mainGain.gain.value = 0.15;
-    mainGain.connect(audioCtx.destination);
-    const subGain = audioCtx.createGain();
-    subGain.gain.value = 0.05;
-    subGain.connect(audioCtx.destination);
-
     const mainFreq = [1049, 2090, 3147, 5283];
-    const subFreq = [4160, 6128, 9146];
 
-    mainFreq.forEach((freq, i) => {
+    freqs.forEach(([freq, decibel], i) => {
       const osc = audioCtx.createOscillator();
       osc.type = "sine";
       osc.frequency.setValueAtTime(
         freq + addFreq * (i + 1),
         audioCtx.currentTime,
       );
+      const gain = audioCtx.createGain();
+      gain.gain.value =
+        (baseVolume * relativedB2Percentage(decibel)) / freqs.length;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
 
-      if (i < 2) osc.connect(mainGain);
-      else osc.connect(subGain);
       osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + (sec - 0.05));
+      osc.stop(audioCtx.currentTime + (sec - 0.06));
     });
     return wait(sec);
   }
