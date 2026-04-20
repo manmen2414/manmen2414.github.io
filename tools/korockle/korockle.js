@@ -337,6 +337,116 @@ function initFileConverting() {
   });
 }
 
+/**
+ * @param {kLib.Melody} melody
+ * @param {number} startOffsetMillSecond
+ */
+async function playKorockleMDPFile(melody, startOffsetMillSecond = 0) {
+  const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
+  if (startOffsetMillSecond > 0) await wait(startOffsetMillSecond);
+  const audioCtx = new AudioContext();
+  /**@type {[freq:number,reduceDecibel:number][]} */
+  const freqs = [
+    [1049, 0],
+    [2093, -30.5],
+    [3152, -2.9],
+    [4192, -42.5],
+    [5237, -5.75],
+    [6291, -37.7],
+    [7334, -28.1],
+    [8376, -56.5],
+    [9179, -47.9],
+  ];
+
+  /**@param {number} dB */
+  const relativedB2Percentage = (dB) => 10 ** (dB / 20);
+
+  const baseVolume = 0.5;
+  function call(addFreq, sec) {
+    const mainFreq = [1049, 2090, 3147, 5283];
+
+    freqs.forEach(([freq, decibel], i) => {
+      const osc = audioCtx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(
+        freq + addFreq * (i + 1),
+        audioCtx.currentTime,
+      );
+      const gain = audioCtx.createGain();
+      gain.gain.value =
+        (baseVolume * relativedB2Percentage(decibel)) / freqs.length;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + (sec - 0.06));
+    });
+    return wait(sec);
+  }
+  const callList = [
+    ,
+    ,
+    -306,
+    -262.009,
+    -215.4,
+    -166,
+    -113.7,
+    -58.2,
+    0,
+    62.7,
+    128.6,
+    198.5,
+    272.51,
+    350.913,
+    434,
+    521.982,
+    615.219,
+    714,
+    818.655,
+    929.5,
+    1044,
+    1171.5,
+    1303.3,
+    1443.016,
+    1591.02,
+    1747.826,
+    1913.955,
+    2089.963,
+    2276.438,
+    2474,
+    2683.31,
+    2905.066,
+  ];
+  let stopPlay = () => {};
+  stopPlay();
+  const TEMPOS = [60, 90, 120, 150, 180];
+  const tempo = TEMPOS[parseInt(xml.querySelector("tempoIndex").innerHTML)];
+  const beatsecond = 60 / tempo;
+  const times = [
+    beatsecond / 4,
+    beatsecond / 2,
+    beatsecond / 1.5,
+    beatsecond,
+    beatsecond * 1.5,
+    beatsecond * 2,
+    beatsecond * 3,
+    beatsecond * 4,
+  ];
+  let playing = true;
+  stopPlay = () => {
+    playing = false;
+  };
+  (async () => {
+    for (const n of melody.notes) {
+      if (!playing) return;
+      const add = callList[n.scale];
+      const time = times[n.length];
+      if (add === undefined) await wait(time);
+      else await call(add, time);
+    }
+  })();
+}
+
 function initKorocklePlayer() {
   const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
   const audioCtx = new AudioContext();
