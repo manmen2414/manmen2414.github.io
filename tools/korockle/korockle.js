@@ -336,7 +336,6 @@ function initFileConverting() {
     }
   });
 }
-
 /**
  * @param {kLib.Melody} melody
  */
@@ -377,7 +376,7 @@ async function playKorockleMDPFile(melody) {
       gain.connect(audioCtx.destination);
 
       osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + (sec - 0.06));
+      osc.stop(audioCtx.currentTime + (sec - 0.05));
     });
     return wait(sec);
   }
@@ -457,18 +456,26 @@ async function playKorockleMDPFile(melody) {
       startPlay();
     },
   };
+  let justTime = 0;
   /**
    * @param {number} i
    */
   async function callNote(i) {
     const note = melody.notes[i];
     const add = callList[note.scale];
-    const time = times[note.length];
+    const originalTime = times[note.length];
+    // 本来の時間とずれてたら修正する
+    const offset = justTime - audioCtx.currentTime;
+    justTime += originalTime;
+    const offsettedTime = originalTime + offset;
     obj.oncall(note, i, melody);
-    if (add === undefined) await wait(time);
-    else await call(add, time);
+    if (add === undefined) await wait(offsettedTime);
+    else await call(add, offsettedTime);
+    // console.log(justTime - audioCtx.currentTime);
+    // console.warn(melody.notes.length, audioCtx.currentTime, justTime);
   }
   async function startPlay() {
+    console.log(times);
     playing = true;
     for (; noteIndex < melody.notes.length; noteIndex++) {
       if (!playing) break;
@@ -497,18 +504,22 @@ function initKorocklePlayer() {
     $("#file-player-inp")[0].click();
   });
   const info = $("#file-player-info");
+  /**@type {{stop:()=>void}?} */
+  let oldPlayer = null;
   onFileSelected($("#file-player-inp")[0], async (text, name) => {
+    if (!!oldPlayer) oldPlayer.stop();
     info.text(`${name} Loading...`);
     const melody = await kLib.MDP.readMDP(text);
-    const instance = await playKorockleMDPFile(melody);
+    const player = await playKorockleMDPFile(melody);
     const noteNameLocalizer = getNoteNameLocalizer();
-    instance.oncall = (note, index, melody) => {
+    player.oncall = (note, index, melody) => {
       const noteinfo = `"${name}" BPM: ${melody.bpm}`;
       const songinfo = ` ${index + 1}/${melody.notes.length} ${noteNameLocalizer(note)}`;
 
       info.text(`${noteinfo} | ${songinfo}`);
     };
-    instance.play();
+    oldPlayer = player;
+    player.play();
   });
 }
 
