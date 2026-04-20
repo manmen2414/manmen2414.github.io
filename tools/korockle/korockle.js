@@ -339,11 +339,9 @@ function initFileConverting() {
 
 /**
  * @param {kLib.Melody} melody
- * @param {number} startOffsetMillSecond
  */
-async function playKorockleMDPFile(melody, startOffsetMillSecond = 0) {
+async function playKorockleMDPFile(melody) {
   const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
-  if (startOffsetMillSecond > 0) await wait(startOffsetMillSecond);
   const audioCtx = new AudioContext();
   /**@type {[freq:number,reduceDecibel:number][]} */
   const freqs = [
@@ -419,8 +417,7 @@ async function playKorockleMDPFile(melody, startOffsetMillSecond = 0) {
   ];
   let stopPlay = () => {};
   stopPlay();
-  const TEMPOS = [60, 90, 120, 150, 180];
-  const tempo = TEMPOS[parseInt(xml.querySelector("tempoIndex").innerHTML)];
+  const tempo = melody.bpm;
   const beatsecond = 60 / tempo;
   const times = [
     beatsecond / 4,
@@ -432,141 +429,86 @@ async function playKorockleMDPFile(melody, startOffsetMillSecond = 0) {
     beatsecond * 3,
     beatsecond * 4,
   ];
-  let playing = true;
-  stopPlay = () => {
-    playing = false;
+  let playing = false;
+  let noteIndex = 0;
+
+  const obj = {
+    /**
+     * @param {kLib.Note} note
+     * @param {number} index
+     * @param {kLib.Melody} melody
+     */
+    oncall: (note, index, melody) => {},
+    /**@readonly */
+    stop: () => {
+      playing = false;
+      noteIndex = 0;
+    },
+    /**@readonly */
+    pause: () => {
+      playing = false;
+    },
+    /**@readonly */
+    resume: () => {
+      startPlay();
+    },
+    /**@readonly */
+    play: () => {
+      startPlay();
+    },
   };
-  (async () => {
-    for (const n of melody.notes) {
-      if (!playing) return;
-      const add = callList[n.scale];
-      const time = times[n.length];
-      if (add === undefined) await wait(time);
-      else await call(add, time);
+  /**
+   * @param {number} i
+   */
+  async function callNote(i) {
+    const note = melody.notes[i];
+    const add = callList[note.scale];
+    const time = times[note.length];
+    obj.oncall(note, i, melody);
+    if (add === undefined) await wait(time);
+    else await call(add, time);
+  }
+  async function startPlay() {
+    playing = true;
+    for (; noteIndex < melody.notes.length; noteIndex++) {
+      if (!playing) break;
+      await callNote(noteIndex);
     }
-  })();
+  }
+  return obj;
+}
+
+function getNoteNameLocalizer() {
+  const nameTable = [];
+  for (let i = 1; i < 32; i++) {
+    nameTable[i] = getTranslate(`korockle.notes.${i}`);
+  }
+  /**@param {kLib.Note} note */
+  return (note) => {
+    /**@type {string} */
+    const text = nameTable[note.scale];
+    if (!text) return "Note not listed";
+    return text;
+  };
 }
 
 function initKorocklePlayer() {
-  const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
-  const audioCtx = new AudioContext();
-  /**@type {[freq:number,reduceDecibel:number][]} */
-  const freqs = [
-    [1049, 0],
-    [2093, -30.5],
-    [3152, -2.9],
-    [4192, -42.5],
-    [5237, -5.75],
-    [6291, -37.7],
-    [7334, -28.1],
-    [8376, -56.5],
-    [9179, -47.9],
-  ];
-
-  /**@param {number} dB */
-  const relativedB2Percentage = (dB) => 10 ** (dB / 20);
-
-  const baseVolume = 0.5;
-  function call(addFreq, sec) {
-    const mainFreq = [1049, 2090, 3147, 5283];
-
-    freqs.forEach(([freq, decibel], i) => {
-      const osc = audioCtx.createOscillator();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(
-        freq + addFreq * (i + 1),
-        audioCtx.currentTime,
-      );
-      const gain = audioCtx.createGain();
-      gain.gain.value =
-        (baseVolume * relativedB2Percentage(decibel)) / freqs.length;
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + (sec - 0.06));
-    });
-    return wait(sec);
-  }
-  const callList = {
-    LOW_FA_SHARP: -306,
-    LOW_SO: -262.009,
-    LOW_SO_SHARP: -215.4,
-    LOW_RA: -166,
-    LOW_RA_SHARP: -113.7,
-    LOW_SI: -58.2,
-    DO: 0,
-    DO_SHARP: 62.7,
-    RE: 128.6,
-    RE_SHARP: 198.5,
-    MI: 272.51,
-    FA: 350.913,
-    FA_SHARP: 434,
-    SO: 521.982,
-    SO_SHARP: 615.219,
-    RA: 714,
-    RA_SHARP: 818.655,
-    SI: 929.5,
-    HIGH_DO: 1044,
-    HIGH_DO_SHARP: 1171.5,
-    HIGH_RE: 1303.3,
-    HIGH_RE_SHARP: 1443.016,
-    HIGH_MI: 1591.02,
-    HIGH_FA: 1747.826,
-    HIGH_FA_SHARP: 1913.955,
-    HIGH_SO: 2089.963,
-    HIGH_SO_SHARP: 2276.438,
-    HIGH_RA: 2474,
-    HIGH_RA_SHARP: 2683.31,
-    HIGH_SI: 2905.066,
-  };
   $("#file-player-btn").on("click", () => {
     $("#file-player-inp")[0].click();
   });
-  let stopPlay = () => {};
   const info = $("#file-player-info");
-  onFileSelected($("#file-player-inp")[0], (text, name) => {
-    stopPlay();
+  onFileSelected($("#file-player-inp")[0], async (text, name) => {
     info.text(`${name} Loading...`);
-    const TEMPOS = [60, 90, 120, 150, 180];
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(text, "text/xml");
-    if (!xml.querySelector("MelodyModule")) {
-      alert(getTranslate("@korockle.file.nokorockle"));
-      info.text(``);
-      return;
-    }
-    const tempo = TEMPOS[parseInt(xml.querySelector("tempoIndex").innerHTML)];
-    const beatsecond = 60 / tempo;
-    const times = {
-      SIXTEEN: beatsecond / 4,
-      EIGHT: beatsecond / 2,
-      EIGHT_DOT: beatsecond / 1.5,
-      FOUR: beatsecond,
-      FOUR_DOT: beatsecond * 1.5,
-      TWO: beatsecond * 2,
-      TWO_DOT: beatsecond * 3,
-      ONE: beatsecond * 4,
+    const melody = await kLib.MDP.readMDP(text);
+    const instance = await playKorockleMDPFile(melody);
+    const noteNameLocalizer = getNoteNameLocalizer();
+    instance.oncall = (note, index, melody) => {
+      const noteinfo = `"${name}" BPM: ${melody.bpm}`;
+      const songinfo = ` ${index + 1}/${melody.notes.length} ${noteNameLocalizer(note)}`;
+
+      info.text(`${noteinfo} | ${songinfo}`);
     };
-    const keys = xml.querySelectorAll("Key");
-    const iterator = keys.entries();
-    let playing = true;
-    stopPlay = () => {
-      playing = false;
-    };
-    info.text(`${name} 0/${keys.length} | BPM: ${tempo}`);
-    (async () => {
-      for (const [i, el] of iterator) {
-        if (!playing) return;
-        info.text(`${name} ${i + 1}/${keys.length} | BPM: ${tempo}`);
-        const rank = el.querySelector("Rank").innerHTML;
-        const leng = el.querySelector("Length").innerHTML;
-        const add = callList[rank];
-        const time = times[leng];
-        if (add === undefined) await wait(time);
-        else await call(add, time);
-      }
-    })();
+    instance.play();
   });
 }
 
