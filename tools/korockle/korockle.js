@@ -1,4 +1,5 @@
 import * as kLib from "../koroLib/main/web.js";
+import { playKorockleMDPFileOld } from "./korockle_mdpplayer_old.js";
 const { Color } = kLib;
 
 /**
@@ -336,14 +337,7 @@ function initFileConverting() {
     }
   });
 }
-/**
- * // TODO: audioCtxを1つにまとめ複数のコロックル音を再生できるように配列を受け取り再生できるようにしたい！！！
- * @param {kLib.Melody} melody
- */
-async function playKorockleMDPFile(melody) {
-  const player = new KorockleMDPPlayer([melody]);
-  return player;
-}
+
 class KorockleMDPPlayer {
   /**@type {[freq:number,reduceDecibel:number][]} */
   static FREQS = [
@@ -538,20 +532,35 @@ function initKorocklePlayer() {
   const info = $("#file-player-info");
   /**@type {{stop:()=>void}?} */
   let oldPlayer = null;
+  const useOldPlayer = getParam().includes("oldMDPP");
   onFileSelected($("#file-player-inp")[0], async (text, name) => {
     if (!!oldPlayer) oldPlayer.stop();
     info.text(`${name} Loading...`);
     const melody = await kLib.MDP.readMDP(text);
-    const player = await playKorockleMDPFile(melody);
     const noteNameLocalizer = getNoteNameLocalizer();
-    player.oncall = (index, note, _, melody) => {
-      const noteinfo = `"${name}" BPM: ${melody.bpm}`;
-      const songinfo = ` ${index + 1}/${melody.notes.length} ${noteNameLocalizer(note)}`;
+    if (useOldPlayer) {
+      // old player
+      const player = await playKorockleMDPFileOld(melody);
+      player.oncall = (note, index, melody) => {
+        const noteinfo = `@ "${name}" BPM: ${melody.bpm}`;
+        const songinfo = ` ${index + 1}/${melody.notes.length} ${noteNameLocalizer(note)}`;
 
-      info.text(`${noteinfo} | ${songinfo}`);
-    };
-    oldPlayer = player;
-    player.play();
+        info.text(`${noteinfo} | ${songinfo}`);
+      };
+      oldPlayer = player;
+      player.play();
+    } else {
+      // new player
+      const player = new KorockleMDPPlayer([melody]);
+      player.oncall = (index, note, _, melody) => {
+        const noteinfo = `"${name}" BPM: ${melody.bpm}`;
+        const songinfo = ` ${index + 1}/${melody.notes.length} ${noteNameLocalizer(note)}`;
+
+        info.text(`${noteinfo} | ${songinfo}`);
+      };
+      oldPlayer = player;
+      player.play();
+    }
   });
 }
 
@@ -795,8 +804,17 @@ function initMelodySlicer() {
           ),
       )
       .filter((m) => m.notes.length !== 0);
-    const player = new KorockleMDPPlayer(joinedMelodies);
-    player.play();
+    const useOldPlayer = getParam().includes("oldMDP");
+
+    if (useOldPlayer) {
+      const players = await Promise.all(
+        joinedMelodies.map((m) => playKorockleMDPFileOld(m)),
+      );
+      players.forEach((p) => p.play());
+    } else {
+      const player = new KorockleMDPPlayer(joinedMelodies);
+      player.play();
+    }
   }
 }
 

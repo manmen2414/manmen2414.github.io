@@ -20,12 +20,16 @@ You can change English/Japanese at top right menu.
 It keeps selected language between pages.  
 
 ## Parameters / URLパラメータ
-+ ja: 日本語 Japanese  
-+ en: 英語 English  
-+ dev: デバッグモード Debug mode  
-+ ignore-korockle-connect: コロックルの接続を無視してUIを表示 Show ui without korockle connect  
++ `ja`: 日本語 Japanese  
++ `en`: 英語 English  
++ `dev`: デバッグモード Debug mode  
++ `ignore-korockle-connect`: コロックルの接続を無視してUIを表示 Show ui without korockle connect  
   + /tools/korockle.html, /tools/korohub/korohub.html で動作  
   + It effects /tools/korockle.html, /tools/korohub/korohub.html  
++ `oldMDPP`: "コロックルMDPプレイヤー"にて以前のシステムを使用する  Use older system in ".mdp Player"  
+  + 普通は有効化する必要はない。You don't have activate normally.  
+  + /tools/korockle.html で動作  
+  + It effects /tools/korockle.html  
 
 ## Warning / 注意
 このプロジェクトはGit Submoduleを用いています。  
