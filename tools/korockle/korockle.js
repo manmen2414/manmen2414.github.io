@@ -341,10 +341,12 @@ function initFileConverting() {
  * @param {kLib.Melody} melody
  */
 async function playKorockleMDPFile(melody) {
-  const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
-  const audioCtx = new AudioContext();
+  const player = new KorockleMDPPlayer([melody]);
+  return player;
+}
+class KorockleMDPPlayer {
   /**@type {[freq:number,reduceDecibel:number][]} */
-  const freqs = [
+  static FREQS = [
     [1049, 0],
     [2093, -30.5],
     [3152, -2.9],
@@ -355,33 +357,7 @@ async function playKorockleMDPFile(melody) {
     [8376, -56.5],
     [9179, -47.9],
   ];
-
-  /**@param {number} dB */
-  const relativedB2Percentage = (dB) => 10 ** (dB / 20);
-
-  const baseVolume = 0.5;
-  function call(addFreq, sec) {
-    const mainFreq = [1049, 2090, 3147, 5283];
-
-    freqs.forEach(([freq, decibel], i) => {
-      const osc = audioCtx.createOscillator();
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(
-        freq + addFreq * (i + 1),
-        audioCtx.currentTime,
-      );
-      const gain = audioCtx.createGain();
-      gain.gain.value =
-        (baseVolume * relativedB2Percentage(decibel)) / freqs.length;
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start(audioCtx.currentTime);
-      osc.stop(audioCtx.currentTime + (sec - 0.05));
-    });
-    return wait(sec);
-  }
-  const callList = [
+  static CALL_LIST = [
     ,
     ,
     -306,
@@ -415,75 +391,129 @@ async function playKorockleMDPFile(melody) {
     2683.31,
     2905.066,
   ];
-  let stopPlay = () => {};
-  stopPlay();
-  const tempo = melody.bpm;
-  const beatsecond = 60 / tempo;
-  const times = [
-    beatsecond / 4,
-    beatsecond / 2,
-    beatsecond / 1.5,
-    beatsecond,
-    beatsecond * 1.5,
-    beatsecond * 2,
-    beatsecond * 3,
-    beatsecond * 4,
-  ];
-  let playing = false;
-  let noteIndex = 0;
+  /**@param {number} dB */
+  static relativedB2Percentage = (dB) => 10 ** (dB / 20);
 
-  const obj = {
+  /**
+   * @param {kLib.Melody[]} melodies
+   *
+   */
+  constructor(melodies) {
+    this.melodies = melodies;
+    this.volume = 0.5;
+    this.audioCtx = new AudioContext();
+    this.playersForSingleMDP = melodies.map(
+      (m) => new _KorockleMDPPlayerForSingleMDP(this, m),
+    );
     /**
+     * @param {number} noteIndex
      * @param {kLib.Note} note
-     * @param {number} index
+     * @param {number} melodyIndex
      * @param {kLib.Melody} melody
+     * @param {KorockleMDPPlayer} player
      */
-    oncall: (note, index, melody) => {},
-    /**@readonly */
-    stop: () => {
-      playing = false;
-      noteIndex = 0;
-    },
-    /**@readonly */
-    pause: () => {
-      playing = false;
-    },
-    /**@readonly */
-    resume: () => {
-      startPlay();
-    },
-    /**@readonly */
-    play: () => {
-      startPlay();
-    },
-  };
-  let justTime = 0;
+    this.oncall = (noteIndex, note, melodyIndex, melody, player) => {};
+  }
+  /**
+   * @param {number} addFreq
+   * @param {number} sec
+   */
+  call(addFreq, sec) {
+    const mainFreq = [1049, 2090, 3147, 5283];
+
+    KorockleMDPPlayer.FREQS.forEach(([freq, decibel], i) => {
+      const osc = this.audioCtx.createOscillator();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq + addFreq * (i + 1), 0);
+      const gain = this.audioCtx.createGain();
+      gain.gain.value =
+        (this.volume * KorockleMDPPlayer.relativedB2Percentage(decibel)) /
+        KorockleMDPPlayer.FREQS.length;
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+
+      osc.start(0);
+      osc.stop(this.audioCtx.currentTime + (sec - 0.05));
+    });
+    return wait(sec);
+  }
+  play() {
+    this.playersForSingleMDP.forEach((v) => v.init());
+    this.playersForSingleMDP.forEach((v) => v.play());
+  }
+  stop() {
+    this.playersForSingleMDP.forEach((v) => v.stop());
+  }
+  pause() {
+    this.playersForSingleMDP.forEach((v) => v.pause());
+  }
+}
+class _KorockleMDPPlayerForSingleMDP {
+  /**
+   * @param {KorockleMDPPlayer} player
+   * @param {kLib.Melody} melody
+   */
+  constructor(player, melody) {
+    this.player = player;
+    this.melody = melody;
+    this.justTime = 0;
+    this.playing = false;
+    this.noteIndex = 0;
+    this.melodyIndex = 0;
+
+    const beatsecond = 60 / melody.bpm;
+
+    this.times = [
+      beatsecond / 4,
+      beatsecond / 2,
+      (beatsecond / 4) * 3,
+      beatsecond,
+      beatsecond * 1.5,
+      beatsecond * 2,
+      beatsecond * 3,
+      beatsecond * 4,
+    ];
+  }
+  init() {
+    this.melodyIndex = this.player.melodies.indexOf(this.melody);
+    if (this.melodyIndex === -1) throw new Error("Melody not listed");
+  }
+  async play() {
+    this.playing = true;
+    for (; this.noteIndex < this.melody.notes.length; this.noteIndex++) {
+      if (!this.playing) break;
+      await this.callNote(this.noteIndex);
+    }
+    this.playing = false;
+  }
+  async stop() {
+    this.playing = false;
+    this.noteIndex = 0;
+  }
+  async pause() {
+    this.playing = false;
+  }
   /**
    * @param {number} i
    */
-  async function callNote(i) {
-    const note = melody.notes[i];
-    const add = callList[note.scale];
-    const originalTime = times[note.length];
+  async callNote(i) {
+    const note = this.melody.notes[i];
+    const add = KorockleMDPPlayer.CALL_LIST[note.scale];
+    const originalTime = this.times[note.length];
     // 本来の時間とずれてたら修正する
-    const offset = justTime - audioCtx.currentTime;
-    justTime += originalTime;
+    const offset = this.justTime - this.player.audioCtx.currentTime;
     const offsettedTime = originalTime + offset;
-    obj.oncall(note, i, melody);
+    this.justTime += originalTime;
+    (async () => {
+      try {
+        this.player.oncall(i, note, this.melodyIndex, this.melody, this.player);
+      } catch (ex) {
+        console.error(ex);
+      }
+    })();
     if (add === undefined) await wait(offsettedTime);
-    else await call(add, offsettedTime);
-    // console.log(justTime - audioCtx.currentTime);
-    // console.warn(melody.notes.length, audioCtx.currentTime, justTime);
+    else await this.player.call(add, offsettedTime);
   }
-  async function startPlay() {
-    console.log(times);
-    playing = true;
-    for (; noteIndex < melody.notes.length; noteIndex++) {
-      if (!playing) break;
-      await callNote(noteIndex);
-    }
-  }
-  return obj;
 }
 
 function getNoteNameLocalizer() {
@@ -513,7 +543,7 @@ function initKorocklePlayer() {
     const melody = await kLib.MDP.readMDP(text);
     const player = await playKorockleMDPFile(melody);
     const noteNameLocalizer = getNoteNameLocalizer();
-    player.oncall = (note, index, melody) => {
+    player.oncall = (index, note, _, melody) => {
       const noteinfo = `"${name}" BPM: ${melody.bpm}`;
       const songinfo = ` ${index + 1}/${melody.notes.length} ${noteNameLocalizer(note)}`;
 
@@ -764,10 +794,8 @@ function initMelodySlicer() {
           ),
       )
       .filter((m) => m.notes.length !== 0);
-    const players = await Promise.all(
-      joinedMelodies.map((m) => playKorockleMDPFile(m)),
-    );
-    players.forEach((p) => p.play());
+    const player = new KorockleMDPPlayer(joinedMelodies);
+    player.play();
   }
 }
 

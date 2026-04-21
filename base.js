@@ -37,6 +37,7 @@ function isObjectString(str) {
     return false;
   }
 }
+const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
 
 /**
  * localStorageからデータを取得する。\
