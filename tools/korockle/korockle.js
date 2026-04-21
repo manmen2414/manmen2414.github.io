@@ -466,6 +466,7 @@ class _KorockleMDPPlayerForSingleMDP {
     this.times = [
       beatsecond / 4,
       beatsecond / 2,
+      // うわああああああああああああああああああああ誰だああああああああ 符点8分を4分の2/3倍の長さと設定した馬鹿はよぉ！！！！ああああああああああああああ！！！！！！！！！！！！！
       (beatsecond / 4) * 3,
       beatsecond,
       beatsecond * 1.5,
