@@ -83,6 +83,18 @@ function initGames() {
   }
 }
 
+function initLilja() {
+  // 特例()
+  PageLoadEventTarget.addEventListener("translateEnd", (ev) => {
+    if (translateLang === "ja")
+      $("#gakumas-charas")
+        .children(0)
+        .children(0)
+        .attr("aria-label", "レジェンドマンモスさんランク");
+  });
+}
+
 $(() => {
   initGames();
+  initLilja();
 });
