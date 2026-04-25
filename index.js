@@ -1,28 +1,88 @@
-const PJSKCSS = (chara, index) =>
-  `#pjsk-charas>li:nth-child(${index + 1})>a::after{content:"→ ${chara}";}\n`;
-const LIGHT_CHARA_COLOR = [
-  "rgb(33, 86, 117)",
-  "rgb(53, 53, 99)",
-  "rgb(95, 66, 83)",
+/**
+ * @typedef {{id: string;favorites: { id: string; name: string; color: { l: string; d: string } }[]}} GameInfo
+ */
+
+/**
+ * @param {GameInfo} game
+ * @param {number} charaIndex
+ */
+const makeCharaCSS = (game, charaIndex) =>
+  `#${game.id}-charas>li:nth-child(${charaIndex + 1})>a::after{content:"→ ${game.favorites[charaIndex].name}";}\n`;
+
+/**
+ * @type {GameInfo[]}
+ */
+const gamesInfomation = [
+  {
+    id: "pjsk",
+    favorites: [
+      {
+        id: "ichika",
+        name: "",
+        color: {
+          l: "rgb(33, 86, 117)",
+          d: "#33aaee",
+        },
+      },
+      {
+        id: "mafuyu",
+        name: "",
+        color: {
+          l: "rgb(53, 53, 99)",
+          d: "#6c6caf",
+        },
+      },
+      {
+        id: "mizuki",
+        name: "",
+        color: {
+          l: "rgb(95, 66, 83)",
+          d: "#d482b3",
+        },
+      },
+    ],
+  },
+  {
+    id: "gakumas",
+    favorites: [
+      {
+        id: "lilja",
+        name: "",
+        color: {
+          l: "#0f0100",
+          d: "#f0feff",
+        },
+      },
+    ],
+  },
 ];
-const DARK_CHARA_COLOR = ["#33aaee", "#6c6caf", "#d482b3"];
+
+/**
+ * @param {JQuery<HTMLElement>} targetElement
+ */
+function initGames() {
+  let css = "";
+  for (const game of gamesInfomation) {
+    const charas = $(`#${game.id}-charas`);
+    const charaElementList = [...charas.children()];
+    PageLoadEventTarget.addEventListener("themeload", (ev) => {
+      charaElementList.forEach((li, i) => {
+        const a = li.querySelector("a");
+        a.style.color = game.favorites[i].color[theme];
+      });
+    });
+    PageLoadEventTarget.addEventListener("translateEnd", (ev) => {
+      charaElementList.forEach((li, i) => {
+        game.favorites[i].name = getTranslate(
+          `index.descripton.${game.id}.${game.favorites[i].id}`,
+        );
+        css += makeCharaCSS(game, i);
+        $(`<style>${css}</style>`).appendTo($("head"));
+      });
+    });
+  }
+}
 
 $(() => {
-  const pjskCharas = $("#pjsk-charas");
-  const lis = [...pjskCharas.children()];
-  PageLoadEventTarget.addEventListener("themeload", (ev) => {
-    const themeColor = theme === "d" ? DARK_CHARA_COLOR : LIGHT_CHARA_COLOR;
-    lis.forEach((li, i) => {
-      const a = li.querySelector("a");
-      a.style.color = themeColor[i];
-    });
-  });
-  PageLoadEventTarget.addEventListener("translateEnd", (ev) => {
-    const charas = ["ichika", "mafuyu", "mizuki"];
-    let css = "";
-    lis.forEach((li, i) => {
-      css += PJSKCSS(getTranslate(`index.descripton.pjsk.${charas[i]}`), i);
-    });
-    $(`<style>${css}</style>`).appendTo($("head"));
-  });
+  initGames();
 });
