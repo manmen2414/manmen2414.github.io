@@ -90,7 +90,7 @@ function initLilja() {
       $("#gakumas-charas")
         .children(0)
         .children(0)
-        .attr("aria-label", "レジェンドマンモスさんランク");
+        .attr("aria-label", "レジェンドマンモスさんランク, 葛城リーリヤ");
   });
 }
 
