@@ -41,6 +41,16 @@ let colorvalBeforeRGB = [0, 0, 0];
 let colorvalBeforeColor = "000000";
 let colorvalChangeId = -1;
 let colorvalGradId = -1;
+/**
+ * @param {number|string} r
+ * @param {number|string} g
+ * @param {number|string} b
+ */
+function setLEDColorText(r, g, b) {
+  $("#ledvalue-red").val(r);
+  $("#ledvalue-green").val(g);
+  $("#ledvalue-blue").val(b);
+}
 function changeColor() {
   function valOr0(html) {
     const val = parseInt($(html).val());
@@ -50,13 +60,15 @@ function changeColor() {
   const green = valOr0("#ledvalue-green");
   const blue = valOr0("#ledvalue-blue");
   /**@type {string} */
-  const color = $("#ledvalue-color").val().substring(1);
+  const rgbCodeStr = $("#ledvalue-color").val().substring(1);
   const rgbArr = [red, green, blue];
   //全部同じ
   if (rgbArr.every((v, i) => colorvalBeforeRGB[i] === v)) {
-    if (colorvalBeforeColor !== color) {
-      colorvalBeforeColor = color;
-      korockle.led(Color.fromRGB(color));
+    if (colorvalBeforeColor !== rgbCodeStr) {
+      colorvalBeforeColor = rgbCodeStr;
+      const color = Color.fromRGB(rgbCodeStr);
+      setLEDColorText(color.red, color.green, color.blue);
+      korockle.led(color);
     }
   } else {
     colorvalBeforeRGB = rgbArr;
@@ -77,6 +89,7 @@ function grad() {
     if (color[nowIndex] >= 10) {
       nowIndex = (nowIndex + 1) % 3;
     }
+    setLEDColorText(...color);
     korockle.led(new Color(...color));
   }, 100);
 }
