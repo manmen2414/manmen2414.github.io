@@ -57,30 +57,38 @@ const gamesInfomation = [
   },
 ];
 
+function getCharaElementList(gameId) {
+  const charas = $(`#${gameId}-charas`);
+  return [...charas.children()];
+}
+
 /**
  * @param {JQuery<HTMLElement>} targetElement
  */
 function initGames() {
   let css = "";
-  for (const game of gamesInfomation) {
-    const charas = $(`#${game.id}-charas`);
-    const charaElementList = [...charas.children()];
-    PageLoadEventTarget.addEventListener("themeload", (ev) => {
+
+  PageLoadEventTarget.addEventListener("themeload", (ev) => {
+    for (const game of gamesInfomation) {
+      const charaElementList = getCharaElementList(game.id);
       charaElementList.forEach((li, i) => {
         const a = li.querySelector("a");
         a.style.color = game.favorites[i].color[theme];
       });
-    });
-    PageLoadEventTarget.addEventListener("translateEnd", (ev) => {
-      charaElementList.forEach((li, i) => {
+    }
+  });
+  PageLoadEventTarget.addEventListener("translateEnd", (ev) => {
+    for (const game of gamesInfomation) {
+      const charaElementList = getCharaElementList(game.id);
+      for (let i = 0; i < charaElementList.length; i++) {
         game.favorites[i].name = getTranslate(
           `index.descripton.${game.id}.${game.favorites[i].id}`,
         );
         css += makeCharaCSS(game, i);
-        $(`<style>${css}</style>`).appendTo($("head"));
-      });
-    });
-  }
+      }
+    }
+    $(`<style>${css}</style>`).appendTo($("head"));
+  });
 }
 
 function initLilja() {
