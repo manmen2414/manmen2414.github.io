@@ -1,4 +1,5 @@
 import * as kLib from "../../koroLib/main/web.js";
+import * as kUtil from "../koroutil.js";
 
 const { Color } = kLib;
 
@@ -34,6 +35,7 @@ async function addKorockle() {
   maxId++;
   newKorockle.id = maxId;
   korockles.push(newKorockle);
+  kUtil.setUnloadOnPageExitKorocklesList(korockles);
   onKorockleConnect(newKorockle);
 }
 
@@ -216,6 +218,7 @@ function initTime() {
 }
 
 $(() => {
+  kUtil.initUnloadOnPageExit();
   initMelody();
   initTime();
   melodySequenceWriter.display();

@@ -1,5 +1,6 @@
 import * as kLib from "../koroLib/main/web.js";
 import { playKorockleMDPFileOld } from "./korockle_mdpplayer_old.js";
+import * as kUtil from "./koroutil.js";
 const { Color } = kLib;
 
 /**
@@ -22,6 +23,7 @@ async function connect() {
   if (!!korockle) return;
   const korocklehid = await kLib.getKorockle();
   korockle = new kLib.Korockle(korocklehid);
+  kUtil.setUnloadOnPageExitKorocklesList([korockle]);
   $("#content").removeClass("x");
   $("#connectgui").hide();
 }
@@ -834,6 +836,7 @@ function initMelodySlicer() {
 $(() => {
   check();
   //initInputing();
+  kUtil.initUnloadOnPageExit();
   initSounds();
   initLEDs();
   initTimeAlerm();
