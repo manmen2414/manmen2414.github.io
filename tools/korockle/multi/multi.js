@@ -219,6 +219,8 @@ function initTime() {
 
 $(() => {
   kUtil.initUnloadOnPageExit();
+  kUtil.initKorockleConnectingInfo();
+
   initMelody();
   initTime();
   melodySequenceWriter.display();
@@ -228,9 +230,6 @@ $(() => {
   $("#disconnect").on("click", () => {
     disconnect();
   });
-  if (getParam().includes("ignore-korockle-connect")) {
-    $("#content").removeClass("x");
-  }
   PageLoadEventTarget.addEventListener("translateEnd", () => {
     melodySequenceWriter.init();
   });

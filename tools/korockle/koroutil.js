@@ -18,4 +18,16 @@ function setUnloadOnPageExitKorocklesList(newArray) {
   unloadOnPageExitKorockles = newArray;
 }
 
-export { initUnloadOnPageExit, setUnloadOnPageExitKorocklesList };
+function initKorockleConnectingInfo() {
+  if (!navigator.hid) {
+    PageLoadEventTarget.addEventListener("translateEnd", () => {
+      $("#connect-info").text(getTranslate("korockle.notworking"));
+    });
+  }
+}
+
+export {
+  initUnloadOnPageExit,
+  setUnloadOnPageExitKorocklesList,
+  initKorockleConnectingInfo,
+};

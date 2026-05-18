@@ -31,13 +31,6 @@ async function disconnect() {
   await korockle.hid.close();
   location.reload();
 }
-function check() {
-  if (!navigator.hid) {
-    setTimeout(() => {
-      $("#connect-info").text(getTranslate("korockle.notworking"));
-    }, 100);
-  }
-}
 
 let colorvalBeforeRGB = [0, 0, 0];
 let colorvalBeforeColor = "000000";
@@ -834,8 +827,7 @@ function initMelodySlicer() {
 }
 
 $(() => {
-  check();
-  //initInputing();
+  kUtil.initKorockleConnectingInfo();
   kUtil.initUnloadOnPageExit();
   initSounds();
   initLEDs();
