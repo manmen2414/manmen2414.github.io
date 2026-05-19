@@ -70,7 +70,7 @@
   <script>
     (() => {
       // `/path`の形式。index.htmlを参照する際は/を入れること。
-      const urls = ["/", "/tools/tools", "/tools/korockle/", "/tools/battery"]
+      const urls = ["/", "/tools/", "/tools/korockle/", "/tools/battery"]
       const sites = ["Main", "Tools", "Korockle", "Battery"]
       let index = (() => {
         const path = location.pathname.replace(/\.html$|\.htm$/, "")
