@@ -29,8 +29,8 @@ const convertFunctions = {
         .val()
         .replace(
           /[^\x00-\x7F]/g,
-          (c) => "\\u" + ("000" + c.charCodeAt(0).toString(16)).slice(-4)
-        )
+          (c) => "\\u" + ("000" + c.charCodeAt(0).toString(16)).slice(-4),
+        ),
     );
   },
   unicodeDecode() {
@@ -38,8 +38,8 @@ const convertFunctions = {
       text
         .val()
         .replace(/\\u([a-fA-F0-9]{4})/g, (x, y) =>
-          String.fromCharCode(parseInt(y, 16))
-        )
+          String.fromCharCode(parseInt(y, 16)),
+        ),
     );
   },
   base64Encode() {
@@ -100,7 +100,7 @@ const convertFunctions = {
   unicodeShift() {
     //引数を変数みたいに扱い匿名関数で変数宣言を汚さない見ずらいコード！
     const shiftAmount = ((v) => (v.length === 0 ? 1 : parseInt(v)))(
-      $("#text-shift-amount").val()
+      $("#text-shift-amount").val(),
     );
     function shift(c) {
       const charPoint = c.codePointAt(0) + shiftAmount;
@@ -129,7 +129,7 @@ const convertFunctions = {
         .val()
         .replaceAll(str2, REPLACEING)
         .replaceAll(str1, str2)
-        .replaceAll(REPLACEING, str1)
+        .replaceAll(REPLACEING, str1),
     );
   },
   frame() {
@@ -155,7 +155,7 @@ const framegens = {
     const maxXUnceiled = Math.max(...calcdXs);
     const maxX = Math.ceil(maxXUnceiled);
     const lines = linesUnspaced.map(
-      (l, i) => l + " ".repeat(posiOr0((maxX - calcdXs[i]) * 2))
+      (l, i) => l + " ".repeat(posiOr0((maxX - calcdXs[i]) * 2)),
     );
     const Y = lines.length;
     return { lines, maxX, Y, maxXUnceiled };
@@ -261,7 +261,7 @@ function initTextConversion() {
         setTimeout(() => {
           ev.currentTarget.innerText = "Copy";
         }, 2000);
-      }
+      },
     );
   });
   $("#text-download").on("click", () => {
@@ -320,23 +320,90 @@ function initNumbers() {
     $("#random-answer").text(info);
   });
   //radix
+  const BASES = [2, 8, 10, 16];
+  const baseAny = $("#base-any");
+  const baseAnyChars = $("#base-any-chars");
   /**
-   * @param {2|8|10|16} input
+   * @param {number} decimalValue
    */
-  function changeBase(base) {
-    const base10Value = parseInt($(`#base-${base}`).val(), base);
-    const BASES = [2, 8, 10, 16];
-    //変更を加えられていないinputに対し変更を加える
-    BASES.filter((v) => v !== base).forEach((changeAt) => {
-      const num = base10Value.toString(changeAt);
+  function applyToAllBaseInputs(decimalValue) {
+    BASES.forEach((changeAt) => {
+      const num = decimalValue.toString(changeAt);
       const elem = $(`#base-${changeAt}`);
-      if (isNaN(base10Value)) elem.val("");
+      if (isNaN(decimalValue)) elem.val("");
       else elem.val(num);
     });
+    const chars = baseAnyChars.val();
+    if (typeof chars === "string" && chars.length !== 0) {
+      baseAny.val(decimalToAnyBase(decimalValue, chars));
+    }
+  }
+  /**
+   * @param {string} numAnyBase
+   * @param {string} anyBaseChars
+   */
+  function anyBaseToDecimal(numAnyBase, anyBaseChars) {
+    const base = anyBaseChars.length;
+    const numAnyRev = numAnyBase.split("").reverse();
+    let decimal = 0;
+
+    for (let i = 0; i < numAnyRev.length; i++) {
+      const char = numAnyRev[i];
+      const anyBaseCharsIndex = anyBaseChars.indexOf(char);
+      if (anyBaseCharsIndex === -1) return NaN;
+      if (base === 1 && i > 0) {
+        decimal += 1;
+      } else {
+        decimal += anyBaseCharsIndex * base ** i;
+      }
+    }
+    return decimal;
+  }
+  /**
+   * @param {number} decimal
+   * @param {string} anyBaseChars
+   */
+  function decimalToAnyBase(decimal, anyBaseChars) {
+    if (isNaN(decimal)) return "";
+    const base = anyBaseChars.length;
+    let anyChars = [];
+    let nowDecimal = Math.abs(decimal);
+
+    if (base === 1) {
+      return anyBaseChars[0].repeat(nowDecimal + 1);
+    }
+
+    while (true) {
+      const modded = nowDecimal % base;
+      anyChars.unshift(anyBaseChars[modded]);
+      console.log(nowDecimal, modded);
+      if (nowDecimal === modded) {
+        if (decimal < 0) anyChars.unshift("-");
+        return anyChars.join("");
+      }
+      nowDecimal = (nowDecimal - modded) / base;
+      console.log(nowDecimal);
+    }
   }
   //各inputに適用
-  [2, 8, 10, 16].forEach((v) => {
-    $(`#base-${v}`).on("change", () => changeBase(v));
+  BASES.forEach((v) => {
+    $(`#base-${v}`).on("change", (e) => {
+      const base10Value = parseInt(e.target.value, v);
+      applyToAllBaseInputs(base10Value);
+    });
+  });
+  // any系統
+  baseAny.on("change", (e) => {
+    /**@type {string} */
+    const value = e.target.value;
+    const chars = baseAnyChars.val();
+    if (typeof chars === "string" && chars.length !== 0) {
+      applyToAllBaseInputs(anyBaseToDecimal(value, chars));
+    }
+  });
+  baseAnyChars.on("change", (e) => {
+    baseAny.attr("placeholder", `[${e.target.value}]`);
+    baseAny.attr("disabled", e.target.value.length === 0);
   });
 }
 function initMediaEmbed() {

@@ -85,6 +85,11 @@ select {
   transition: border 0.05s ease-in-out;
 }
 
+input:disabled {
+  cursor: no-drop;
+  border-color: transparent;
+}
+
 .modal-wrapper {
   position: fixed;
   display: none;
