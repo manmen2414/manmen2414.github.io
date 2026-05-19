@@ -376,13 +376,11 @@ function initNumbers() {
     while (true) {
       const modded = nowDecimal % base;
       anyChars.unshift(anyBaseChars[modded]);
-      console.log(nowDecimal, modded);
       if (nowDecimal === modded) {
         if (decimal < 0) anyChars.unshift("-");
         return anyChars.join("");
       }
       nowDecimal = (nowDecimal - modded) / base;
-      console.log(nowDecimal);
     }
   }
   //各inputに適用
