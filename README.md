@@ -4,6 +4,7 @@ My introdution, some tools, and my playground.
 ※Very Bad English!!!  
 
 私の自己紹介といくつかのツールを提供する私の遊び場。  
+Base64変換、JSONフォーマット、進数変換などのちょっとしたツールを広告を含まないページで使用可能です。  
 
 ## Light / Dark
 ライトモードとダークモードに対応しています。  
