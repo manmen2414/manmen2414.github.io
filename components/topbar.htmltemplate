@@ -90,7 +90,8 @@
         if (!url.endsWith("/") && !isGithubPages) htmlIfNeed = `.html`
         const a = $(`<a href="${url}${htmlIfNeed}${params}">${sites[i]}</a>`);
         if (index === i) a.addClass("now");
-        $("#topbar-urls").append(a);
+        if (i !== 0)
+          $("#topbar-urls").append(a);
       })
     })()
   </script>
