@@ -15,6 +15,7 @@ let theme = "";
 const noTranslatedTexts = new Set();
 const TRANSLATE_KEYS = ["ja", "en"];
 const TRANSLATE_KEYS_LAST = TRANSLATE_KEYS[TRANSLATE_KEYS.length - 1];
+
 function _DEV() {
   const param = getParam();
   if (param.includes("dev"))
@@ -37,6 +38,7 @@ function isObjectString(str) {
     return false;
   }
 }
+
 const wait = (sec) => new Promise((r) => setTimeout(r, sec * 1000));
 
 /**
@@ -76,6 +78,7 @@ function setStorage(key, value = null, objTranslate = true) {
   localStorage.setItem(key, writeVal);
   return writeVal;
 }
+
 /**
  * 上部に表示するバーを生成する。
  */
@@ -83,10 +86,11 @@ function genTopBar() {
   fetch("/components/topbar.htmltemplate").then(async (v) => {
     BODY.prepend(await v.text());
     /**@type {GeneratedTopBarEvent} */
-    const event = new Event("generatedTopBar", { cancelable: false });
+    const event = new Event("generatedTopBar", {cancelable: false});
     PageLoadEventTarget.dispatchEvent(event);
   });
 }
+
 /**
  * 右部に表示するバーを生成する。
  */
@@ -94,10 +98,11 @@ function genRightbar() {
   fetch("/components/rightbar.htmltemplate").then(async (v) => {
     BODY.prepend(await v.text());
     /**@type {GeneratedRightBarEvent} */
-    const event = new Event("generatedRightBar", { cancelable: false });
+    const event = new Event("generatedRightBar", {cancelable: false});
     PageLoadEventTarget.dispatchEvent(event);
   });
 }
+
 /**
  * テーマをデバイス色、もしくはlocalStorage.m.themeに設定する。
  */
@@ -112,9 +117,10 @@ function setTheme() {
   let nowIsDark = $("body").hasClass("dark");
   theme = nowIsDark ? "d" : "l";
   /**@type {ThemeloadEvent} */
-  const event = new Event("themeload", { cancelable: false });
+  const event = new Event("themeload", {cancelable: false});
   PageLoadEventTarget.dispatchEvent(event);
 }
+
 /**
  * テーマを変更する。
  */
@@ -128,9 +134,10 @@ function changeTheme(save = true) {
   }
   theme = nowIsDark ? "l" : "d";
   /**@type {ThemeloadEvent} */
-  const event = new Event("themeload", { cancelable: false });
+  const event = new Event("themeload", {cancelable: false});
   PageLoadEventTarget.dispatchEvent(event);
 }
+
 /**
  * min以上max未満の整数乱数。
  * @returns {number}
@@ -184,6 +191,7 @@ function Dev_NoTranslated(key) {
   noTranslatedTexts.forEach((k) => (data += `"${k}": "",\n`));
   console.log(data);
 }
+
 /**
  * デバッグモードの場合、翻訳できなかったテキストをリストに入れる。
  * または、リストからJSONを取得する。
@@ -201,7 +209,7 @@ function Dev_TranslatedLog(key, at) {
 
 /**
  * 翻訳キーを用いて翻訳を行う。
- * @param {string} lang
+ * @param {string|null} lang
  * @param {HTMLElement[]} targetElements?
  */
 async function translate(lang, targetElements = null) {
@@ -211,7 +219,7 @@ async function translate(lang, targetElements = null) {
     translateLang = lang;
     translateJson.version = Version;
     /**@type {TranslateStartEvent} */
-    const startEvent = new Event("translateStart", { cancelable: true });
+    const startEvent = new Event("translateStart", {cancelable: true});
     if (!PageLoadEventTarget.dispatchEvent(startEvent)) {
       styledLog(`%c[!] Translate Canceled`, ["!C:black;!B:#c33;!PA:1px 3px"]);
       return;
@@ -230,6 +238,7 @@ async function translate(lang, targetElements = null) {
     ...$("td"),
   ];
   const translates = !targetElements ? defaultTarget : targetElements;
+
   function translateOne(k) {
     //虚無や非対象は飛ばす
     if (!k) return k;
@@ -237,6 +246,7 @@ async function translate(lang, targetElements = null) {
     if (!k.startsWith("@")) return k;
     return getTranslate(k);
   }
+
   translates.forEach((j) => {
     if (j.innerHTML.includes("<")) return;
     j.innerText = translateOne(j.innerText);
@@ -246,10 +256,11 @@ async function translate(lang, targetElements = null) {
   });
   if (!targetElements) {
     /**@type {TranslateEndEvent} */
-    const endEvent = new Event("translateEnd", { cancelable: false });
+    const endEvent = new Event("translateEnd", {cancelable: false});
     PageLoadEventTarget.dispatchEvent(endEvent);
   }
 }
+
 /**
  * 翻訳キーから翻訳結果を取得する。
  * @param {string} key
@@ -276,6 +287,7 @@ function getTranslate(key) {
  */
 function youtubeUrlToEmbed(url) {
   const EMBED_BASE = `<iframe width="560" height="315" src="https://www.youtube.com/embed/%VIDEO_ID%" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+
   function getVideoId() {
     const shortLink = /http(?:s?)\:\/\/youtu\.be\/([0-9a-zA-z_\-]+)/;
     const normalLink =
@@ -284,11 +296,13 @@ function youtubeUrlToEmbed(url) {
     if (!videoIdExec) return null;
     return videoIdExec[1];
   }
+
   const videoId = url.includes("/") ? getVideoId() : url;
   if (/((?:sm|so)[0-9]+)/.test(url)) return null;
   if (!videoId) return null;
   return EMBED_BASE.replace(/%VIDEO_ID%/g, videoId);
 }
+
 /**
  * url/videoIDからニコ動の埋め込みのHTMLを取得する
  * // TODO: 処理を共通化
@@ -297,6 +311,7 @@ function youtubeUrlToEmbed(url) {
 function nicoVideoUrlToEmbed(url, isVideo = false) {
   const EMBED_BASE_VIDEO = `<iframe width="560" height="315" src="http://embed.nicovideo.jp/watch/%VIDEO_ID%"></iframe>`;
   const EMBED_BASE = `<iframe width="560" height="206" src="https://ext.nicovideo.jp/thumb/%VIDEO_ID%" scrolling="no"style="border:solid 1px #ccc;" frameborder="0"><a href="https://www.nicovideo.jp/watch/%VIDEO_ID%">_</a></iframe>`;
+
   function getVideoId() {
     const link =
       /http(?:s?)\:\/\/(?:www.)?nicovideo.jp\/watch\/((?:sm|so)[0-9]+)/;
@@ -304,6 +319,7 @@ function nicoVideoUrlToEmbed(url, isVideo = false) {
     if (!videoIdExec) return null;
     return videoIdExec[1];
   }
+
   const videoId = url.includes("/") ? getVideoId() : url;
   if (!videoId) return null;
   return (isVideo ? EMBED_BASE_VIDEO : EMBED_BASE).replace(
@@ -311,6 +327,7 @@ function nicoVideoUrlToEmbed(url, isVideo = false) {
     videoId,
   );
 }
+
 /**
  * パラメータを取得する。
  * @returns {string[]}
@@ -322,6 +339,7 @@ function getParam() {
   const set = new Set([...hash, ...search].filter((s) => !!s));
   return Array.from(set);
 }
+
 /**
  * 配列からパラメータを適用する。
  * @param {string[]} arr
@@ -331,6 +349,7 @@ function setParam(arr, reload = false) {
   location.search = "?p=" + arr.join(",");
   // if (reload) location.reload();
 }
+
 /**
  * URLのパラメータから翻訳キーを取得する。
  */
@@ -338,6 +357,7 @@ function translateParam() {
   const lang = getParam().find((v) => TRANSLATE_KEYS.includes(v));
   translate(lang ?? TRANSLATE_KEYS[0]);
 }
+
 /**
  * 言語を変更する。
  */
@@ -364,6 +384,7 @@ function bytesToBase64(bytes) {
   ).join("");
   return btoa(binString);
 }
+
 /**
  * https://developer.mozilla.org/ja/docs/Glossary/Base64#%E3%80%8Cunicode_%E5%95%8F%E9%A1%8C%E3%80%8D
  * @param {string} base64
@@ -381,6 +402,7 @@ function stringToByte(str) {
   const encorder = new TextEncoder();
   return Array.from(encorder.encode(str));
 }
+
 /**
  * 数列をutf-8で文字列に変換する
  * @param {Uint8Array<ArrayBuffer>} bytes
@@ -389,6 +411,7 @@ function ByteToString(bytes) {
   const decoder = new TextDecoder();
   return decoder.decode(bytes);
 }
+
 /**
  * urlの中身をダウンロードする
  * @param {string} url
@@ -406,6 +429,7 @@ function downloadUrl(url, filename) {
   anchor.href = url;
   anchor.click();
 }
+
 /**
  * テキストをダウンロードする
  * @param {string} text
@@ -477,6 +501,7 @@ function styledLog(text, paramsStyled) {
   let pos = 0;
   let index = 0;
   let params = [text.replace(/%r/g, "%c")];
+
   function checkNext() {
     const c = text.indexOf("%c", pos);
     const r = text.indexOf("%r", pos);
@@ -490,6 +515,7 @@ function styledLog(text, paramsStyled) {
       return "r";
     }
   }
+
   /**
    * @param {string} css
    */
@@ -524,10 +550,11 @@ async function getVersion() {
   const json = await res.json();
   Version = json.version;
   /**@type {VersionloadEvent} */
-  const event = new Event("versionload", { cancelable: false });
+  const event = new Event("versionload", {cancelable: false});
   PageLoadEventTarget.dispatchEvent(event);
   return json.version;
 }
+
 /**
  * 開始時のログ。景気づけ。
  */
@@ -540,6 +567,7 @@ function logStartMessage() {
     styleDef + "!B:#944;",
   ]);
 }
+
 /**
  * 描画用に次のフレームを待つ非同期。
  */

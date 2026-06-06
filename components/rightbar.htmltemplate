@@ -1,16 +1,19 @@
 <div id="rightbar">
   <style>
     #rightbar {
+      --width:255px;
+      --unactivated-px: 40px;
       background-color: aliceblue;
       position: fixed;
       text-align: left;
       top: 20px;
-      right: -192px;
-      width: 255px;
+      right: calc(var(--unactivated-px) - var(--width));
+      width: var(--width);
       padding-bottom: 10px;
       border-radius: 20px 0 0 20px;
       z-index: 10;
       transition: right 0.2s ease-in-out;
+      touch-action: manipulation;
     }
 
     #rightbar.hovering {
@@ -84,36 +87,36 @@
       const isDev = params.includes("dev");
       let rightBar = $("#rightbar");
       if (isDev) { $("#rightbar-exitdev").show() }
+      /**@param {PointerEvent} e */
+      const checkTapable = (e)=> e.pointerType !== "touch" || rightBar.hasClass("hovering");
       $("#rightbar-theme").on("pointerdown", (e) => {
-        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
-          changeTheme()
+        if (checkTapable(e)) changeTheme()
       });
       $("#rightbar-translate").on("pointerdown", (e) => {
-        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
-          changeLanguage()
+        if (checkTapable(e)) changeLanguage()
       });
       $("#rightbar-top").on("pointerdown", (e) => {
-        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
-          BODY.scrollTop(0)
+        if (checkTapable(e)) BODY.scrollTop()
       });
       $("#rightbar-github").on("pointerdown", (e) => {
-        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
-          open("https://github.com/manmen2414/manmen2414.github.io", "_blank")
+        if (checkTapable(e)) open("https://github.com/manmen2414/manmen2414.github.io", "_blank")
       })
       $("#rightbar-exitdev").on("pointerdown", (e) => {
-        if (e.pointerType !== "touch" || rightBar.hasClass("hovering"))
+        if (checkTapable(e))
           setParam(params.filter(v => v !== "dev"), true)
       })
       setTimeout(() => {
-        let closeBarTimeout = null;
         rightBar = $("#rightbar");
         rightBar.on("mouseover", () => rightBar.addClass("hovering"))
         rightBar.on("mouseleave", () => rightBar.removeClass("hovering"))
-        rightBar.on("pointerdown", (e) => {
-          if (e.pointerType !== "touch") return;
-          setTimeout(() => rightBar.addClass("hovering"), 10)
-          if (!!closeBarTimeout) clearTimeout(closeBarTimeout)
-          closeBarTimeout = setTimeout(() => rightBar.removeClass("hovering"), 2000)
+        document.addEventListener("touchstart", (e) => {
+          const finger = e.changedTouches[0];
+          const element = document.elementFromPoint(finger.clientX,finger.clientY);
+          if(!rightBar[0].contains(element)) {
+            rightBar.removeClass("hovering");
+          }else{
+            rightBar.addClass("hovering");
+          }
         })
       }, 100)
     })()
