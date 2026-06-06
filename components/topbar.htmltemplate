@@ -71,7 +71,7 @@
     (() => {
       // `/path`の形式。index.htmlを参照する際は/を入れること。
       const urls = ["/", "/tools/", "/tools/korockle/", "/tools/battery"]
-      const sites = ["Main", "Tools", "Korockle", "Battery"]
+      const sites = ["Top", "Tools", "Korockle", "Battery"]
       let index = (() => {
         const path = location.pathname.replace(/\.html$|\.htm$/, "")
         if (path === "/index") return 0;
@@ -90,8 +90,7 @@
         if (!url.endsWith("/") && !isGithubPages) htmlIfNeed = `.html`
         const a = $(`<a href="${url}${htmlIfNeed}${params}">${sites[i]}</a>`);
         if (index === i) a.addClass("now");
-        if (i !== 0)
-          $("#topbar-urls").append(a);
+        $("#topbar-urls").append(a);
       })
     })()
   </script>
