@@ -1,98 +1,98 @@
 <header id="topbar">
-  <style>
-    #topbar {
-      width: calc(100% - 20px);
-      height: 80px;
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      padding: 10px;
-      display: flex;
-      justify-content: center;
-    }
+    <style>
+        #topbar {
+            width: calc(100% - 20px);
+            height: 40px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            padding: 10px;
+            display: flex;
+            justify-content: left;
+            align-items: center;
+        }
 
-    body {
-      margin-top: 120px;
-    }
+        body {
+            margin-top: 80px;
+        }
 
-    body:not(.dark) #topbar {
-      background-color: rgb(188, 188, 255);
+        body:not(.dark) #topbar {
+            background: linear-gradient(to right, rgb(149 149 255), rgb(156 193 255));
+        }
 
-    }
+        body.dark #topbar {
+            background: linear-gradient(to right, rgb(41 41 106), rgb(1 6 44));
+        }
 
-    body.dark #topbar {
-      background-color: rgb(172, 172, 255);
-    }
+        #topbar-myname {
+            font-size: 20px;
+            margin-left: 10px;
+        }
 
-    #topbar-myname {
-      font-size: 30px;
-      color: #1b3015;
-    }
+        :where(body.dark) #topbar-myname {
+            color: #fff;
+        }
 
-    #topbar-selectors {
-      margin-left: 50px;
-    }
+        :where(body:not(.dark)) #topbar-myname {
+            color: #000;
+        }
 
-    #topbar-urls {
-      display: flex;
-    }
+        :where(body.dark) #topbar-urls {
+            color: #fff;
+        }
 
-    #topbar-urls>a {
-      display: flex;
-      font-size: 18px;
-      color: #000;
-      text-decoration: none;
-      background-color: white;
-      padding: 1px 8px;
-      border-radius: 7px;
-      margin-right: 5px;
-    }
+        #topbar-urls {
+            margin-left: 20px;
+            display: flex;
+            gap: 2px;
+        }
 
-    #topbar-urls>a.now {
-      background-color: #afa;
-    }
+        #topbar-urls > a {
+            min-width: fit-content;
+            font-size: 18px;
+            text-decoration: none;
+            padding: 1px 8px;
+            border-radius: 7px;
+            height: fit-content;
+        }
 
+        #topbar-urls > a:visited {
+            color: inherit;
+        }
 
-    #topbar-urls>a:visited {
-      color: #000;
-    }
-
-
-    #topbar-icon {
-      border-radius: 8px;
-    }
-  </style>
-  <img id="topbar-icon" src="/assets/mameeenn.png" alt="Mameeenn" width="80px" height="80px">
-  <div id="topbar-selectors">
-    <div id="topbar-myname">Mameeenn/まめーん</div>
+        #topbar-icon {
+            border-radius: 8px;
+        }
+    </style>
+    <img id="topbar-icon" src="/assets/mameeenn.png" alt="Mameeenn" width="40px" height="40px">
+    <div id="topbar-myname">まめーんの置き場</div>
     <div id="topbar-urls"></div>
-  </div>
-  <script>
-    (() => {
-      // `/path`の形式。index.htmlを参照する際は/を入れること。
-      const urls = ["/", "/tools/", "/tools/korockle/", "/tools/battery"]
-      const sites = ["Top", "Tools", "Korockle", "Battery"]
-      let index = (() => {
-        const path = location.pathname.replace(/\.html$|\.htm$/, "")
-        if (path === "/index") return 0;
-        if (urls.includes(path)) return urls.indexOf(path);
-        if (path.includes("korohub")) return 2;
-        if (path.includes("whimsicalTools")) return 1;
-        if (path.includes("forme")) return 1;
-        return 0;
-      })();
-      if (index === -1) index = 0;
-      const paramsRaw = "?p=" + getParam().join(',');
-      let params = paramsRaw.length === 1 ? "" : paramsRaw;
-      const isGithubPages = location.host.includes(".github.io")
-      urls.forEach((url, i) => {
-        let htmlIfNeed = "";
-        if (!url.endsWith("/") && !isGithubPages) htmlIfNeed = `.html`
-        const a = $(`<a href="${url}${htmlIfNeed}${params}">${sites[i]}</a>`);
-        if (index === i) a.addClass("now");
-        $("#topbar-urls").append(a);
-      })
-    })()
-  </script>
+    <script>
+      (() => {
+        // `/path`の形式。index.htmlを参照する際は/を入れること。
+        const urls = ["/", "/tools/", "/tools/korockle/", "/tools/battery"]
+        const sites = ["Top", "Tools", "Korockle", "Battery"]
+        let index = (() => {
+          const path = location.pathname.replace(/\.html$|\.htm$/, "")
+          if (path === "/index") return 0;
+          if (urls.includes(path)) return urls.indexOf(path);
+          if (path.includes("korohub")) return 2;
+          if (path.includes("whimsicalTools")) return 1;
+          if (path.includes("forme")) return 1;
+          return 0;
+        })();
+        if (index === -1) index = 0;
+        const paramsRaw = "?p=" + getParam().join(',');
+        let params = paramsRaw.length === 1 ? "" : paramsRaw;
+        const isGithubPages = location.host.includes(".github.io")
+        urls.forEach((url, i) => {
+          let htmlIfNeed = "";
+          if (!url.endsWith("/") && !isGithubPages) htmlIfNeed = `.html`
+          const a = $(`<a href="${url}${htmlIfNeed}${params}">${sites[i]}</a>`);
+          if (index === i) a.text((_, t) => `[${t}]`);
+          $("#topbar-urls").append(a);
+        })
+      })()
+    </script>
 
 </header>

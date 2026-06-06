@@ -2,132 +2,142 @@
 <html>
 
 <head>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <title>Mameeenn/まめーん</title>
-  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
-  <meta name="description" content="Mameeenn's Tool.">
-  <link rel="stylesheet" href="/main.css">
-  <link rel="stylesheet" href="./tools.css">
-  <script src="/base.js"></script>
-  <script src="./tools.js"></script>
-  <meta name="viewport" content="width=device-width,initial-scale=0.8">
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Mameeenn/まめーん</title>
+    <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+    <meta name="description" content="Mameeenn's Tool.">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="./tools.css">
+    <script src="/base.js"></script>
+    <script src="./tools.js"></script>
+    <meta name="viewport" content="width=device-width,initial-scale=0.8">
 </head>
 
 <body>
-  <div class="title" style="width: 100%;text-align: center;">@tools.title.tools</div>
-  <span class="title m-ri40">@tools.title.textconversion</span>
+<div class="title" style="width: 100%;text-align: center;">@tools.title.tools</div>
+<span class="title m-ri40">@tools.title.textconversion</span>
 
-  <button id="text-clear">Clear</button>
-  <button id="text-copy">Copy</button>
-  <button id="text-download">Download</button>
-  <textarea id="text-conversion"></textarea><br>
-  <table class="text-table">
+<button id="text-clear">Clear</button>
+<button id="text-copy">Copy</button>
+<button id="text-download">Download</button>
+<textarea id="text-conversion"></textarea><br>
+<table class="text-table">
     <tr>
-      <th> <span class="title-smaller">@tools.title.base64</span></th>
-      <th>
-        <button id="text-base64-en">@words.encode</button>
-        <button id="text-base64-de">@words.decode</button>
-        <button id="text-base64-url">@tools.base64.data-url</button>
-      </th>
+        <th><span class="title-smaller">@tools.title.base64</span></th>
+        <th>
+            <button id="text-base64-en">@words.encode</button>
+            <button id="text-base64-de">@words.decode</button>
+            <button id="text-base64-url">@tools.base64.data-url</button>
+        </th>
     </tr>
     <tr>
-      <th> <span class="title-smaller">@tools.title.unicode-escape</span></th>
-      <th> <button id="text-unicode-en">@words.encode</button><button id="text-unicode-de">@words.decode</button></th>
+        <th><span class="title-smaller">@tools.title.unicode-escape</span></th>
+        <th>
+            <button id="text-unicode-en">@words.encode</button>
+            <button id="text-unicode-de">@words.decode</button>
+        </th>
     </tr>
     <tr>
-      <th> <span class="title-smaller">@tools.title.json-formatter</span></th>
-      <th> <button id="text-json-mini">@tools.json-formatter.minify</button><button
-          id="text-json-form">@tools.json-formatter.format</button></th>
+        <th><span class="title-smaller">@tools.title.json-formatter</span></th>
+        <th>
+            <button id="text-json-mini">@tools.json-formatter.minify</button>
+            <button
+                    id="text-json-form">@tools.json-formatter.format
+            </button>
+        </th>
     </tr>
     <tr>
-      <th> <span class="title-smaller">@tools.title.sjis-utf8</span></th>
-      <th>
-        <button id="text-sjis8-sjis">@tools.sjis-utf8.sjis</button>
-        <button id="text-sjis8-utf8">@tools.sjis-utf8.utf8</button>
-      </th>
+        <th><span class="title-smaller">@tools.title.sjis-utf8</span></th>
+        <th>
+            <button id="text-sjis8-sjis">@tools.sjis-utf8.sjis</button>
+            <button id="text-sjis8-utf8">@tools.sjis-utf8.utf8</button>
+        </th>
     </tr>
     <tr>
-      <th><span class="title-smaller">@tools.title.shift</span></th>
-      <th>
-        <button id="text-shift">@tools.shift.text</button>
-        <input type="number" id="text-shift-amount" placeholder="@tools.shift.amount.placeholder">
-      </th>
+        <th><span class="title-smaller">@tools.title.shift</span></th>
+        <th>
+            <button id="text-shift">@tools.shift.text</button>
+            <input type="number" id="text-shift-amount" placeholder="@tools.shift.amount.placeholder">
+        </th>
     </tr>
     <tr>
-      <th><span class="title-smaller">@tools.title.replace</span></th>
-      <th>
-        <button id="text-replace-normal">@tools.replace.normal</button>
-        <input type="text" id="text-replace-from" class="text-replace" placeholder="@tools.replace.from"> →
-        <div style="padding: 2px;"></div>
-        <button id="text-replace-regex">@tools.replace.regex</button>
-        <input type="text" id="text-replace-to" class="text-replace" placeholder="@tools.replace.to">
-      </th>
+        <th><span class="title-smaller">@tools.title.replace</span></th>
+        <th>
+            <button id="text-replace-normal">@tools.replace.normal</button>
+            <input type="text" id="text-replace-from" class="text-replace" placeholder="@tools.replace.from"> →
+            <div style="padding: 2px;"></div>
+            <button id="text-replace-regex">@tools.replace.regex</button>
+            <input type="text" id="text-replace-to" class="text-replace" placeholder="@tools.replace.to">
+        </th>
     </tr>
     <tr>
-      <th><span class="title-smaller">@tools.title.swap</span></th>
-      <th>
-        <button id="text-swap">@tools.swap</button>
-        <button id="text-reverse">@tools.reverse.text</button>
-        <div style="padding: 2px;"></div>
-        <input type="text" id="text-swap1" class="text-swap" placeholder="@tools.swap.ph">
-        <input type="text" id="text-swap2" class="text-swap" placeholder="@tools.swap.ph">
-      </th>
+        <th><span class="title-smaller">@tools.title.swap</span></th>
+        <th>
+            <button id="text-swap">@tools.swap</button>
+            <button id="text-reverse">@tools.reverse.text</button>
+            <div style="padding: 2px;"></div>
+            <input type="text" id="text-swap1" class="text-swap" placeholder="@tools.swap.ph">
+            <input type="text" id="text-swap2" class="text-swap" placeholder="@tools.swap.ph">
+        </th>
     </tr>
     <tr>
-      <th><span class="title-smaller">@tools.title.frame</span></th>
-      <th>
-        <select name="frames" id="text-frames">
-          <option value="normalLight" selected>@tools.frame.light</option>
-          <option value="normalBold">@tools.frame.bold</option>
-          <option value="totuzennosi">@tools.frame.totuzennosi</option>
-          <option value="fukidasi">@tools.frame.fukidasi</option>
-          <option value="double">@tools.frame.double</option>
-        </select>
+        <th><span class="title-smaller">@tools.title.frame</span></th>
+        <th>
+            <select name="frames" id="text-frames">
+                <option value="normalLight" selected>@tools.frame.light</option>
+                <option value="normalBold">@tools.frame.bold</option>
+                <option value="totuzennosi">@tools.frame.totuzennosi</option>
+                <option value="fukidasi">@tools.frame.fukidasi</option>
+                <option value="double">@tools.frame.double</option>
+            </select>
 
-        <button id="text-frame-apply">@tools.frame.apply</button>
-      </th>
+            <button id="text-frame-apply">@tools.frame.apply</button>
+        </th>
     </tr>
-  </table><br>
-  <div class="title">@tools.title.numbers</div>
-  <span class="title-smaller m-ri40">@tools.numbers.random</span>
-  <input type="number" placeholder="Min (1)" id="random-min">
-  <input type="number" placeholder="Max (100)" id="random-max">
-  <input type="number" placeholder="Count (1)" id="random-count">
-  <button id="random-go" class="gobutton">Go!</button>
-  <div id="random-answer"></div>
-  <span class="title-smaller m-ri40">@tools.numbers.base</span>
-  <table class="base-table">
+</table>
+<br>
+<div class="title">@tools.title.numbers</div>
+<span class="title-smaller m-ri40">@tools.numbers.random</span>
+<input type="number" placeholder="Min (1)" id="random-min">
+<input type="number" placeholder="Max (100)" id="random-max">
+<input type="number" placeholder="Count (1)" id="random-count">
+<button id="random-go" class="gobutton">Go!</button>
+<div id="random-answer"></div>
+<span class="title-smaller m-ri40">@tools.numbers.base</span>
+<table class="base-table">
     <tr>
-      <th> <span class="title-smaller">@tools.numbers.base.2</span></th>
-      <th> <input type="text" id="base-2" placeholder="[01]"></th>
-    </tr>
-    <tr>
-      <th> <span class="title-smaller">@tools.numbers.base.8</span></th>
-      <th> <input type="text" id="base-8" placeholder="[01234567]"></th>
+        <th><span class="title-smaller">@tools.numbers.base.2</span></th>
+        <th><input type="text" id="base-2" placeholder="[01]"></th>
     </tr>
     <tr>
-      <th> <span class="title-smaller">@tools.numbers.base.10</span></th>
-      <th> <input type="number" id="base-10" placeholder="[0123456789]"></th>
+        <th><span class="title-smaller">@tools.numbers.base.8</span></th>
+        <th><input type="text" id="base-8" placeholder="[01234567]"></th>
     </tr>
     <tr>
-      <th> <span class="title-smaller">@tools.numbers.base.16</span></th>
-      <th> <input type="text" id="base-16" placeholder="[0123456789ABCDEF]"></th>
+        <th><span class="title-smaller">@tools.numbers.base.10</span></th>
+        <th><input type="number" id="base-10" placeholder="[0123456789]"></th>
     </tr>
     <tr>
-      <th> <span class="title-smaller">@tools.numbers.base.any</span></th>
-      <th> <input type="text" id="base-any" placeholder="[]" disabled></th>
+        <th><span class="title-smaller">@tools.numbers.base.16</span></th>
+        <th><input type="text" id="base-16" placeholder="[0123456789ABCDEF]"></th>
     </tr>
     <tr>
-      <th> <span>@tools.numbers.base.any.desc</span></th>
-      <th> <input type="text" id="base-any-chars" placeholder="@tools.numbers.base.any.example"></th>
+        <th><span class="title-smaller">@tools.numbers.base.any</span></th>
+        <th><input type="text" id="base-any" placeholder="[]" disabled></th>
     </tr>
-  </table><br>
-  <div class="title">@tools.title.mediaembed</div>
-  <input type="text" id="mediaembed-url" placeholder="URL / ID"><br>
-  <input type="checkbox" name="isnico-video" id="isnico-video">
-  <label for="isnico-video">@tools.mediaembed.isnico-video</label>
-  <div id="mediaembed"></div>
+    <tr>
+        <th><span>@tools.numbers.base.any.desc</span></th>
+        <th><input type="text" id="base-any-chars" placeholder="@tools.numbers.base.any.example"></th>
+    </tr>
+</table>
+<br>
+<div class="title">@tools.title.mediaembed</div>
+<input type="text" id="mediaembed-url" placeholder="URL / ID"><br>
+<input type="checkbox" name="isnico-video" id="isnico-video">
+<label for="isnico-video">@tools.mediaembed.isnico-video</label>
+<div id="mediaembed"></div>
 </body>
 
 </html>

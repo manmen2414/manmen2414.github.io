@@ -1,157 +1,160 @@
 :where(body:not(.dark)),
 :where(body:not(.dark)) * {
-  color: #000;
+    color: #000;
 }
 
 :where(body.dark),
 :where(body.dark) * {
-  color: #fff;
+    color: #fff;
 }
+
 :where(body:not(.dark)) {
-  background-color: #fff;
+    background-color: #fff;
 }
 
 :where(body.dark) {
-  background-color: #333;
+    background-color: #111;
 }
 
 body {
-  --margin: 15%;
-  margin: 0px var(--margin);
-  margin-bottom: 50px;
-  width: calc(100% - var(--margin) * 2);
+    --margin: 15%;
+    margin: 0px var(--margin);
+    margin-bottom: 50px;
+    width: calc(100% - var(--margin) * 2);
 }
 
 .title {
-  margin-top: 23px;
-  margin-bottom: -4px;
-  font-size: 35px;
+    margin-top: 23px;
+    margin-bottom: -4px;
+    font-size: 35px;
 }
 
 .title-smaller {
-  margin-top: 10px;
-  font-size: 25px;
+    margin-top: 10px;
+    font-size: 25px;
 }
+
 .title-smallest {
-  margin-top: 7.5px;
-  font-size: 20px;
+    margin-top: 7.5px;
+    font-size: 20px;
 }
 
 :where(body.dark) button:active,
 :where(body:not(.dark)) button:active {
-  border: 2px solid #77d;
+    border: 2px solid #77d;
 }
 
 :where(body:not(.dark)) button {
-  background-color: #ddd;
-  border: 2px solid #333;
+    background-color: #ddd;
+    border: 2px solid #333;
 }
 
 :where(body.dark) button {
-  background-color: #333;
-  border: 2px solid #ddd;
+    background-color: #333;
+    border: 2px solid #ddd;
 }
 
 button {
-  border-radius: 5px;
-  padding: 4px 10px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: border 0.1s ease-in-out;
+    border-radius: 5px;
+    padding: 4px 10px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border 0.1s ease-in-out;
 }
 
 :where(body.dark) input:not(:placeholder-shown),
 :where(body:not(.dark)) input:not(:placeholder-shown) {
-  border: 2px solid #77d;
+    border: 2px solid #77d;
 }
 
 :where(body:not(.dark)) input,
 :where(body:not(.dark)) select {
-  background-color: #ddd;
-  border: 2px solid #333;
+    background-color: #ddd;
+    border: 2px solid #333;
 }
 
 :where(body.dark) input,
 :where(body.dark) select {
-  background-color: #333;
-  border: 2px solid #ddd;
+    background-color: #333;
+    border: 2px solid #ddd;
 }
 
 input,
 select {
-  border-radius: 5px;
-  padding: 3px 2px 3px 3px;
-  font-size: 15px;
-  transition: border 0.05s ease-in-out;
+    border-radius: 5px;
+    padding: 3px 2px 3px 3px;
+    font-size: 15px;
+    transition: border 0.05s ease-in-out;
 }
 
 input:disabled {
-  cursor: no-drop;
-  border-color: transparent;
+    cursor: no-drop;
+    border-color: transparent;
 }
 
 .modal-wrapper {
-  position: fixed;
-  display: none;
-  z-index: 100;
-  background-color: #00000073;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 100vh;
+    position: fixed;
+    display: none;
+    z-index: 100;
+    background-color: #00000073;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
 }
 
 .modal-ui {
-  --padLR: 15px;
-  --padTop: 7px;
-  --width: 66.6vw;
-  --height: 70vh;
-  background: var(--bg);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: calc(var(--width) - var(--padLR) * 2);
-  height: calc(var(--height) - var(--padTop));
-  padding: var(--padTop) var(--padLR) 0 var(--padLR);
-  transform: translate(-50%, -50%);
-  overflow: scroll;
+    --padLR: 15px;
+    --padTop: 7px;
+    --width: 66.6vw;
+    --height: 70vh;
+    background: var(--bg);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--width) - var(--padLR) * 2);
+    height: calc(var(--height) - var(--padTop));
+    padding: var(--padTop) var(--padLR) 0 var(--padLR);
+    transform: translate(-50%, -50%);
+    overflow: scroll;
 }
+
 .modal-close {
-  font-size: 150%;
-  border: none;
-  height: 2em;
-  width: 2em;
-  position: fixed;
-  right: 0px;
-  top: 0px;
+    font-size: 150%;
+    border: none;
+    height: 2em;
+    width: 2em;
+    position: fixed;
+    right: 0px;
+    top: 0px;
 }
 
 .modal-ui * {
-  color: var(--color);
+    color: var(--color);
 }
 
 .modal-ui button,
 .modal-ui input {
-  background: #fff;
+    background: #fff;
 }
 
 @media screen and (max-width: 700px) {
-  .modal-ui {
-    --padLR: 10px;
-    --padTop: 15vh;
-    --width: 100vw;
-    --height: 100vh;
-    background: var(--color);
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0) 7%,
-      var(--bg) 15%,
-      var(--bg) 100%
-    );
-  }
+    .modal-ui {
+        --padLR: 10px;
+        --padTop: 15vh;
+        --width: 100vw;
+        --height: 100vh;
+        background: var(--color);
+        background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0) 7%,
+                var(--bg) 15%,
+                var(--bg) 100%
+        );
+    }
 
-  body {
-    --margin: 5%;
-  }
+    body {
+        --margin: 5%;
+    }
 }
