@@ -1,5 +1,11 @@
 :where(body.dark) .input-area {
   background-color: #222;
+}
+:where(body:not(.dark)) .input-area {
+  background-color: #ddd;
+}
+
+.input-area {
   padding: 5px 15px;
   border-radius: 20px;
   border-collapse: separate;
