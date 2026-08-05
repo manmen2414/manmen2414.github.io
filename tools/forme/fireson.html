@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <title>Mameeenn/まめーん</title>
+  <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
+  <meta name="description" content="ファイアソンとかいう頭おかしいツールをどうぞ。">
+  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="fireson.css">
+  <script src="/base.js"></script>
+  <script src="fireson.js"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=0.8">
+</head>
+
+<body>
+  <div class="title">ファイアソン</div>
+
+  <div class="title-smaller">CustomPersona</div>
+  <div>コピーされたスプリクトをアプリのDevtoolsコンソール画面で貼り付けてください。</div>
+
+  <table class="input-area">
+    <tbody>
+      <tr>
+        <td>名前</td>
+        <td>
+          <input type="text" id="cp-displayName">
+        </td>
+      </tr>
+      <tr>
+        <td>年齢</td>
+        <td>
+          <input type="number" id="cp-age">
+        </td>
+      </tr>
+      <tr>
+        <td>肩書き</td>
+        <td>
+          <input type="text" id="cp-title">
+        </td>
+      </tr>
+      <tr>
+        <td>得意なこと(改行区切り)</td>
+        <td>
+          <textarea id="cp-tags"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>性格・行動原理</td>
+        <td>
+          <textarea id="cp-system_style"></textarea>
+        </td>
+      </tr>
+      <tr>
+        <td>口癖や話し方</td>
+        <td>
+          <input type="text" id="cp-catchphrase">
+        </td>
+      </tr>
+      <tr>
+        <td>画像URL</td>
+        <td>
+          <input type="url" id="cp-url">
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 80%;color:gray">以下特殊設定</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>アイコン</td>
+        <td>
+          <input type="text" id="cp-icon" value="👤">
+        </td>
+      </tr>
+      <tr>
+        <td>ID</td>
+        <td>
+          <input type="text" id="cp-id" value="my_persona">
+        </td>
+      </tr>
+      <tr>
+        <td><button id="cp-export">エクスポート</button></td>
+    </tbody>
+    </tr>
+  </table>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+:where(body.dark) .input-area {
+  background-color: #222;
+  padding: 5px 15px;
+  border-radius: 20px;
+  border-collapse: separate;
+  border-spacing: 10px 4px;
+}
+
+.input-area input,
+.input-area textarea {
+  min-width: 15vw;
+  field-sizing: content;
+  max-width: 50vw;
+}
+
+.input-area textarea {
+  min-height: 2rem;
+}
